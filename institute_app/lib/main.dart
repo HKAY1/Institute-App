@@ -12,7 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white54,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: const Color(0xff1900FF).withOpacity(0.7), //dark blue
+        ),
+      ),
       title: 'Institute',
       home: const HomePage(),
     );
