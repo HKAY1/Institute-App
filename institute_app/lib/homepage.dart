@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'event.dart';
-import 'home.dart';
-import 'performance.dart';
-import 'profile.dart';
+import 'screens/event.dart';
+import 'screens/home.dart';
+import 'screens/performance.dart';
+import 'screens/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
