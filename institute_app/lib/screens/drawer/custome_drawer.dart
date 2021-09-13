@@ -14,6 +14,17 @@ class CustomeDrawer extends StatelessWidget {
     'Settings',
     'Log Out',
   ];
+  final drawerPages = <String>[
+    '/studyMaterial',
+    '/calender',
+    '/default',
+    '/default',
+    '/default',
+    '/default',
+    '/default',
+    '/default',
+    '/default',
+  ];
   CustomeDrawer({Key? key}) : super(key: key);
 
   @override
@@ -41,6 +52,9 @@ class CustomeDrawer extends StatelessWidget {
                   padding: EdgeInsets.only(left: 30, right: 40),
                   itemBuilder: (context, item) {
                     return ListTile(
+                      onTap: (){
+                        Navigator.of(context).popAndPushNamed(drawerPages[item]);
+                      },
                       leading: Icon(
                         Icons.home,
                         color: Theme.of(context).scaffoldBackgroundColor,
@@ -62,6 +76,21 @@ class CustomeDrawer extends StatelessWidget {
         ),
       ),
       borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
+    );
+  }
+}
+
+
+class DefaultPage extends StatelessWidget {
+  const DefaultPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text('Deafult Page',)
+      ),
     );
   }
 }

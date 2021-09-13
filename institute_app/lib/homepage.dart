@@ -25,19 +25,19 @@ class _HomePageState extends State<HomePage> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'FLo',
+                label: 'Home',
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'FLo',
+                icon: Icon(Icons.calendar_today_rounded),
+                label: 'Events',
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'FLo',
+                icon: Icon(Icons.query_stats),
+                label: 'Performance',
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'FLo',
+                icon: Icon(Icons.person_rounded),
+                label: 'Profile',
                 backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
           ],
           onTap: (i) {

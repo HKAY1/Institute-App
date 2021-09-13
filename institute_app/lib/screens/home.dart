@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Institute',
-          style: Theme.of(context).textTheme.headline1,
+          
         ),
         centerTitle: true,
         actions: [

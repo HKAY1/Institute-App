@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:imstitute/screens/drawer/calender.dart';
+import 'package:imstitute/screens/drawer/custome_drawer.dart';
+import 'package:imstitute/screens/drawer/study_material.dart';
 
 import 'homepage.dart';
 
@@ -15,6 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/studyMaterial': (context)=> const StudyMaterial(),
+        '/calender': (context)=> const Calender(),
+        '/default': (context)=> const DefaultPage()
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         dividerTheme: DividerThemeData(
@@ -60,16 +68,15 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          //For app bar text theme
-          headline1: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
         ),
         // primaryColor: const Color(0xff1900FF).withOpacity(0.7),
         scaffoldBackgroundColor: const Color(0xff1900FF).withOpacity(0.7),
         appBarTheme: AppBarTheme(
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
           backgroundColor: const Color(0xff1900FF).withOpacity(0.7), //dark blue
         ),
       ),
