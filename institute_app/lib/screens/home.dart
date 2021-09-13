@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:imstitute/colorScheme.dart';
 
-import 'custome_drawer.dart';
+import 'drawer/custome_drawer.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
