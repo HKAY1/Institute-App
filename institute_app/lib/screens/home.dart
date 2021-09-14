@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:imstitute/colorScheme.dart';
 
+import '../customeCard.dart';
 import 'drawer/custome_drawer.dart';
 
 class Home extends StatelessWidget {
@@ -15,10 +16,8 @@ class Home extends StatelessWidget {
     return Scaffold(
       drawer: CustomeDrawer(),
       appBar: AppBar(
-        elevation: 0,
         title: Text(
           'Institute',
-          
         ),
         centerTitle: true,
         actions: [
@@ -84,111 +83,10 @@ class Home extends StatelessWidget {
             CarouselSlider.builder(
               itemCount: 3,
               itemBuilder: (context, i, j) {
-                return Container(
-                  width: size.width * 0.85,
-                  decoration: BoxDecoration(
-                      color: cardcolor,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Stack(
-                        children: [
-                          CircleAvatar(
-                            minRadius: 40,
-                            maxRadius: 50,
-                            backgroundColor: Colors.white,
-                          ),
-                          Positioned(
-                              right: 10,
-                              child: Container(
-                                padding: EdgeInsets.all(2),
-                                child: Text(
-                                  'Live',
-                                  style: TextStyle(
-                                      fontSize: 10, color: Colors.white),
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10)),
-                              ))
-                        ],
-                      ),
-                      Flexible(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 8),
-                          padding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 10, right: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Physics',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                      ))
-                                ],
-                              ),
-                              Text(
-                                'Electromagnetic Induction',
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                              Text(
-                                'By Harry',
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Physics',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20))),
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Join',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
+                return MyCard();
               },
               options: CarouselOptions(
-                  aspectRatio: 6 / 2,
+                  aspectRatio: 5 / 2,
                   viewportFraction: 1,
                   autoPlay: true,
                   enableInfiniteScroll: true),
@@ -204,90 +102,7 @@ class Home extends StatelessWidget {
               itemCount: 3,
               shrinkWrap: true,
               itemBuilder: (context, item) {
-                return Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
-                  padding: EdgeInsets.all(8),
-                  width: size.width * 0.85,
-                  decoration: BoxDecoration(
-                      color: cardcolor,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CircleAvatar(
-                        minRadius: 40,
-                        maxRadius: 50,
-                        backgroundColor: Colors.white,
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 8),
-                          padding: EdgeInsets.only(
-                              top: 5, bottom: 5, left: 10, right: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Physics',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                      ))
-                                ],
-                              ),
-                              Text(
-                                'Electromagnetic Induction',
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                              Text(
-                                'By Harry',
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Physics',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20))),
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Join',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return MyCard();
               },
             ),
             Padding(

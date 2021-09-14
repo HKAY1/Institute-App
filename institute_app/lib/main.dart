@@ -4,7 +4,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:imstitute/screens/drawer/calender.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
-import 'package:imstitute/screens/drawer/study_material.dart';
+import 'package:imstitute/screens/drawer/downloads.dart';
+import 'package:imstitute/screens/drawer/study_material/study_material.dart';
 
 import 'homepage.dart';
 
@@ -19,9 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/studyMaterial': (context)=> const StudyMaterial(),
-        '/calender': (context)=> const Calender(),
-        '/default': (context)=> const DefaultPage()
+        '/studyMaterial': (context) => const StudyMaterial(),
+        '/calender': (context) => const Calender(),
+        '/default': (context) => const DefaultPage(),
+        '/downloads': (context) => const Downloads()
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -70,14 +72,16 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // primaryColor: const Color(0xff1900FF).withOpacity(0.7),
-        scaffoldBackgroundColor: const Color(0xff1900FF).withOpacity(0.7),
-        appBarTheme: AppBarTheme(
-          titleTextStyle: const TextStyle(
+        scaffoldBackgroundColor: const Color(0xff1900FF),
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          elevation: 0,
+          titleTextStyle: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
-          backgroundColor: const Color(0xff1900FF).withOpacity(0.7), //dark blue
+          backgroundColor: Color(0xff1900FF), //dark blue
         ),
       ),
       title: 'Institute',

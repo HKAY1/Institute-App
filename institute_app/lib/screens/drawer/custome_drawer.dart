@@ -17,7 +17,7 @@ class CustomeDrawer extends StatelessWidget {
   final drawerPages = <String>[
     '/studyMaterial',
     '/calender',
-    '/default',
+    '/downloads',
     '/default',
     '/default',
     '/default',
@@ -52,8 +52,10 @@ class CustomeDrawer extends StatelessWidget {
                   padding: EdgeInsets.only(left: 30, right: 40),
                   itemBuilder: (context, item) {
                     return ListTile(
-                      onTap: (){
-                        Navigator.of(context).popAndPushNamed(drawerPages[item]);
+                      onTap: () {
+                        Navigator.of(context).popAndPushNamed(
+                          drawerPages[item],
+                        );
                       },
                       leading: Icon(
                         Icons.home,
@@ -80,7 +82,6 @@ class CustomeDrawer extends StatelessWidget {
   }
 }
 
-
 class DefaultPage extends StatelessWidget {
   const DefaultPage({Key? key}) : super(key: key);
 
@@ -88,9 +89,10 @@ class DefaultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text('Deafult Page',)
-      ),
+          automaticallyImplyLeading: true,
+          title: Text(
+            'Deafult Page',
+          )),
     );
   }
 }
