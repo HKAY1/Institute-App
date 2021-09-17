@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:imstitute/customeWidgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../colorScheme.dart';
@@ -24,14 +25,7 @@ class _CalenderState extends State<Calender> {
         title: Text('Calender'),
         centerTitle: true,
       ),
-      body: Container(
-        clipBehavior: Clip.antiAlias,
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.elliptical(200, 60)),
-          color: bodycolor,
-        ),
+      body: MyBackground(
         child: Column(
           children: [
             Card(

@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'screens/study_material/study_material.dart';
 
 import 'screens/event.dart';
 import 'screens/home.dart';
-import 'screens/performance.dart';
-import 'screens/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,23 +21,22 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _myindex,
-          items: [
+          items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
+              icon: Icon(Icons.home),
+              label: 'Home',
+              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today_rounded),
-                label: 'Events',
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
+              icon: Icon(Icons.calendar_today_rounded),
+              label: 'Events',
+              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.query_stats),
-                label: 'Performance',
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_rounded),
-                label: 'Profile',
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor),
+              icon: Icon(Icons.book),
+              label: 'Study Material',
+              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            ),
           ],
           onTap: (i) {
             setState(() {
@@ -55,6 +53,5 @@ class _HomePageState extends State<HomePage> {
 final mylist = <Widget>[
   Home(),
   EventPage(),
-  PerformancePage(),
-  Profile(),
+  StudyMaterial(),
 ];

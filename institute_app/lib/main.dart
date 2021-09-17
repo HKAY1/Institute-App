@@ -5,9 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:imstitute/screens/drawer/calender.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
 import 'package:imstitute/screens/drawer/downloads.dart';
-import 'package:imstitute/screens/drawer/study_material/study_material.dart';
+import 'package:imstitute/screens/drawer/profile.dart';
 
 import 'homepage.dart';
+import 'screens/performance.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/studyMaterial': (context) => const StudyMaterial(),
+        '/profile': (context) => const Profile(),
+        '/performance': (context) => const PerformancePage(),
         '/calender': (context) => const Calender(),
         '/default': (context) => const DefaultPage(),
         '/downloads': (context) => const Downloads()
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
           color: const Color(0xff978DFB).withOpacity(0.2),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Color(0xff1900FF),
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white54,
         ),

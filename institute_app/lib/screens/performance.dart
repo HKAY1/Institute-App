@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class PerformancePage extends StatelessWidget {
@@ -5,8 +7,10 @@ class PerformancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Performance'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Performance'),
+      ),
     );
   }
 }

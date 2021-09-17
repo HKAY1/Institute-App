@@ -1,21 +1,24 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
+class DrawerItems {
+  final String title;
+  final IconData icon;
+  DrawerItems({this.title = 'Error', this.icon = Icons.error});
+}
+
 class CustomeDrawer extends StatelessWidget {
-  final draweritems = <String>[
-    'Study Materials',
-    'Calender',
-    'Downloads',
-    'Chat with Faculty',
-    'Invite Friends',
-    'Contact Us',
-    'F.A.Q\'s',
-    'Settings',
-    'Log Out',
+  final draweritems = [
+    DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
+    DrawerItems(title: 'Calender', icon: Icons.calendar_view_month_rounded),
+    DrawerItems(title: 'Downloads', icon: Icons.download),
+    DrawerItems(title: 'Chat with Faculty', icon: Icons.chat),
+    DrawerItems(title: 'Contact Us', icon: Icons.contact_page),
+    DrawerItems(title: 'F.A.Q\'s', icon: Icons.feedback_rounded),
+    DrawerItems(title: 'Log Out', icon: Icons.logout_rounded),
   ];
   final drawerPages = <String>[
-    '/studyMaterial',
+    '/performance',
     '/calender',
     '/downloads',
     '/default',
@@ -33,18 +36,25 @@ class CustomeDrawer extends StatelessWidget {
       child: Drawer(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: CircleAvatar(
-                maxRadius: 40,
-                minRadius: 20,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 15),
-              child: Text(
-                'data',
-                style: Theme.of(context).textTheme.headline2,
+            GestureDetector(
+              onTap: () {},
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: CircleAvatar(
+                      maxRadius: 40,
+                      minRadius: 20,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 15),
+                    child: Text(
+                      'data',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -58,11 +68,11 @@ class CustomeDrawer extends StatelessWidget {
                         );
                       },
                       leading: Icon(
-                        Icons.home,
+                        draweritems[item].icon,
                         color: Theme.of(context).scaffoldBackgroundColor,
                       ),
                       title: Text(
-                        draweritems[item],
+                        draweritems[item].title,
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     );
@@ -72,7 +82,7 @@ class CustomeDrawer extends StatelessWidget {
                       height: 2,
                     );
                   },
-                  itemCount: 9),
+                  itemCount: draweritems.length),
             ),
           ],
         ),

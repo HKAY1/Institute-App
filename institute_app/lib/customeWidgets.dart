@@ -88,3 +88,24 @@ class MyCard extends StatelessWidget {
     );
   }
 }
+
+class MyBackground extends StatelessWidget {
+  final Widget child;
+
+  const MyBackground({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      child: child,
+      clipBehavior: Clip.antiAlias,
+      height: size.height,
+      width: size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.elliptical(200, 60)),
+        color: bodycolor,
+      ),
+    );
+  }
+}

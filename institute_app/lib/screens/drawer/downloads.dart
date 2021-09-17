@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'study_material/assignment.dart';
+import '../study_material/assignment.dart';
 import '../../colorScheme.dart';
-import 'study_material/notes.dart';
-import 'study_material/testseries.dart';
+import '../study_material/notes.dart';
+import '../study_material/testseries.dart';
 
 class Downloads extends StatefulWidget {
   const Downloads({Key? key}) : super(key: key);
@@ -31,17 +31,8 @@ class _Downloads extends State<Downloads> {
         title: Text('Downloads'),
         centerTitle: true,
       ),
-      body: Container(
-        clipBehavior: Clip.antiAlias,
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.elliptical(200, 60)),
-          color: bodycolor,
-        ),
-        child: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,

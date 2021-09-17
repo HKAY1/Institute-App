@@ -2,9 +2,9 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:imstitute/colorScheme.dart';
+// import 'package:imstitute/colorScheme.dart';
 
-import '../customeCard.dart';
+import '../customeWidgets.dart';
 import 'drawer/custome_drawer.dart';
 
 class Home extends StatelessWidget {
@@ -24,14 +24,7 @@ class Home extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
         ],
       ),
-      body: Container(
-        clipBehavior: Clip.antiAlias,
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.elliptical(200, 60)),
-          color: bodycolor,
-        ),
+      body: MyBackground(
         child: ListView(
           padding: EdgeInsets.only(left: 20, right: 20, top: 15),
           children: [
@@ -42,17 +35,18 @@ class Home extends StatelessWidget {
                   color: Theme.of(context).textTheme.headline2!.color,
                   fontSize: 25),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 20),
-              child: TextField(
-                cursorColor: Theme.of(context).backgroundColor,
-                style: Theme.of(context).textTheme.headline3,
-                decoration: InputDecoration(
-                  hintText: ' Type Something',
-                  prefixIcon: Icon(Icons.search),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 30, bottom: 20),
+            //   child: TextField(
+            //     cursorColor: Theme.of(context).backgroundColor,
+            //     style: Theme.of(context).textTheme.headline3,
+            //     decoration: InputDecoration(
+            //       hintText: ' Type Something',
+            //       prefixIcon: Icon(Icons.search),
+            //     ),
+            //   ),
+            // ),
+            SizedBox(height: 30),
             CarouselSlider.builder(
               itemCount: 3,
               itemBuilder: (context, i, j) {
