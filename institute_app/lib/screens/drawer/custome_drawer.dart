@@ -24,11 +24,9 @@ class CustomeDrawer extends StatelessWidget {
     '/calender',
     '/downloads',
     '/default',
-    '/default',
+    '/contactus',
     '/faq',
     '/logout',
-    
-    '/default',
   ];
   CustomeDrawer({Key? key}) : super(key: key);
   
