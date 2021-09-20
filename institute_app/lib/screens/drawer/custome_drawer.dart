@@ -23,13 +23,13 @@ class CustomeDrawer extends StatelessWidget {
     '/downloads',
     '/default',
     '/default',
-    '/default',
-    '/default',
-    '/default',
+    '/faq',
+    '/logout',
+    
     '/default',
   ];
   CustomeDrawer({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -63,7 +63,20 @@ class CustomeDrawer extends StatelessWidget {
                   itemBuilder: (context, item) {
                     return ListTile(
                       onTap: () {
-                        Navigator.of(context).popAndPushNamed(
+                        (draweritems[item].title == 'Log Out')?showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Do you want to logout'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),):Navigator.of(context).popAndPushNamed(
                           drawerPages[item],
                         );
                       },
@@ -106,3 +119,6 @@ class DefaultPage extends StatelessWidget {
     );
   }
 }
+
+
+  
