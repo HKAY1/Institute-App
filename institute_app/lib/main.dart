@@ -6,8 +6,10 @@ import 'package:imstitute/screens/drawer/calender.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
 import 'package:imstitute/screens/drawer/downloads.dart';
+import 'package:imstitute/screens/drawer/faq.dart';
 import 'package:imstitute/screens/drawer/profile.dart';
 import 'homepage.dart';
+
 import 'screens/performance.dart';
 
 void main() {
@@ -17,6 +19,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +29,9 @@ class MyApp extends StatelessWidget {
         '/performance': (context) => const PerformancePage(),
         '/calender': (context) => const Calender(),
         '/default': (context) => const DefaultPage(),
-        '/downloads': (context) => const Downloads()
+        '/downloads': (context) => const Downloads(),
+        '/faq': (context) => const FAQPage(),
+        // '/logout': (context) => const Logout(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

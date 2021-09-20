@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 class DrawerItems {
@@ -23,11 +25,11 @@ class CustomeDrawer extends StatelessWidget {
     '/downloads',
     '/default',
     '/contactus',
-    '/default',
-    '/default',
+    '/faq',
+    '/logout',
   ];
   CustomeDrawer({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -61,7 +63,20 @@ class CustomeDrawer extends StatelessWidget {
                   itemBuilder: (context, item) {
                     return ListTile(
                       onTap: () {
-                        Navigator.of(context).popAndPushNamed(
+                        (draweritems[item].title == 'Log Out')?showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Do you want to logout'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),):Navigator.of(context).popAndPushNamed(
                           drawerPages[item],
                         );
                       },
@@ -104,3 +119,6 @@ class DefaultPage extends StatelessWidget {
     );
   }
 }
+
+
+  
