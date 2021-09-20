@@ -34,6 +34,8 @@ class _CalenderState extends State<Calender> {
                   borderRadius: BorderRadius.circular(50)),
               elevation: 5,
               child: TableCalendar(
+                rowHeight: 35,
+                daysOfWeekHeight: 15,
                 firstDay: DateTime.utc(2010, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: DateTime.now(),
