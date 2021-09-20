@@ -1,18 +1,20 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:imstitute/mydata.dart';
+import 'package:imstitute/screens/drawer/downloads.dart';
 
 import '../../../colorScheme.dart';
 
-class Notes extends StatefulWidget {
-  final bool isEMpty;
-  Notes({Key? key, required this.isEMpty}) : super(key: key);
+class MyDataList extends StatefulWidget {
+  final List<MyData> mydata;
+  MyDataList({Key? key, required this.mydata}) : super(key: key);
 
   @override
-  State<Notes> createState() => _NotesState();
+  State<MyDataList> createState() => _MyDataListState();
 }
 
-class _NotesState extends State<Notes> {
+class _MyDataListState extends State<MyDataList> {
   final subjects = <String>[
     'All Subjects',
     'Physics',
@@ -74,10 +76,10 @@ class _NotesState extends State<Notes> {
           //
           color: bodycolor,
         ),
-        child: (widget.isEMpty)
+        child: (widget.mydata.isEmpty)
             ? Container(
-                margin: EdgeInsets.only(top: size.height * 0.1),
                 child: Image.asset('images/nodownloads.png'),
+                margin: EdgeInsets.only(top: size.height * 0.1),
               )
             : ListView.builder(
                 itemBuilder: (context, item) {
@@ -108,7 +110,7 @@ class _NotesState extends State<Notes> {
                                 padding: const EdgeInsets.only(
                                     top: 8.0, bottom: 15, right: 5),
                                 child: Text(
-                                  'Electromagnetic Induction cbhgdvchb wdhcbjhwec jhvwchjvce ejhvwhbcew wghcvhg whgcv w hgvwc hcvw',
+                                  widget.mydata[item].detail,
                                   style: TextStyle(
                                     fontSize: Theme.of(context)
                                         .textTheme
@@ -123,7 +125,7 @@ class _NotesState extends State<Notes> {
                                 ),
                               ),
                               Text(
-                                'By Harry',
+                                widget.mydata[item].provider,
                                 style: TextStyle(
                                   fontSize: Theme.of(context)
                                       .textTheme
@@ -140,22 +142,34 @@ class _NotesState extends State<Notes> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Full Chapter PDF',
-                                    style: TextStyle(
-                                      fontSize: Theme.of(context)
-                                          .textTheme
-                                          .headline5!
-                                          .fontSize,
-                                      fontWeight: Theme.of(context)
-                                          .textTheme
-                                          .headline5!
-                                          .fontWeight,
-                                      color: bodycolor,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.6),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 8,
+                                    ),
+                                    child: Text(
+                                      widget.mydata[item].tag,
+                                      style: TextStyle(
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .fontSize,
+                                        fontWeight: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .fontWeight,
+                                        color: bodycolor,
+                                      ),
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      downloadList.add(widget.mydata[item]);
+                                    },
                                     icon: Icon(
                                       Icons.download,
                                       color: Colors.white,
@@ -170,7 +184,7 @@ class _NotesState extends State<Notes> {
                     ),
                   );
                 },
-                itemCount: 10,
+                itemCount: widget.mydata.length,
                 padding:
                     EdgeInsets.only(top: 00, bottom: 40, left: 20, right: 20),
               ),

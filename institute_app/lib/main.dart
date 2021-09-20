@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:imstitute/screens/drawer/calender.dart';
+import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
 import 'package:imstitute/screens/drawer/downloads.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/profile': (context) => const Profile(),
+        '/contactus': (context) => const ContactUs(),
         '/performance': (context) => const PerformancePage(),
         '/calender': (context) => const Calender(),
         '/default': (context) => const DefaultPage(),

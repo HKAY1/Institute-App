@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class DrawerItems {
@@ -22,11 +23,9 @@ class CustomeDrawer extends StatelessWidget {
     '/calender',
     '/downloads',
     '/default',
-    '/default',
+    '/contactus',
     '/faq',
     '/logout',
-    
-    '/default',
   ];
   CustomeDrawer({Key? key}) : super(key: key);
   
