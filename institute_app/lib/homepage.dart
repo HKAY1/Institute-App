@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:imstitute/screens/event.dart';
 import 'screens/study_material/study_material.dart';
-
-import 'screens/event.dart';
 import 'screens/home.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_rounded),
-              label: 'Events',
+              label: 'Calender',
               // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             ),
             BottomNavigationBarItem(
@@ -52,6 +51,6 @@ class _HomePageState extends State<HomePage> {
 
 final mylist = <Widget>[
   Home(),
-  EventPage(),
+  Calender(),
   StudyMaterial(),
 ];

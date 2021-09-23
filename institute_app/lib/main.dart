@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:imstitute/screens/drawer/calender.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
 import 'package:imstitute/screens/drawer/downloads.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
-import 'package:imstitute/screens/drawer/profile.dart';
+import 'package:imstitute/screens/drawer/profile_Page.dart';
+import 'package:imstitute/screens/notification.dart';
 import 'homepage.dart';
 
 import 'screens/performance.dart';
@@ -19,19 +19,28 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/profile': (context) => const Profile(),
+        '/profile': (context) => const ProfilePage(),
+        '/notification': (context) => const NotificatioPage(),
         '/contactus': (context) => const ContactUs(),
         '/performance': (context) => const PerformancePage(),
-        '/calender': (context) => const Calender(),
         '/default': (context) => const DefaultPage(),
         '/downloads': (context) => const Downloads(),
         '/faq': (context) => const FAQPage(),
-        // '/logout': (context) => const Logout(),
+      },
+      onGenerateRoute: (setting) {
+        if (setting.name == '/profile') {
+          return PageRouteBuilder(
+            settings:
+                setting, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+            pageBuilder: (_, __, ___) => const ProfilePage(),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
+          );
+        }
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

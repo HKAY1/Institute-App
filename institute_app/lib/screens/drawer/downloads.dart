@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:imstitute/mydata.dart';
 import '../../colorScheme.dart';
-import '../study_material/notes.dart';
 
 class Downloads extends StatefulWidget {
   const Downloads({Key? key}) : super(key: key);

@@ -11,7 +11,6 @@ class DrawerItems {
 class CustomeDrawer extends StatelessWidget {
   final draweritems = [
     DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
-    DrawerItems(title: 'Calender', icon: Icons.calendar_view_month_rounded),
     DrawerItems(title: 'Downloads', icon: Icons.download),
     DrawerItems(title: 'Chat with Faculty', icon: Icons.chat),
     DrawerItems(title: 'Contact Us', icon: Icons.contact_page),
@@ -20,7 +19,6 @@ class CustomeDrawer extends StatelessWidget {
   ];
   final drawerPages = <String>[
     '/performance',
-    '/calender',
     '/downloads',
     '/default',
     '/contactus',
@@ -28,32 +26,63 @@ class CustomeDrawer extends StatelessWidget {
     '/logout',
   ];
   CustomeDrawer({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       child: Drawer(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {},
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: CircleAvatar(
-                      maxRadius: 40,
-                      minRadius: 20,
+            InkWell(
+              onTap: () {
+                Navigator.popAndPushNamed(context, '/profile');
+              },
+              child: Hero(
+                tag: 'profile',
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Stack(
+                        fit: StackFit.passthrough,
+                        children: [
+                          Center(
+                            child: CircleAvatar(
+                              maxRadius: 40,
+                              minRadius: 20,
+                              backgroundImage:
+                                  Image.asset('images/monkey_profile.jpg')
+                                      .image,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: Colors.blue,
+                              ),
+                            ),
+                            right: 115,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 15),
-                    child: Text(
-                      'data',
-                      style: Theme.of(context).textTheme.headline2,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Text(
+                        'Ravi',
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -62,22 +91,29 @@ class CustomeDrawer extends StatelessWidget {
                   itemBuilder: (context, item) {
                     return ListTile(
                       onTap: () {
-                        (draweritems[item].title == 'Log Out')?showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-          title: const Text('Logout'),
-          content: const Text('Do you want to logout'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),):Navigator.of(context).popAndPushNamed(
-                          drawerPages[item],
-                        );
+                        (draweritems[item].title == 'Log Out')
+                            ? showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Logout'),
+                                  content: const Text('Do you want to logout'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Navigator.of(context).popAndPushNamed(
+                                drawerPages[item],
+                              );
                       },
                       leading: Icon(
                         draweritems[item].icon,
@@ -118,6 +154,3 @@ class DefaultPage extends StatelessWidget {
     );
   }
 }
-
-
-  

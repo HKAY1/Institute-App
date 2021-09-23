@@ -15,7 +15,7 @@ class StudyMaterial extends StatefulWidget {
 class _StudyMaterial extends State<StudyMaterial> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return DefaultTabController(
       length: 3,
       child: Scaffold(

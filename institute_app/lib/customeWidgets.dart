@@ -10,7 +10,7 @@ class MyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       // padding: EdgeInsets.all(8),
       width: size.width * 0.85,
       decoration: BoxDecoration(
@@ -23,7 +23,7 @@ class MyCard extends StatelessWidget {
           CircleAvatar(
             minRadius: 40,
             maxRadius: 50,
-            backgroundColor: Colors.white,
+            backgroundImage: Image.asset('images/monkey_profile.jpg').image,
           ),
           Expanded(
             child: Container(
