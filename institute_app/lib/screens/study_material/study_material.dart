@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:imstitute/customeWidgets.dart';
 import 'package:imstitute/mydata.dart';
 import 'notes.dart';
 
@@ -20,35 +21,59 @@ class _StudyMaterial extends State<StudyMaterial> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
           title: Text('Study Material'),
-          centerTitle: true,
-          bottom: TabBar(
-            tabs: const [
-              Tab(
-                text: 'Notes',
+        ),
+        body: MyBackground(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+                height: 45,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(
+                    25.0,
+                  ),
+                ),
+                child: TabBar(
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      25.0,
+                    ),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.black,
+                  tabs: const [
+                    Tab(
+                      text: 'Notes',
+                    ),
+                    Tab(
+                      text: 'Assignment',
+                    ),
+                    Tab(
+                      text: 'Text Series',
+                    ),
+                  ],
+                ),
               ),
-              Tab(
-                text: 'Assignment',
-              ),
-              Tab(
-                text: 'Text Series',
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    MyDataList(
+                      mydata: notes,
+                    ),
+                    MyDataList(
+                      mydata: assignment,
+                    ),
+                    MyDataList(
+                      mydata: testseries,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            MyDataList(
-              mydata: notes,
-            ),
-            MyDataList(
-              mydata: assignment,
-            ),
-            MyDataList(
-              mydata: testseries,
-            ),
-          ],
         ),
       ),
     );

@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
       showModalBottomSheet(
         clipBehavior: Clip.hardEdge,
         constraints: BoxConstraints(
-          maxHeight: size.height * 0.9,
+          maxHeight: size.height * 0.90,
           minHeight: size.height * 0.4,
         ),
         isScrollControlled: true,
