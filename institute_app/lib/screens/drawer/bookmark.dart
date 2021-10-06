@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:imstitute/mydata.dart';
 import '../../colorScheme.dart';
 
-class Downloads extends StatefulWidget {
-  const Downloads({Key? key}) : super(key: key);
+class Bookmark extends StatefulWidget {
+  const Bookmark({Key? key}) : super(key: key);
 
   @override
-  State<Downloads> createState() => _Downloads();
+  State<Bookmark> createState() => _Bookmark();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _Downloads extends State<Downloads> {
+class _Bookmark extends State<Bookmark> {
   final subjects = <String>[
     'All Subjects',
     'Physics',

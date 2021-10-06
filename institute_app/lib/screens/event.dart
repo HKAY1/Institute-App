@@ -19,7 +19,6 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

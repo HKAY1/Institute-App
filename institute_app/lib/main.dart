@@ -4,7 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
-import 'package:imstitute/screens/drawer/downloads.dart';
+import 'package:imstitute/screens/drawer/bookmark.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
 import 'package:imstitute/screens/drawer/profile_Page.dart';
 import 'package:imstitute/screens/notification.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         '/contactus': (context) => const ContactUs(),
         '/performance': (context) => const PerformancePage(),
         '/default': (context) => const DefaultPage(),
-        '/downloads': (context) => const Downloads(),
+        '/downloads': (context) => const Bookmark(),
         '/faq': (context) => const FAQPage(),
       },
       onGenerateRoute: (setting) {
