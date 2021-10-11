@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'package:imstitute/customeWidgets.dart';
-import 'package:imstitute/mydata.dart';
+import '../../coustom/customeWidgets.dart';
+import '../../mydata.dart';
 import 'notes.dart';
 
 class StudyMaterial extends StatefulWidget {
