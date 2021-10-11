@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:imstitute/customeWidgets.dart';
+import '../../custome/customeWidgets.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

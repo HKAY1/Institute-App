@@ -38,6 +38,7 @@ dependencies:
   table_calendar: ^3.0.2
   percent_indicator: ^3.0.1
   get: ^4.3.8
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
