@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:imstitute/colorScheme.dart';
-import 'package:imstitute/customeWidgets.dart';
+import '../../custome/colorScheme.dart';
+import '../../custome/customeWidgets.dart';
 
 class ContactUs extends StatelessWidget {
   const ContactUs({Key? key}) : super(key: key);
