@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 import 'package:flutter/material.dart';
 import '../../coustom/colorScheme.dart';
-import '../../mydata.dart';
+import '../../studydata/mydata.dart';
 
 class Downloads extends StatefulWidget {
   const Downloads({Key? key}) : super(key: key);

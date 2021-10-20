@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:teacher_institute/screens/performance/class.dart';
 import 'homepage.dart';
 import 'screens/drawer/contactUSPage.dart';
 import 'screens/drawer/custome_drawer.dart';
@@ -9,7 +10,6 @@ import 'screens/drawer/downloads.dart';
 import 'screens/drawer/faq.dart';
 import 'screens/drawer/profile_Page.dart';
 import 'screens/notification.dart';
-import 'screens/performance.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/notification': (context) => const NotificatioPage(),
         '/contactus': (context) => const ContactUs(),
-        '/performance': (context) => const PerformancePage(),
+        '/performance': (context) => const ChooseClass(),
         '/default': (context) => const DefaultPage(),
         '/downloads': (context) => const Downloads(),
         '/faq': (context) => const FAQPage(),

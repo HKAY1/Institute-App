@@ -20,7 +20,6 @@ class _CalenderState extends State<Calender> {
   CalendarFormat format = CalendarFormat.month;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -145,20 +144,6 @@ class _CalenderState extends State<Calender> {
                                               ),
                                             ),
                                           ),
-                                          // Text(
-                                          //  'By ${eventData[item].provider}',
-                                          //   style: TextStyle(
-                                          //     fontSize: Theme.of(context)
-                                          //         .textTheme
-                                          //         .headline4!
-                                          //         .fontSize,
-                                          //     fontWeight: Theme.of(context)
-                                          //         .textTheme
-                                          //         .headline4!
-                                          //         .fontWeight,
-                                          //     color: bodycolor,
-                                          //   ),
-                                          // ),
                                           SizedBox(height: 8),
                                         ],
                                       ),

@@ -3,37 +3,36 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
 import 'package:teacher_institute/coustom/customeWidgets.dart';
 
-class AddEvent extends StatefulWidget {
+class AddMaterial extends StatefulWidget {
   
-  const AddEvent({ Key? key }) : super(key: key);
+  const AddMaterial({ Key? key }) : super(key: key);
   
   @override
-  State<AddEvent> createState() => _AddEventState();
+  State<AddMaterial> createState() => _AddMaterialState();
 }
 
-class _AddEventState extends State<AddEvent> {
+class _AddMaterialState extends State<AddMaterial> {
   //  Event? even;
-  final titlecontroller = TextEditingController();
+  final chaptercontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();
-  late DateTime fromDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
-  TimeOfDay selectedTime2 = TimeOfDay.now();
   final formkey = GlobalKey();
-  late DateTime toDate = DateTime.now();
   late List<String?> filter;
+  late List<String?> choose;
+  final List<String> type = <String>['Notes','Assignment','Test Series'];
   final List<bool> isSelect = List.filled(4, false);
+  final List<bool> choice = List.filled(3, false);
   final List<String> clas = <String>[
     '9th','10th','11th','12th'
   ];
+  int typeIndex=0;
   
   
   @override
   void dispose() {
-    titlecontroller.dispose();
+    chaptercontroller.dispose();
      discriptioncontroller.dispose();
     super.dispose();
   }
@@ -42,7 +41,7 @@ class _AddEventState extends State<AddEvent> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Add Event'),
+        title: Text('Create Material'),
         
       ),
       body: MyBackground(
@@ -55,12 +54,13 @@ class _AddEventState extends State<AddEvent> {
               TextFormField(
                 style:TextStyle(fontSize: 24),
                 decoration: InputDecoration(
-                  labelText:'Create Event',
+                  labelText:'Chapter No.',
+                  hintText: 'eg :- 1 ',
                   border: UnderlineInputBorder(),
                 ),
                 onFieldSubmitted: (_){},
                 validator: (title)=>title !=null && title.isEmpty ?'Title should not be empty':null,
-                controller: titlecontroller,
+                controller: chaptercontroller,
               ),
               SizedBox(height: 18),
               Text('Choose Class'),
@@ -104,61 +104,49 @@ class _AddEventState extends State<AddEvent> {
               ),
             ),
               SizedBox(height: 18),
+              Text('Choose Type'),
+              Container(
+              height: 50,
+              color: bodycolor,
+              padding: const EdgeInsets.all(6),
+              child: ListView.builder(
+                itemBuilder: (context, item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5),
+                    child: ChoiceChip(
+            label: Text(type[item]),
+            selected: choice[item] ,
+            selectedColor: Colors.red,
+            onSelected: (selected) {
+              setState(() {
+                typeIndex = selected ? item : 0;
+                choice[item] = selected;
+              });
+            },
+            backgroundColor: Colors.green,
+            labelStyle: TextStyle(color: Colors.white),
+          ));
+                  
+                },
+                itemCount: type.length,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
               Column(
                 children: [
-                  Text('Choose Start Date and Time'),
-                  SizedBox(height:15),
-                  Row(
-                    children: [
-                      Expanded(child:  
-                      ListTile(
-                         title: Text(DateFormat('EEE, MMM d, ').format(fromDate)),
-                        trailing: Icon(Icons.arrow_drop_down),
-                        onTap: ()=> _selectDate(context),
-                      ),
-                    ),
-                     Expanded(child:  
-                      ListTile(
-                         title: Text(selectedTime.format(context)),
-                        trailing: Icon(Icons.arrow_drop_down),
-                        onTap: ()=>_selectTime(context),
-                      ),
-                    ) 
-                    ],
-                  ),
-                  SizedBox(height: 85,),
-                  Text('Choose End Date and Time'),
-                  SizedBox(height:15),
-                  Row(
-                    children: [
-                      Expanded(child:  
-                      ListTile(
-                         title: Text(DateFormat('EEE, MMM d, ').format(toDate)),
-                        trailing: Icon(Icons.arrow_drop_down),
-                        onTap: ()=>_selectDate2(context),
-                      ),
-                    ),
-                     Expanded(child:  
-                      ListTile(
-                         title: Text(selectedTime2.format(context)),
-                        trailing: Icon(Icons.arrow_drop_down),
-                        onTap: ()=>_selectTime1(context),
-                      ),
-                    ) 
-                    ],
-                  ),
                    TextFormField(
                      minLines: 1,
                      maxLines: 5,
-                     maxLength: 300,
+                     maxLength: 50,
                 style:TextStyle(fontSize: 14),
                 decoration: InputDecoration(
-                  labelText:' Discription',
+                  labelText:' Chapter Name',
                   border: OutlineInputBorder(),
                 ),
                 onFieldSubmitted: (_){},
                 controller: discriptioncontroller,
               ),
+                  SizedBox(height:15),
                TextButton.icon(
                   style: TextButton.styleFrom(
                     minimumSize: Size(150, 50),
@@ -169,10 +157,6 @@ class _AddEventState extends State<AddEvent> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    print(DateTime(fromDate.year,fromDate.month,fromDate.day).millisecondsSinceEpoch);
-                    print(DateTime.fromMillisecondsSinceEpoch(DateTime(fromDate.year,fromDate.month,fromDate.day).millisecondsSinceEpoch));
-                    print(fromDate.millisecondsSinceEpoch);
-                    print(selectedTime.format(context));
                     setState(() {
                       // for(int i = 0;i<isSelect.length;i++)
                       // if(isSelect[i])
@@ -182,8 +166,14 @@ class _AddEventState extends State<AddEvent> {
                         return clas[e.key].replaceAll('th', '');
                       }).toList();
                       filter.removeWhere((element) => element == null);
+                       choose = choice.asMap().entries.map((e){
+                         if(e.value)
+                        return type[e.key];
+                      }).toList();
+                      choose.removeWhere((element) => element == null);
                     });
                     print(filter);
+                    print(choose);
                   },
                   icon: Icon(Icons.add),
                   label: Text('Add Event'),
@@ -197,47 +187,4 @@ class _AddEventState extends State<AddEvent> {
         ),
     );
   }
-   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: fromDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != fromDate)
-      setState(() {
-        fromDate = picked;
-      });
-  } 
-  Future<void> _selectDate2(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: toDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != toDate)
-      setState(() {
-        toDate = picked;
-      });
-  }
-  Future<void> _selectTime(BuildContext context) async {
-final TimeOfDay? pickedS = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.fromDateTime(fromDate),);
-
-if (pickedS != null  )
-  setState(() {
-    selectedTime = pickedS;
-  });
-}
-  
-  Future<void> _selectTime1(BuildContext context) async {
-final TimeOfDay? pickedS = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.fromDateTime(toDate),);
-
-if (pickedS != null  )
-  setState(() {
-    selectedTime2 = pickedS;
-  });
- }
 }

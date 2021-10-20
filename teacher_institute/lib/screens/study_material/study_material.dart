@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teacher_institute/screens/study_material/add_material.dart';
 import '../../coustom/customeWidgets.dart';
-import '../../mydata.dart';
+import '../../studydata/mydata.dart';
 import 'notes.dart';
 
 class StudyMaterial extends StatefulWidget {
@@ -23,6 +25,9 @@ class _StudyMaterial extends State<StudyMaterial> {
         appBar: AppBar(
           title: Text('Study Material'),
         ),
+        floatingActionButton:FloatingActionButton.extended(onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder:(context)=>AddMaterial() ),);
+        }, label: Text('Upload'),icon: Icon(CupertinoIcons.add),),
         body: MyBackground(
           child: Column(
             children: [
@@ -52,7 +57,7 @@ class _StudyMaterial extends State<StudyMaterial> {
                       text: 'Assignment',
                     ),
                     Tab(
-                      text: 'Text Series',
+                      text: 'Test Series',
                     ),
                   ],
                 ),

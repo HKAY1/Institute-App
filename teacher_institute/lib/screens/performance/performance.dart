@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '../coustom/colorScheme.dart';
-import '../coustom/customeWidgets.dart';
+import '../../coustom/colorScheme.dart';
+import '../../coustom/customeWidgets.dart';
 
 class PerformancePage extends StatelessWidget {
   const PerformancePage({Key? key}) : super(key: key);
