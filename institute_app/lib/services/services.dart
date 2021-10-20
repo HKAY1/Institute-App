@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:imstitute/models/eventModals.dart';
+import 'package:imstitute/models/study_modals.dart';
 
 class Services {
   static var client = http.Client();
@@ -7,6 +10,12 @@ class Services {
   static Future<Map<String, List<MyEvent>>> fetchEvent() async {
     await Future.delayed(const Duration(seconds: 1));
     return fakeData;
+  }
+
+  static Future<Study> fetchStudy() async {
+    String data = await rootBundle.loadString('json/study_material.json');
+    var jsonResult = json.decode(data);
+    return studyFromJson(jsonResult);
   }
 }
 

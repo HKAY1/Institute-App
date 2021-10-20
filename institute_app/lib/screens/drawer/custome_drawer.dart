@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DrawerItems {
   final String title;
@@ -8,7 +9,14 @@ class DrawerItems {
   DrawerItems({this.title = 'Error', this.icon = Icons.error});
 }
 
-class CustomeDrawer extends StatelessWidget {
+class CustomeDrawer extends StatefulWidget {
+  const CustomeDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<CustomeDrawer> createState() => _CustomeDrawerState();
+}
+
+class _CustomeDrawerState extends State<CustomeDrawer> {
   final draweritems = [
     DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
     DrawerItems(title: 'Downloads', icon: Icons.download),
@@ -17,6 +25,7 @@ class CustomeDrawer extends StatelessWidget {
     DrawerItems(title: 'F.A.Q\'s', icon: Icons.feedback_rounded),
     DrawerItems(title: 'Log Out', icon: Icons.logout_rounded),
   ];
+
   final drawerPages = <String>[
     '/performance',
     '/downloads',
@@ -25,7 +34,6 @@ class CustomeDrawer extends StatelessWidget {
     '/faq',
     '/logout',
   ];
-  CustomeDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,7 @@ class CustomeDrawer extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.popAndPushNamed(context, '/profile');
+                Get.toNamed('/profile');
               },
               child: Hero(
                 tag: 'profile',
@@ -91,33 +99,33 @@ class CustomeDrawer extends StatelessWidget {
                   itemBuilder: (context, item) {
                     return ListTile(
                       onTap: () {
-                        (draweritems[item].title == 'Log Out')
-                            ? showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Logout'),
-                                  content: const Text('Do you want to logout'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'OK'),
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
+                        if (draweritems[item].title == 'Log Out') {
+                          Get.dialog(
+                            AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text('Do you want to logout'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: const Text('Cancel'),
                                 ),
-                              )
-                            : Navigator.of(context).popAndPushNamed(
-                                drawerPages[item],
-                              );
+                                TextButton(
+                                  onPressed: () => Get.offAllNamed('/login'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          Get.toNamed(drawerPages[item]);
+                        }
                       },
                       leading: Icon(
                         draweritems[item].icon,
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        color: Theme.of(context)
+                            .appBarTheme
+                            .actionsIconTheme!
+                            .color,
                       ),
                       title: Text(
                         draweritems[item].title,

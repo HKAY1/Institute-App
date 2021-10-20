@@ -3,7 +3,7 @@
 import 'package:get/get.dart';
 import 'package:imstitute/models/eventModals.dart';
 
-import '../services.dart';
+import '../services/services.dart';
 
 class EventController extends GetxController {
   @override

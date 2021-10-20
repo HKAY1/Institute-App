@@ -35,29 +35,19 @@ class _Bookmark extends State<Bookmark> {
       appBar: AppBar(
         title: Text('Downloads'),
       ),
-      body: Container(
-        // clipBehavior: Clip.antiAlias,
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          // borderRadius:
-          //     const BorderRadius.vertical(top: Radius.elliptical(200, 60)),
-          //
-          color: bodycolor,
-        ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
         child: Column(
           children: [
             Container(
               height: 50,
-              color: bodycolor,
               padding: const EdgeInsets.all(6),
               child: ListView.builder(
                 itemBuilder: (context, item) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 5.0, right: 5),
                     child: FilterChip(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor: cardcolor,
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontSize:
