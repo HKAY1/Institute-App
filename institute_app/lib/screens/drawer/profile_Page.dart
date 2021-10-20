@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
-import '../../custome/customeWidgets.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -226,187 +225,179 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: MyBackground(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          children: [
-            SizedBox(
-              height: 150,
-              width: 150,
-              child: Hero(
-                tag: 'profile',
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: CircleAvatar(
-                        maxRadius: 70,
-                        minRadius: 40,
-                        backgroundImage:
-                            Image.asset('images/monkey_profile.jpg').image,
-                      ),
+      body: ListView(
+        padding: EdgeInsets.all(30),
+        children: [
+          SizedBox(
+            height: 150,
+            width: 150,
+            child: Hero(
+              tag: 'profile',
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: CircleAvatar(
+                      maxRadius: 70,
+                      minRadius: 40,
+                      backgroundImage:
+                          Image.asset('images/monkey_profile.jpg').image,
                     ),
-                    Positioned(
-                      bottom: 5,
-                      left: size.width * 0.49,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(15),
-                        ),
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.camera_alt_rounded,
-                          size: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                'Ravi',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Text(
-                'Mobile No.',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                '473809',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                'Email Address',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                data.email,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                'Class',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                data.lass,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                'Stream',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                data.stream,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                'Address',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                data.add,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                'Institute',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                  fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
-              child: Text(
-                'Allen poi',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Align(
-                child: TextButton.icon(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size(150, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    backgroundColor: Colors.blue,
-                    primary: Colors.white,
                   ),
-                  onPressed: () => editButtonPress(),
-                  icon: Icon(Icons.edit),
-                  label: Text('Edit Profile'),
-                ),
+                  Positioned(
+                    bottom: 5,
+                    left: size.width * 0.49,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(15),
+                      ),
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.camera_alt_rounded,
+                        size: 25,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              'Ravi',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline2,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Text(
+              'Mobile No.',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              '473809',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+            child: Text(
+              'Email Address',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              data.email,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+            child: Text(
+              'Class',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              data.lass,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+            child: Text(
+              'Stream',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              data.stream,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+            child: Text(
+              'Address',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              data.add,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+            child: Text(
+              'Institute',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Theme.of(context).textTheme.headline2!.fontSize,
+                fontWeight: Theme.of(context).textTheme.headline3!.fontWeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15),
+            child: Text(
+              'Allen poi',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Align(
+              child: TextButton.icon(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(150, 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  backgroundColor: Colors.blue,
+                  primary: Colors.white,
+                ),
+                onPressed: () => editButtonPress(),
+                icon: Icon(Icons.edit),
+                label: Text('Edit Profile'),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

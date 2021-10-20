@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:imstitute/custome/colorScheme.dart';
 import 'package:imstitute/screens/event.dart';
 import 'screens/study_material/study_material.dart';
 import 'screens/home.dart';
@@ -18,32 +21,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _myindex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_rounded),
-              label: 'Calender',
-              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Study Material',
-              // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            ),
-          ],
-          onTap: (i) {
-            setState(() {
-              _myindex = i;
-            });
-          },
-        ),
-        body: mylist.elementAt(_myindex),
+        bottomNavigationBar: FancyBottomNavigation(
+            textColor: Colors.blue,
+            circleColor: cardcolor,
+            activeIconColor: Colors.white,
+            inactiveIconColor: Colors.blue,
+            barBackgroundColor: Colors.white,
+            tabs: [
+              TabData(iconData: Icons.home, title: "Home"),
+              TabData(iconData: Icons.calendar_today_rounded, title: "Events"),
+              TabData(
+                  iconData: Icons.menu_book_outlined, title: "Study Mayerial")
+            ],
+            onTabChangedListener: (i) {
+              setState(() {
+                _myindex = i;
+              });
+            }),
+        body: BottomBarPageTransition(
+            // transitionType: TransitionType.slide,
+            builder: (_, i) => mylist.elementAt(i),
+            currentIndex: _myindex,
+            totalLength: mylist.length),
       ),
     );
   }

@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import '../../custome/colorScheme.dart';
-import '../../custome/customeWidgets.dart';
-// import 'package:imstitute/customeWidgets.dart';
 
 class FAQPage extends StatelessWidget {
   const FAQPage({Key? key}) : super(key: key);
@@ -16,15 +14,12 @@ class FAQPage extends StatelessWidget {
         title: Text("FAQ's"),
         centerTitle: true,
       ),
-      body: MyBackground(
-        // decoration:BoxDecoration(gradient: LinearGradient(colors: [Theme.of(context).scaffoldBackgroundColor,cardcolor],begin:Alignment.topCenter,end: Alignment.bottomCenter,),),
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          itemCount: itemData.length,
-          itemBuilder: (context, item) {
-            return MyExpandedList(item: item);
-          },
-        ),
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        itemCount: itemData.length,
+        itemBuilder: (context, item) {
+          return MyExpandedList(item: item);
+        },
       ),
     );
   }

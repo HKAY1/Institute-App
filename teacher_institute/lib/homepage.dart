@@ -27,8 +27,8 @@ class _HomePageState extends State<HomePage> {
               // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_rounded),
-              label: 'Calender',
+              icon: Icon(Icons.event_note_outlined),
+              label: 'Events',
               // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             ),
             BottomNavigationBarItem(
