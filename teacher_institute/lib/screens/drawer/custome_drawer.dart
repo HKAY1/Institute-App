@@ -102,8 +102,12 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         if (draweritems[item].title == 'Log Out') {
                           Get.dialog(
                             AlertDialog(
-                              title: const Text('Logout'),
-                              content: const Text('Do you want to logout'),
+                              title: const Text('Logout',style: TextStyle(
+                                color: Colors.black
+                              ),),
+                              content: const Text('Do you want to logout',style: TextStyle(
+                                color: Colors.black
+                              ),),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Get.back(),

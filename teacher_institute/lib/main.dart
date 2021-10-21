@@ -77,28 +77,28 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           headline1: TextStyle(
-            // color: Colors.white,
+            color: Colors.black,
             fontSize: 60,
           ),
           //for card headline 2
           headline4: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 13,
           ),
           //for card headline 3
           headline5: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 10,
           ),
           //for card headline 1
           headline3: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
           //for in body Text theme
           headline2: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
           //         BorderRadius.vertical(bottom: Radius.circular(5000))),
 
           iconTheme: IconThemeData(color: Colors.white),
-          actionsIconTheme: IconThemeData(color: Colors.white),
+          actionsIconTheme: IconThemeData(color: Colors.blue),
           centerTitle: true,
           elevation: 20,
           titleTextStyle: TextStyle(

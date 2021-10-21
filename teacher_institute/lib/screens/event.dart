@@ -120,7 +120,7 @@ class _CalenderState extends State<Calender> {
                             color: Colors.white,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: cardcolor,
                           ),
                           titleCentered: true,
                           formatButtonShowsNext: false,
