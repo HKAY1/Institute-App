@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key}) : super(key: key);
@@ -39,8 +38,7 @@ class _AddEventState extends State<AddEvent> {
         centerTitle: true,
         title: Text('Add Event'),
       ),
-      body: MyBackground(
-          child: SingleChildScrollView(
+      body:  SingleChildScrollView(
         padding: EdgeInsets.only(top: 20, left: 12),
         child: Form(
           key: formkey,
@@ -199,7 +197,7 @@ class _AddEventState extends State<AddEvent> {
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 

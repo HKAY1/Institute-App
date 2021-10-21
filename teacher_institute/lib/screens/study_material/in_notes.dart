@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
+import 'package:teacher_institute/screens/drawer/downloads.dart';
 import 'package:teacher_institute/studydata/myinternaldata.dart';
 import '../../coustom/colorScheme.dart';
 
@@ -20,12 +20,11 @@ class _MyInDataListState extends State<MyInDataList> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: Text('Notes'),
         centerTitle: true,
       ),
       floatingActionButton:FloatingActionButton.extended(onPressed: (){}, label: Text('Upload'),icon: Icon(CupertinoIcons.add),),
-      body: MyBackground(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: (widget.mdata.isEmpty)
               ? Container(
@@ -104,7 +103,6 @@ class _MyInDataListState extends State<MyInDataList> {
                       EdgeInsets.only(top: 00, bottom: 40, left: 20, right: 20),
                 ),
         ),
-      ),
     );
   }
 }

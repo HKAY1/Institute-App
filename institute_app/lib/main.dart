@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
 
         // primaryColor: const Color(0xff1900FF).withOpacity(0.7),
         // const Color(0xff02d5fa)
-        scaffoldBackgroundColor: const Color(0xffd4f5f0).withOpacity(0.2),
+        scaffoldBackgroundColor:  Colors.white,
         appBarTheme: const AppBarTheme(
           // toolbarHeight: 10,
           shape: MyShapeBorder(10),
@@ -108,20 +108,20 @@ class MyApp extends StatelessWidget {
           //     borderRadius:
           //         BorderRadius.vertical(bottom: Radius.circular(5000))),
 
-          iconTheme: IconThemeData(color: Colors.blue),
-          actionsIconTheme: IconThemeData(color: Colors.blue),
+          iconTheme: IconThemeData(color: Colors.white),
+          actionsIconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
           elevation: 20,
           titleTextStyle: TextStyle(
             shadows: [
-              Shadow(color: Colors.blue, blurRadius: 3, offset: Offset(2, 2))
+              Shadow(color: Colors.grey, blurRadius: 3, offset: Offset(2, 2))
             ],
-            color: Colors.blue,
+            color: Colors.white,
             letterSpacing: 2,
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
-          backgroundColor: Colors.white, //dark blue
+          backgroundColor: Colors.blue, //dark blue
         ),
       ),
       title: 'Institute',

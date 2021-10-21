@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
 import 'package:teacher_institute/screens/performance/student_list.dart';
 
 class ChooseClass extends StatefulWidget {
@@ -21,7 +20,7 @@ class _ChooseClassState extends State<ChooseClass> {
         title: Text('Performance'),
         centerTitle: true,
       ),
-      body: MyBackground(child: Padding(
+      body: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Column(
           children: [
@@ -55,7 +54,6 @@ class _ChooseClassState extends State<ChooseClass> {
             ),
           ],
         ),
-      ),
       ),
     );
   }

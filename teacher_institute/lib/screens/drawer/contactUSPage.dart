@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../coustom/colorScheme.dart';
-import '../../coustom/customeWidgets.dart';
 class ContactUs extends StatelessWidget {
   const ContactUs({Key? key}) : super(key: key);
 
@@ -16,8 +15,7 @@ class ContactUs extends StatelessWidget {
         title: Text('Contact US'),
         centerTitle: true,
       ),
-      body: MyBackground(
-        child: Padding(
+      body:Padding(
           padding: EdgeInsets.symmetric(vertical: 40, horizontal: 40),
           child: Column(
             children: [
@@ -94,7 +92,6 @@ class ContactUs extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 

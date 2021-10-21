@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../coustom/customeWidgets.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -227,8 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: MyBackground(
-        child: ListView(
+      body: ListView(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           children: [
             SizedBox(
@@ -408,7 +405,6 @@ class _ProfilePageState extends State<ProfilePage> {
             )
           ],
         ),
-      ),
     );
   }
 }

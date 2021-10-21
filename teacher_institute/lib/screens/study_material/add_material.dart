@@ -44,8 +44,7 @@ class _AddMaterialState extends State<AddMaterial> {
         title: Text('Create Material'),
         
       ),
-      body: MyBackground(
-        child:SingleChildScrollView(
+      body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 20,left: 12),
           child: Form(
             key: formkey,
@@ -183,8 +182,8 @@ class _AddMaterialState extends State<AddMaterial> {
             ],
             ),
             ),
-        )
         ),
+        
     );
   }
 }

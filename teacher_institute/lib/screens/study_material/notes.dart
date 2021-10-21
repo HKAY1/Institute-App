@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:teacher_institute/screens/drawer/downloads.dart';
-import 'package:teacher_institute/screens/study_material/in_notes.dart';
 import 'package:teacher_institute/studydata/mydata.dart';
-import 'package:teacher_institute/studydata/myinternaldata.dart';
 
 import '../../coustom/colorScheme.dart';
 
@@ -58,15 +56,6 @@ class _MyDataListState extends State<MyDataList> {
              itemCount: widget.mydata.length, itemBuilder: (context, item) {
                 return GestureDetector(
                   onTap: (){
-                    if(widget.mydata == notes){
-                      Navigator.push(context, MaterialPageRoute(builder:(context)=>MyInDataList(mdata:note) ),);
-                    }
-                   else if(widget.mydata == assignment){
-                      Navigator.push(context, MaterialPageRoute(builder:(context)=>MyInDataList(mdata:assignments) ),);
-                    }
-                   else if(widget.mydata == testseries){
-                      Navigator.push(context, MaterialPageRoute(builder:(context)=>MyInDataList(mdata:testserie) ),);
-                    }
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 15, bottom: 10),
