@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:teacher_institute/login_page.dart';
 import 'package:teacher_institute/screens/drawer/downloads.dart';
-import 'package:teacher_institute/screens/performance/performance.dart';
+import 'package:teacher_institute/screens/performance/class.dart';
+import 'package:teacher_institute/screens/performance/student_list.dart';
 import 'package:teacher_institute/screens/study_material/add_material.dart';
 import 'package:teacher_institute/screens/study_material/in_notes.dart';
 import 'package:teacher_institute/screens/study_material/study_material.dart';
@@ -36,10 +37,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       getPages: [
         GetPage(name: '/homepage', page: () => const HomePage()),
+        GetPage(name: '/student', page: () => const StudentList()),
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/notification', page: () => const NotificatioPage()),
         GetPage(name: '/contactus', page: () => const ContactUs()),
-        GetPage(name: '/performance', page: () => const PerformancePage()),
+        GetPage(name: '/performance', page: () => const ChooseClass()),
         GetPage(name: '/default', page: () => const DefaultPage()),
         GetPage(name: '/downloads', page: () => const Downloads()),
         GetPage(name: '/faq', page: () => const FAQPage()),

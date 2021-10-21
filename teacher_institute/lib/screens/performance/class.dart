@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/screens/performance/student_list.dart';
 
 class ChooseClass extends StatefulWidget {
   const ChooseClass({ Key? key }) : super(key: key);
@@ -21,7 +21,7 @@ class _ChooseClassState extends State<ChooseClass> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.only(top: 50),
         child: Column(
           children: [
             Text('Select Class',style: Theme.of(context).textTheme.headline2,),
@@ -30,11 +30,11 @@ class _ChooseClassState extends State<ChooseClass> {
                 itemBuilder: (context,item){
                 return  GestureDetector(
                   onTap: (){
-                   Navigator.push(context, MaterialPageRoute(builder:(context)=>StudentList() ),);
+                   Get.toNamed('/student');
                 },
                   child: Container(
                                   margin: EdgeInsets.only(top: 15, bottom: 10),
-                                  padding: EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(15),
                                   width: size.width * 0.85,
                                   decoration: BoxDecoration(
                                       color: cardcolor,
