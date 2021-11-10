@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../custome/colorScheme.dart';
+import '../../custome/colorScheme.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class PerformancePage extends StatelessWidget {

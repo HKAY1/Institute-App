@@ -153,7 +153,9 @@ class _HomeState extends State<Home> {
                               Text(
                                 'Ravi bhai',
                                 style: TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               )
                             ],
                           ),

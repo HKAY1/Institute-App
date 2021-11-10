@@ -13,7 +13,7 @@ class EventController extends GetxController {
   }
 
   var isLoading = true.obs;
-  var eventList = <String, List<MyEvent>>{}.obs;
+  var eventList = <String, List<Events>>{}.obs;
   void fetchEvent() async {
     isLoading(true);
     var events = await Services.fetchEvent();

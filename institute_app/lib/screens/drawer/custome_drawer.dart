@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imstitute/controller/authorisation_controller.dart';
+import 'package:imstitute/custome/colorScheme.dart';
+import 'package:imstitute/models/aothorised_modal.dart';
 
 class DrawerItems {
   final String title;
@@ -17,6 +21,7 @@ class CustomeDrawer extends StatefulWidget {
 }
 
 class _CustomeDrawerState extends State<CustomeDrawer> {
+  var controll = Get.put(AuthrisationController());
   final draweritems = [
     DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
     DrawerItems(title: 'Downloads', icon: Icons.download),
@@ -55,12 +60,29 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         fit: StackFit.passthrough,
                         children: [
                           Center(
-                            child: CircleAvatar(
-                              maxRadius: 40,
-                              minRadius: 20,
-                              backgroundImage:
-                                  Image.asset('images/monkey_profile.jpg')
-                                      .image,
+                            child: CachedNetworkImage(
+                              imageUrl: 'controll.userinfo().'.replaceAll(
+                                  'localhost:9000', '192.168.0.109:9000'),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                              errorWidget: (context, url, error) =>
+                                  CircleAvatar(
+                                maxRadius: 40,
+                                minRadius: 20,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 40,
+                                ),
+                              ),
+                              imageBuilder: (_, img) {
+                                return CircleAvatar(
+                                  maxRadius: 40,
+                                  minRadius: 20,
+                                  backgroundImage: img,
+                                );
+                              },
                             ),
                           ),
                           Positioned(
@@ -102,15 +124,22 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         if (draweritems[item].title == 'Log Out') {
                           Get.dialog(
                             AlertDialog(
-                              title: const Text('Logout'),
-                              content: const Text('Do you want to logout'),
+                              title: const Text(
+                                'Logout',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              content: const Text('Do you want to logout',
+                                  style: TextStyle(color: Colors.black)),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Get.back(),
                                   child: const Text('Cancel'),
                                 ),
                                 TextButton(
-                                  onPressed: () => Get.offAllNamed('/login'),
+                                  onPressed: () {
+                                    controll.removeUser();
+                                    Get.offAllNamed('/login');
+                                  },
                                   child: const Text('OK'),
                                 ),
                               ],
@@ -122,10 +151,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                       },
                       leading: Icon(
                         draweritems[item].icon,
-                        color: Theme.of(context)
-                            .appBarTheme
-                            .actionsIconTheme!
-                            .color,
+                        color: cardcolor,
                       ),
                       title: Text(
                         draweritems[item].title,

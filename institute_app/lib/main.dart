@@ -2,28 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:imstitute/controller/authorisation_controller.dart';
 import 'package:imstitute/login_page.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
 import 'package:imstitute/screens/drawer/bookmark.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
-import 'package:imstitute/screens/drawer/profile_Page.dart';
+import 'package:imstitute/screens/drawer/profile_page.dart';
 import 'package:imstitute/screens/notification.dart';
+import 'package:imstitute/screens/study_material/notes_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'bindings.dart';
 import 'homepage.dart';
+import 'screens/drawer/performance.dart';
+import 'screens/study_material/study_subjects.dart';
 
-import 'screens/performance.dart';
-import 'screens/study_material/study_material.dart';
-
-void main() {
+void main() async {
   runApp(const MyApp());
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,8 +28,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: InitialBinding(),
       getPages: [
-        GetPage(name: '/homepage', page: () => const HomePage()),
+        GetPage(name: '/homepage', page: () => const HomePage(), bindings: [
+          BindingsBuilder(() {
+            Get.lazyPut(() => AuthrisationController());
+          })
+        ]),
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/notification', page: () => const NotificatioPage()),
         GetPage(name: '/contactus', page: () => const ContactUs()),
@@ -41,13 +42,15 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/default', page: () => const DefaultPage()),
         GetPage(name: '/downloads', page: () => const Bookmark()),
         GetPage(name: '/faq', page: () => const FAQPage()),
-        GetPage(name: '/study', page: () => const StudyChapters()),
+        GetPage(name: '/study', page: () => const SubjectMaterial()),
         GetPage(name: '/login', page: () => const LoginPage()),
+        GetPage(name: '/inchapter', page: () => const InChapter()),
       ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 600),
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
+        primaryColor: Colors.white,
         dividerTheme: DividerThemeData(
           color: const Color(0xff978DFB).withOpacity(0.2),
         ),
@@ -71,62 +74,70 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           headline1: TextStyle(
-            // color: Colors.white,
+            color: Colors.black,
             fontSize: 60,
           ),
           //for card headline 2
           headline4: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 13,
           ),
           //for card headline 3
           headline5: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 10,
           ),
           //for card headline 1
           headline3: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
           //for in body Text theme
           headline2: TextStyle(
-            // color: Color(0xff978DFB),
+            color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        // primaryColor: const Color(0xff1900FF).withOpacity(0.7),
-        // const Color(0xff02d5fa)
-        scaffoldBackgroundColor: const Color(0xffd4f5f0).withOpacity(0.2),
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
-          // toolbarHeight: 10,
           shape: MyShapeBorder(10),
-          // ContinuousRectangleBorder(
-          //     borderRadius:
-          //         BorderRadius.vertical(bottom: Radius.circular(5000))),
-
-          iconTheme: IconThemeData(color: Colors.blue),
-          actionsIconTheme: IconThemeData(color: Colors.blue),
+          iconTheme: IconThemeData(color: Colors.white),
+          actionsIconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
           elevation: 20,
           titleTextStyle: TextStyle(
             shadows: [
-              Shadow(color: Colors.blue, blurRadius: 3, offset: Offset(2, 2))
+              Shadow(color: Colors.grey, blurRadius: 3, offset: Offset(2, 2))
             ],
-            color: Colors.blue,
+            color: Colors.white,
             letterSpacing: 2,
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
-          backgroundColor: Colors.white, //dark blue
+          backgroundColor: Colors.blue, //dark blue
         ),
       ),
       title: 'Institute',
-      home: const LoginPage(),
+      home: FutureBuilder(
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Text('Please wait its loading...'));
+          } else {
+            if (snapshot.data ?? false) return const HomePage();
+            return const LoginPage();
+          }
+        },
+        future: go(),
+      ),
     );
+  }
+
+  Future<bool> go() async {
+    final g = await SharedPreferences.getInstance();
+    final bool data = g.getBool('isloggedin') ?? false;
+    return data;
   }
 }
 

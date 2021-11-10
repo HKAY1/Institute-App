@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:imstitute/models/eventModals.dart';
 import 'package:imstitute/models/study_modals.dart';
@@ -7,70 +7,123 @@ import 'package:imstitute/models/study_modals.dart';
 class Services {
   static var client = http.Client();
 
-  static Future<Map<String, List<MyEvent>>> fetchEvent() async {
+  static Future<Map<String, List<Events>>> fetchEvent() async {
+    // var token =
+    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTcyYWNiOTMxNTQzZjVlY2Q4Nzc2ZmQiLCJpYXQiOjE2MzUzMjEyOTd9.k76ECTqpiCurr7Y-YRkRp4niDdAuHIMRyHJMJ6gG1D0';
+    // var res = await client.get(
+    //     Uri.parse(
+    //         "http://192.168.1.128:9000/api/events?fromDate=1635100200000&toDate=1635445800000"),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json',
+    //       'Authorization': 'Bearer $token',
+    //     });
+    // if (res.statusCode == 200) {
+    //   print("works fine");
+    // }
+    // var data = jsonDecode(res.body);
+    // print(data);
+    // return eventsFromJson(data['data']);
     await Future.delayed(const Duration(seconds: 1));
-    return fakeData;
+    return fakeEventData;
   }
 
-  static Future<Study> fetchStudy() async {
-    String data = await rootBundle.loadString('json/study_material.json');
-    var jsonResult = json.decode(data);
-    return studyFromJson(jsonResult);
+  static Future<List<Notes>> fetchStudy() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return fakeNotesData;
+    // String data = await rootBundle.loadString('json/study_material.json');
+    // var jsonResult = json.decode(data);
+    // return List.from(jsonResult['notes'])
+    //     .map((e) => Notes.fromJson(e))
+    //     .toList();
   }
 }
 
-var fakeData = <String, List<MyEvent>>{
+var fakeNotesData = [
+  Notes(chapter: 01, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ]),
+  Notes(chapter: 21, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ]),
+  Notes(chapter: 03, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ]),
+  Notes(chapter: 15, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ]),
+  Notes(chapter: 14, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ]),
+  Notes(chapter: 09, title: 'EM Wave', data: [
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+  ])
+];
+
+var fakeEventData = <String, List<Events>>{
   '1633804200000': [
-    MyEvent(
+    Events(
       name: 'PTM Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:20 PM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
-    MyEvent(
+    Events(
       name: 'Guu Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:20 PM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
-    MyEvent(
+    Events(
       name: 'poi Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
   ],
   '1635445800000': [
-    MyEvent(
+    Events(
       name: 'PTM Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
-    MyEvent(
+    Events(
       name: 'Guu Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
-    MyEvent(
+    Events(
       name: 'poi Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
-    MyEvent(
+    Events(
       name: 'poi Notice',
-      discription: "teri esi ki tesi",
+      description: "teri esi ki tesi",
       endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
+      startTime: 1635445800000,
+      endTime: 1635445800000,
     ),
   ],
 };

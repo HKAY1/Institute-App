@@ -3,7 +3,6 @@
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:imstitute/custome/colorScheme.dart';
 import 'package:imstitute/screens/event.dart';
 import 'screens/study_material/study_material.dart';
 import 'screens/home.dart';
@@ -22,11 +21,11 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: FancyBottomNavigation(
-            textColor: Colors.blue,
-            circleColor: cardcolor,
-            activeIconColor: Colors.white,
-            inactiveIconColor: Colors.blue,
-            barBackgroundColor: Colors.white,
+            textColor: Colors.white,
+            circleColor: Colors.white,
+            activeIconColor: Colors.blue,
+            inactiveIconColor: Colors.white,
+            barBackgroundColor: Colors.blue,
             tabs: [
               TabData(iconData: Icons.home, title: "Home"),
               TabData(iconData: Icons.calendar_today_rounded, title: "Events"),

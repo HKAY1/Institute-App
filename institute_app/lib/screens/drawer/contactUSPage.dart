@@ -10,7 +10,6 @@ class ContactUs extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         title: Text('Contact US'),
         centerTitle: true,
       ),
