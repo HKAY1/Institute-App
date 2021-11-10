@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, unrelated_type_equality_checks, avoid_print
 
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
+import 'package:open_file/open_file.dart';
 
 class AddMaterial extends StatefulWidget {
   
@@ -19,15 +19,9 @@ class _AddMaterialState extends State<AddMaterial> {
   final chaptercontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();
   final formkey = GlobalKey();
-  late List<String?> filter;
-  late List<String?> choose;
+ String choose = 'Notes';
   final List<String> type = <String>['Notes','Assignment','Test Series'];
-  final List<bool> isSelect = List.filled(4, false);
-  final List<bool> choice = List.filled(3, false);
-  final List<String> clas = <String>[
-    '9th','10th','11th','12th'
-  ];
-  int typeIndex=0;
+  int selectedIndex=0; 
   
   
   @override
@@ -48,7 +42,8 @@ class _AddMaterialState extends State<AddMaterial> {
           padding: EdgeInsets.only(top: 20,left: 12),
           child: Form(
             key: formkey,
-            child: Column(children: [
+            child: Column(
+              children: [
               SizedBox(height: 25,),
               TextFormField(
                 style:TextStyle(fontSize: 24),
@@ -62,75 +57,7 @@ class _AddMaterialState extends State<AddMaterial> {
                 controller: chaptercontroller,
               ),
               SizedBox(height: 18),
-              Text('Choose Class'),
-                Container(
-              height: 50,
-              color: bodycolor,
-              padding: const EdgeInsets.all(6),
-              child: ListView.builder(
-                itemBuilder: (context, item) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                    child: FilterChip(
-                      selected: isSelect[item],
-                      checkmarkColor: Colors.white,
-                      selectedColor: Colors.greenAccent,
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                            Theme.of(context).textTheme.headline3!.fontSize,
-                        fontWeight:
-                            Theme.of(context).textTheme.headline3!.fontWeight,
-                      ),
-                      label: Text(
-                        clas[item],
-                      ),
-                      onSelected: (value) {
-                        setState(() {
-                          isSelect[item] = value;
-                          // if(value)
-                          // filter.add(clas[item].replaceAll('th', ''));
-                          // else filter.removeWhere((String h){
-                          //   return h == clas[item];
-                          // });
-                        });
-                      },
-                    ),
-                  );
-                },
-                itemCount: clas.length,
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
-              SizedBox(height: 18),
-              Text('Choose Type'),
-              Container(
-              height: 50,
-              color: bodycolor,
-              padding: const EdgeInsets.all(6),
-              child: ListView.builder(
-                itemBuilder: (context, item) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                    child: ChoiceChip(
-            label: Text(type[item]),
-            selected: choice[item] ,
-            selectedColor: Colors.red,
-            onSelected: (selected) {
-              setState(() {
-                typeIndex = selected ? item : 0;
-                choice[item] = selected;
-              });
-            },
-            backgroundColor: Colors.green,
-            labelStyle: TextStyle(color: Colors.white),
-          ));
-                  
-                },
-                itemCount: type.length,
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
+             
               Column(
                 children: [
                    TextFormField(
@@ -146,6 +73,75 @@ class _AddMaterialState extends State<AddMaterial> {
                 controller: discriptioncontroller,
               ),
                   SizedBox(height:15),
+                   Text('Choose Type'),
+              Container(
+              height: 50,
+              // color: bodycolor,
+              padding: const EdgeInsets.all(6),
+              child: ListView.builder(
+                itemBuilder: (context, item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5),
+                    child: ChoiceChip(
+            label: Text(type[item]),
+            selected: selectedIndex == item ,
+            selectedColor: Colors.green,
+            onSelected: (selected) {
+              if(selected){
+                selectedIndex = item;
+                setState(() {
+                  choose = type[item];
+                });
+              }
+              print(choose);
+            },
+            backgroundColor: Colors.red,
+            labelStyle: TextStyle(color: Colors.white),
+          ));
+                  
+                },
+                itemCount: type.length,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
+            Visibility(
+              visible: selectedIndex == 0,
+              child:TextFormField(
+                     minLines: 1,
+                     maxLines: 5,
+                     maxLength: 50,
+                style:TextStyle(fontSize: 14),
+                decoration: InputDecoration(
+                  labelText:' Topic Name',
+                  border: OutlineInputBorder(),
+                ),
+                onFieldSubmitted: (_){},
+                controller: discriptioncontroller,
+              ), ),
+            SizedBox(height:15),
+               TextButton.icon(
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(150, 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    backgroundColor: Colors.blue,
+                    primary: Colors.white,
+                  ),
+                  onPressed: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                       allowedExtensions: ['jpg', 'pdf'],
+                    );
+                       if (result == null) {
+                     return;
+                     }
+                     final file = result.files.first;
+                     OpenFile.open(file.path!);
+                  },
+                  icon: Icon(Icons.upload_rounded),
+                  label: Text('Upload File'),
+                ),
+            SizedBox(height:15),
                TextButton.icon(
                   style: TextButton.styleFrom(
                     minimumSize: Size(150, 50),
@@ -157,25 +153,11 @@ class _AddMaterialState extends State<AddMaterial> {
                   ),
                   onPressed: () {
                     setState(() {
-                      // for(int i = 0;i<isSelect.length;i++)
-                      // if(isSelect[i])
-                      // filter[i] = clas[i].replaceAll('th', '');
-                      filter = isSelect.asMap().entries.map((e){
-                        if(e.value)
-                        return clas[e.key].replaceAll('th', '');
-                      }).toList();
-                      filter.removeWhere((element) => element == null);
-                       choose = choice.asMap().entries.map((e){
-                         if(e.value)
-                        return type[e.key];
-                      }).toList();
-                      choose.removeWhere((element) => element == null);
                     });
-                    print(filter);
                     print(choose);
                   },
                   icon: Icon(Icons.add),
-                  label: Text('Add Event'),
+                  label: Text('Add Material'),
                 ),
                 ],
               )

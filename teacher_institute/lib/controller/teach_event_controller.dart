@@ -19,4 +19,25 @@ class EventController extends GetxController {
     eventList.value = events;
     isLoading(false);
   }
+ Future<void>  postEventdata(
+   {
+   required String title ,
+   required String description,
+   required List<String?> classes,
+   required int startDatefromEpoch,
+   required int endDatefromEpoch,
+   required int startTime,
+   required int endTime}
+ )async{
+  print(title);
+  print(description);
+  print(classes);
+  print(startDatefromEpoch);
+  print(endDatefromEpoch);
+  print(startTime);
+  print(endTime);
+  var call = await Services.postEvent(title, description, classes, startDatefromEpoch, endDatefromEpoch, startTime, endTime);
+  fetchEvent();
+ }
 }
+

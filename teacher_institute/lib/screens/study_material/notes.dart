@@ -41,7 +41,6 @@ class _MyDataListState extends State<MyDataList> {
         // borderRadius:
         //     const BorderRadius.vertical(top: Radius.elliptical(200, 60)),
         //
-        color: bodycolor,
       ),
       child: (widget.mydata.isEmpty)
           ? Container(

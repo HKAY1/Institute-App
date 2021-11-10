@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
           //         BorderRadius.vertical(bottom: Radius.circular(5000))),
 
           iconTheme: IconThemeData(color: Colors.white),
-          actionsIconTheme: IconThemeData(color: Colors.blue),
+          actionsIconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
           elevation: 20,
           titleTextStyle: TextStyle(
