@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:imstitute/controller/authorisation_controller.dart';
 import 'package:imstitute/custome/colorScheme.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:imstitute/models/aothorised_modal.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -19,21 +18,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  var controll = Get.put(AuthrisationController()) as UserInfo;
+  var d = Get.put(AuthrisationController());
   final ImagePicker _picker = ImagePicker();
-  File? _image;
-  late TextEditingController contName;
   late TextEditingController contAdd;
   late TextEditingController contEmail;
-  var data = Get.find<AuthrisationController>().userinfo();
 
   @override
   void initState() {
-    // data = await controll.userinfo();
     super.initState();
-    contName = TextEditingController(text: 'data.');
-    contAdd = TextEditingController(text: 'data!.address');
-    contEmail = TextEditingController(text: 'data!.email');
+    contAdd = TextEditingController(text: d.userinfo(key: 'address'));
+    contEmail = TextEditingController(text: d.userinfo(key: 'email'));
   }
 
   @override
@@ -41,34 +35,16 @@ class _ProfilePageState extends State<ProfilePage> {
     final bottoms = MediaQuery.of(context).viewInsets.bottom;
     Size size = MediaQuery.of(context).size;
 
-    _imgFromCamera() async {
-      XFile? image =
-          await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
-
-      if (image != null) {
-        setState(() {
-          _image = File(image.path);
-        });
-      }
-    }
-
-    _imgFromGallery() async {
+    pick_image(ImageSource source) async {
       XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
+        source: source,
+      );
 
       if (image != null) {
-        setState(() {
-          _image = File(image.path);
-        });
+        d.uploadImage(File(image.path),
+            image.path.substring(image.path.lastIndexOf(".") + 1));
       }
     }
-
-    // ImageProvider getImage() {
-    //   if (kIsWeb) {
-    //     return Image.network(_image!.path).image;
-    //   }
-    //   return Image.file(_image!).image;
-    // }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -87,29 +63,31 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: CachedNetworkImage(
-                      imageUrl: 'data.'
-                          .replaceAll('localhost:9000', '192.168.0.109:9000'),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => CircleAvatar(
-                        maxRadius: 70,
-                        minRadius: 50,
-                        child: Icon(
-                          Icons.person,
-                          size: 100,
-                        ),
-                      ),
-                      imageBuilder: (_, img) {
-                        return CircleAvatar(
+                    child: Obx(() {
+                      return CachedNetworkImage(
+                        imageUrl: d.url
+                            .replaceAll('localhost:9000', '192.168.0.109:9000'),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => CircleAvatar(
                           maxRadius: 70,
                           minRadius: 50,
-                          backgroundImage: img,
-                        );
-                      },
-                    ),
+                          child: Icon(
+                            Icons.person,
+                            size: 100,
+                          ),
+                        ),
+                        imageBuilder: (_, img) {
+                          return CircleAvatar(
+                            maxRadius: 70,
+                            minRadius: 50,
+                            backgroundImage: img,
+                          );
+                        },
+                      );
+                    }),
                   ),
                   Positioned(
                     bottom: 5,
@@ -121,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onPressed: () {
                         if (kIsWeb) {
-                          _imgFromGallery();
+                          pick_image(ImageSource.gallery);
                         } else {
                           showModalBottomSheet(
                             context: context,
@@ -160,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       padding: EdgeInsets.all(8),
                                     ),
                                     onPressed: () {
-                                      _imgFromGallery();
+                                      pick_image(ImageSource.gallery);
                                       Get.back();
                                     },
                                     child: Column(
@@ -186,7 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       primary: Colors.pink,
                                     ),
                                     onPressed: () {
-                                      _imgFromCamera();
+                                      pick_image(ImageSource.camera);
                                       Get.back();
                                     },
                                     child: Column(
@@ -223,6 +201,13 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           SizedBox(height: 20),
+          Center(
+            child: Text(
+              d.userinfo(key: 'name'),
+              style: Theme.of(context).textTheme.headline2,
+            ),
+          ),
+          SizedBox(height: 20),
           Container(
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.symmetric(vertical: 20),
@@ -248,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     SizedBox(height: 6),
                     Text(
-                      'data!.phoneNumber',
+                      d.userinfo(key: 'phone'),
                       style: Theme.of(context).textTheme.headline2,
                     ),
                   ],
@@ -268,16 +253,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          editfield(
-            header: 'Name',
-            enable: true,
-            contr: contName,
-          ),
           editfield(header: 'Email Address', enable: true, contr: contEmail),
           editfield(
               header: 'Adress', enable: true, length: 300, contr: contAdd),
-          editfield(header: 'Class', detail: 'data!.dataClass[0].name'),
-          editfield(header: 'Institute', detail: ' data!.gender'),
+          editfield(
+              header: 'Class', detail: d.userinfo(key: 'class').toString()),
+          editfield(header: 'Gender', detail: d.userinfo(key: 'gender')),
           TextButton(
             onPressed: () {},
             child: Text('Change Password'),
@@ -307,7 +288,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       Theme.of(context).appBarTheme.backgroundColor,
                   primary: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  d.updateUserData(contEmail.text, contAdd.text);
+                },
                 icon: Icon(Icons.edit),
                 label: Text('Update Profile'),
               ),
@@ -330,6 +313,15 @@ class _ProfilePageState extends State<ProfilePage> {
         vertical: 10,
       ),
       child: TextFormField(
+        keyboardType: (header == 'Email Address')
+            ? TextInputType.emailAddress
+            : TextInputType.streetAddress,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          if (!GetUtils.isEmail(value ?? '')) {
+            return "Enater valid Email";
+          }
+        },
         controller: contr,
         maxLines: null,
         initialValue: detail,
@@ -342,6 +334,12 @@ class _ProfilePageState extends State<ProfilePage> {
         // controller: TextEditingController()..text = email,
         decoration: InputDecoration(
           disabledBorder: InputBorder.none,
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              color: Colors.redAccent,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(

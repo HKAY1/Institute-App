@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:imstitute/controller/authorisation_controller.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:imstitute/login_page.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
@@ -12,29 +9,27 @@ import 'package:imstitute/screens/drawer/faq.dart';
 import 'package:imstitute/screens/drawer/profile_page.dart';
 import 'package:imstitute/screens/notification.dart';
 import 'package:imstitute/screens/study_material/notes_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'bindings.dart';
 import 'homepage.dart';
 import 'screens/drawer/performance.dart';
 import 'screens/study_material/study_subjects.dart';
 
 void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: InitialBinding(),
       getPages: [
-        GetPage(name: '/homepage', page: () => const HomePage(), bindings: [
-          BindingsBuilder(() {
-            Get.lazyPut(() => AuthrisationController());
-          })
-        ]),
+        GetPage(
+          name: '/homepage',
+          page: () => const HomePage(),
+        ),
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/notification', page: () => const NotificatioPage()),
         GetPage(name: '/contactus', page: () => const ContactUs()),
@@ -120,23 +115,25 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Institute',
-      home: FutureBuilder(
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text('Please wait its loading...'));
-          } else {
-            if (snapshot.data ?? false) return const HomePage();
-            return const LoginPage();
-          }
-        },
-        future: go(),
-      ),
+      home: (go()) ? const HomePage() : const LoginPage(),
+      // FutureBuilder(
+      //   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const Center(child: Text('Please wait its loading...'));
+      //     } else {
+      //       if (snapshot.data ?? false) return const HomePage();
+      //       return const LoginPage();
+      //     }
+      //   },
+      //   future: go(),
+      // ),
     );
   }
 
-  Future<bool> go() async {
-    final g = await SharedPreferences.getInstance();
-    final bool data = g.getBool('isloggedin') ?? false;
+  bool go() {
+    final g = GetStorage();
+    String d = g.read('token') ?? '';
+    bool data = d.isNotEmpty;
     return data;
   }
 }

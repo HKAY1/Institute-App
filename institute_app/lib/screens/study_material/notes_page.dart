@@ -19,10 +19,10 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   @override
   Widget build(BuildContext context) {
-    NotesController controller = Get.put(NotesController());
+    // var controller = Get.put(StudyController());
     // Size size = MediaQuery.of(context).size;
-    return GetX<NotesController>(builder: (_) {
-      if (controller.isLoading.value) {
+    return GetX<StudyController>(builder: (cont) {
+      if (cont.isLoading.value) {
         return Center(child: CircularProgressIndicator());
       }
       return GridView.builder(
@@ -31,7 +31,7 @@ class _NotesState extends State<Notes> {
           horizontal: 20,
           vertical: 10,
         ),
-        itemCount: controller.data.length,
+        itemCount: cont.data.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount:
               MediaQuery.of(context).orientation == Orientation.landscape
@@ -44,8 +44,8 @@ class _NotesState extends State<Notes> {
         itemBuilder: (context, item) {
           return GestureDetector(
             onTap: () => Get.toNamed('/inchapter', arguments: {
-              'chapter': controller.data[item].chapter,
-              'data': controller.data[item].data
+              'chapter': cont.data[item].chapter,
+              'data': cont.data[item].data
             }),
             child: Stack(
               clipBehavior: Clip.none,
@@ -90,7 +90,7 @@ class _NotesState extends State<Notes> {
                       border: Border.all(color: Color(0xff75e6da), width: 4),
                     ),
                     child: Text(
-                      NumberFormat('00').format(controller.data[item].chapter),
+                      NumberFormat('00').format(cont.data[item].chapter),
                       style: Theme.of(context).textTheme.headline2!.copyWith(
                             fontSize: 30,
                             color: Color(0xff05445e),

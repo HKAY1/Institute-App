@@ -10,10 +10,3 @@ class InitialBinding implements Bindings {
     );
   }
 }
-
-// class EventBinding implements Bindings {
-//   @override
-//   void dependencies() {
-//     Get.lazyPut<EventController>(() => EventController());
-//   }
-// }

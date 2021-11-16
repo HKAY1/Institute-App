@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: formKey,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // Expanded(
                     // flex: 5,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:imstitute/models/aothorised_modal.dart';
 import 'package:imstitute/models/eventModals.dart';
 import 'package:imstitute/models/study_modals.dart';
 

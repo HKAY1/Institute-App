@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imstitute/controller/authorisation_controller.dart';
 import 'package:imstitute/custome/colorScheme.dart';
-import 'package:imstitute/models/aothorised_modal.dart';
 
 class DrawerItems {
   final String title;
@@ -21,7 +20,7 @@ class CustomeDrawer extends StatefulWidget {
 }
 
 class _CustomeDrawerState extends State<CustomeDrawer> {
-  var controll = Get.put(AuthrisationController());
+  var controll = Get.find<AuthrisationController>();
   final draweritems = [
     DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
     DrawerItems(title: 'Downloads', icon: Icons.download),
@@ -48,6 +47,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
           children: [
             InkWell(
               onTap: () {
+                Get.back();
                 Get.toNamed('/profile');
               },
               child: Hero(
@@ -60,30 +60,42 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                         fit: StackFit.passthrough,
                         children: [
                           Center(
-                            child: CachedNetworkImage(
-                              imageUrl: 'controll.userinfo().'.replaceAll(
-                                  'localhost:9000', '192.168.0.109:9000'),
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value: downloadProgress.progress),
-                              errorWidget: (context, url, error) =>
-                                  CircleAvatar(
-                                maxRadius: 40,
-                                minRadius: 20,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 40,
-                                ),
-                              ),
-                              imageBuilder: (_, img) {
-                                return CircleAvatar(
+                            child: Obx(() {
+                              return CachedNetworkImage(
+                                placeholder: (_, s) {
+                                  return CircleAvatar(
+                                    maxRadius: 40,
+                                    minRadius: 20,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 40,
+                                    ),
+                                  );
+                                },
+                                imageUrl: controll.url.value.replaceAll(
+                                    'localhost:9000', '192.168.0.109:9000'),
+                                // progressIndicatorBuilder:
+                                //     (context, url, downloadProgress) =>
+                                //         CircularProgressIndicator(
+                                //             value: downloadProgress.progress),
+                                errorWidget: (context, url, error) =>
+                                    CircleAvatar(
                                   maxRadius: 40,
                                   minRadius: 20,
-                                  backgroundImage: img,
-                                );
-                              },
-                            ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                  ),
+                                ),
+                                imageBuilder: (_, img) {
+                                  return CircleAvatar(
+                                    maxRadius: 40,
+                                    minRadius: 20,
+                                    backgroundImage: img,
+                                  );
+                                },
+                              );
+                            }),
                           ),
                           Positioned(
                             bottom: 0,
@@ -107,7 +119,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Text(
-                        'Ravi',
+                        controll.userinfo(key: 'name'),
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ),

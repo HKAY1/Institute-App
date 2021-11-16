@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imstitute/controller/study_material_controller.dart';
 import 'package:imstitute/custome/colorScheme.dart';
 
 class StudyMaterial extends StatefulWidget {
@@ -21,6 +22,7 @@ class StudyMaterial extends StatefulWidget {
 }
 
 class _StudyMaterial extends State<StudyMaterial> {
+  var cont = Get.put(StudyController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -33,7 +35,7 @@ class _StudyMaterial extends State<StudyMaterial> {
         itemBuilder: (context, item) {
           return GestureDetector(
             onTap: () {
-              Get.toNamed('/study', arguments: widget.subjects[item]);
+              Get.toNamed('/study', arguments: cont.subj[item]);
             },
             child: Container(
               padding: EdgeInsets.all(15),
@@ -47,7 +49,7 @@ class _StudyMaterial extends State<StudyMaterial> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.subjects[item],
+                    cont.subj[item],
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight:
@@ -70,7 +72,7 @@ class _StudyMaterial extends State<StudyMaterial> {
             ),
           );
         },
-        itemCount: widget.subjects.length,
+        itemCount: cont.subj.length,
       ),
     );
   }
