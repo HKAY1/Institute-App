@@ -8,7 +8,6 @@ class NotificatioPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('Notificatins'),
       ),
@@ -50,70 +49,75 @@ class NotificatioPage extends StatelessWidget {
                 alignment: Alignment.centerRight,
               ),
             ),
-            child: Container(
-                decoration: BoxDecoration(
+            child: Card(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
                 ),
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage:
-                              Image.asset('images/monkey_profile.jpg').image,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Ravi Sir',
-                          style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline3!.fontSize,
-                            fontWeight: Theme.of(context)
-                                .textTheme
-                                .headline3!
-                                .fontWeight,
+                elevation: 8,
+                // padding: EdgeInsets.all(20),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                Image.asset('images/monkey_profile.jpg').image,
                           ),
-                        ),
-                        Spacer(),
-                        Column(
-                          children: [
-                            IconButton(
-                              color: Colors.redAccent,
-                              onPressed: () {},
-                              icon: Icon(Icons.delete),
+                          SizedBox(width: 5),
+                          Text(
+                            'Ravi Sir',
+                            style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .fontSize,
+                              fontWeight: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .fontWeight,
                             ),
-                            Text(
-                              '5 m',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .fontSize,
-                                fontWeight: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .fontWeight,
+                          ),
+                          Spacer(),
+                          Column(
+                            children: [
+                              IconButton(
+                                color: Colors.redAccent,
+                                onPressed: () {},
+                                icon: Icon(Icons.delete),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Paragraphs To Send To Your Girlfriend: Do you want to make your girlfriend happy? Do you want to make her cry? Do you want to make her cry with tears of joy? Then these sweet paragraphs are what you need. We give you dozens of great romantic love paragraphs that will make your girl smile even if she’s not with you. If you are looking to leave a significant impression on the one you love, then you should consider these cute paragraphs for her. Do you wish to surprise your significant other with your love sentiments? This post has some ideas on how to write something romantic for her.',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize:
-                            Theme.of(context).textTheme.headline4!.fontSize,
-                        fontWeight:
-                            Theme.of(context).textTheme.headline4!.fontWeight,
+                              Text(
+                                '5 m',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .headline5!
+                                      .fontSize,
+                                  fontWeight: Theme.of(context)
+                                      .textTheme
+                                      .headline5!
+                                      .fontWeight,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      Text(
+                        'Paragraphs To Send To Your Girlfriend: Do you want to make your girlfriend happy?',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize:
+                              Theme.of(context).textTheme.headline4!.fontSize,
+                          fontWeight:
+                              Theme.of(context).textTheme.headline4!.fontWeight,
+                        ),
+                      ),
+                    ],
+                  ),
                 )),
           );
         },

@@ -10,7 +10,6 @@ class FAQPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         title: Text("FAQ's"),
         centerTitle: true,
       ),

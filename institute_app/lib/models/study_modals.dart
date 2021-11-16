@@ -1,121 +1,116 @@
-// To parse this JSON data, do
-//
-//     final study = studyFromJson(jsonString);
+// class StudyMaterial {
+//   StudyMaterial({
+//     required this.notes,
+//     required this.assignment,
+//     required this.tests,
+//   });
+//   late final List<Notes> notes;
+//   late final List<Assignment> assignment;
+//   late final List<Tests> tests;
 
-import 'dart:convert';
+//   AutoGenerate.fromJson(Map<String, dynamic> json){
+//     notes = List.from(json['notes']).map((e)=>Notes.fromJson(e)).toList();
+//     assignment = List.from(json['assignment']).map((e)=>Assignment.fromJson(e)).toList();
+//     tests = List.from(json['tests']).map((e)=>Tests.fromJson(e)).toList();
+//   }
 
-Study studyFromJson(String str) => Study.fromJson(json.decode(str));
+//   Map<String, dynamic> toJson() {
+//     final _data = <String, dynamic>{};
+//     _data['notes'] = notes.map((e)=>e.toJson()).toList();
+//     _data['assignment'] = assignment.map((e)=>e.toJson()).toList();
+//     _data['tests'] = tests.map((e)=>e.toJson()).toList();
+//     return _data;
+//   }
+// }
 
-String studyToJson(Study data) => json.encode(data.toJson());
-
-class Study {
-  Study({
-    this.notes,
-    this.assignment,
-    this.tests,
+class Notes {
+  Notes({
+    required this.chapter,
+    required this.title,
+    required this.data,
   });
+  late final int chapter;
+  late final String title;
+  late final List<Data> data;
 
-  final List<Note>? notes;
-  final List<Assignment>? assignment;
-  final List<Assignment>? tests;
+  Notes.fromJson(Map<String, dynamic> json) {
+    chapter = json['chapter'];
+    title = json['title'];
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
+  }
 
-  Study copyWith({
-    List<Note>? notes,
-    List<Assignment>? assignment,
-    List<Assignment>? tests,
-  }) =>
-      Study(
-        notes: notes ?? this.notes,
-        assignment: assignment ?? this.assignment,
-        tests: tests ?? this.tests,
-      );
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['chapter'] = chapter;
+    _data['title'] = title;
+    _data['data'] = data.map((e) => e.toJson()).toList();
+    return _data;
+  }
+}
 
-  factory Study.fromJson(Map<String, dynamic> json) => Study(
-        notes: json["notes"] == null
-            ? null
-            : List<Note>.from(json["notes"].map((x) => Note.fromJson(x))),
-        assignment: json["assignment"] == null
-            ? null
-            : List<Assignment>.from(
-                json["assignment"].map((x) => Assignment.fromJson(x))),
-        tests: json["tests"] == null
-            ? null
-            : List<Assignment>.from(
-                json["tests"].map((x) => Assignment.fromJson(x))),
-      );
+class Data {
+  Data({
+    required this.topic,
+    required this.file,
+  });
+  late final String topic;
+  late final String file;
 
-  Map<String, dynamic> toJson() => {
-        "notes": notes == null
-            ? null
-            : List<dynamic>.from(notes!.map((x) => x.toJson())),
-        "assignment": assignment == null
-            ? null
-            : List<dynamic>.from(assignment!.map((x) => x.toJson())),
-        "tests": tests == null
-            ? null
-            : List<dynamic>.from(tests!.map((x) => x.toJson())),
-      };
+  Data.fromJson(Map<String, dynamic> json) {
+    topic = json['topic'];
+    file = json['file'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['topic'] = topic;
+    _data['file'] = file;
+    return _data;
+  }
 }
 
 class Assignment {
   Assignment({
-    this.topic,
-    this.file,
+    required this.topic,
+    required this.chapter,
+    required this.file,
   });
+  late final String topic;
+  late final int chapter;
+  late final String file;
 
-  final String? topic;
-  final String? file;
+  Assignment.fromJson(Map<String, dynamic> json) {
+    topic = json['topic'];
+    chapter = json['chapter'];
+    file = json['file'];
+  }
 
-  Assignment copyWith({
-    String? topic,
-    String? file,
-  }) =>
-      Assignment(
-        topic: topic ?? this.topic,
-        file: file ?? this.file,
-      );
-
-  factory Assignment.fromJson(Map<String, dynamic> json) => Assignment(
-        topic: json["topic"],
-        file: json["file"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "topic": topic,
-        "file": file,
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['topic'] = topic;
+    _data['chapter'] = chapter;
+    _data['file'] = file;
+    return _data;
+  }
 }
 
-class Note {
-  Note({
-    this.chapter,
-    this.data,
+class Tests {
+  Tests({
+    required this.topic,
+    required this.file,
   });
+  late final String topic;
+  late final String file;
 
-  final int? chapter;
-  final List<Assignment>? data;
+  Tests.fromJson(Map<String, dynamic> json) {
+    topic = json['topic'];
+    file = json['file'];
+  }
 
-  Note copyWith({
-    int? chapter,
-    List<Assignment>? data,
-  }) =>
-      Note(
-        chapter: chapter ?? this.chapter,
-        data: data ?? this.data,
-      );
-
-  factory Note.fromJson(Map<String, dynamic> json) => Note(
-        chapter: json["chapter"],
-        data: json["data"] == null
-            ? null
-            : List<Assignment>.from(
-                json["data"].map((x) => Assignment.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "chapter": chapter,
-        "data": data == null
-            ? null
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['topic'] = topic;
+    _data['file'] = file;
+    return _data;
+  }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'colorScheme.dart';
 
 class MyCard extends StatelessWidget {
@@ -81,4 +82,12 @@ class MyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget customeLeading() {
+  return IconButton(
+    onPressed: () => Get.back(),
+    icon: Icon(Icons.keyboard_arrow_left_rounded),
+    color: Colors.white,
+  );
 }

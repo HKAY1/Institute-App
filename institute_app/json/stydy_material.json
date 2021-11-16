@@ -2,6 +2,7 @@
     "notes":[
         {
             "chapter": 1,
+            "title":"EM Wave",
             "data":[
                 {
                     "topic":"florine /detalta",
@@ -19,6 +20,7 @@
         },
         {
             "chapter":2,
+            "title":"Radio Data",
             "data":[
                 {
                     "topic":"doom",
@@ -42,34 +44,43 @@
     "assignment":[
         {
             "topic":"doom",
+            "chapter": 1,
+
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"duo",
+            "chapter": 21,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"blow",
+            "chapter": 31,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"thanos",
+            "chapter": 11,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"doom",
+            "chapter": 14,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"duo",
+            "chapter": 15,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"blow",
+            "chapter": 17,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         },
         {
             "topic":"thanos",
+            "chapter": 12,
             "file":"dgcwdgcvdghecvgehdvchgedcvhge"
         }
     ],
