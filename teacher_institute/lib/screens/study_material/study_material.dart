@@ -8,6 +8,35 @@ import 'package:teacher_institute/coustom/colorScheme.dart';
 import 'package:teacher_institute/studydata/mydata.dart';
 import 'notes.dart';
 
+ String? selected = 'all';
+  Subject? s;
+   var las =<Subject>[
+    Subject(
+      clas: '5',
+       subj:['English','Hindi','dgqwiy']
+    ),
+    Subject(
+      clas: '6',
+       subj:['Math','Science']
+    ),Subject(
+      clas: '7',
+       subj:['SST','Hindi',',jhgdf']
+    ),Subject(
+      clas: '8',
+       subj:['GK','Eng']
+    ),Subject(
+      clas: '9',
+       subj:['English','Hindi']
+    ),Subject(
+      clas: '10',
+       subj:['Math','arys']
+    ),
+
+    
+  ];
+  
+
+
 class StudyMaterial extends StatefulWidget {
   StudyMaterial({Key? key}) : super(key: key);
 
@@ -18,32 +47,7 @@ class StudyMaterial extends StatefulWidget {
 class _StudyMaterial extends State<StudyMaterial> {
   late ScrollController controll;
   final controller = TextEditingController();
-  String? selected = 'all';
-   var las =<Subject>[
-    Subject(
-      clas: 5,
-       subj:['English','Hindi']
-    ),
-    Subject(
-      clas: 6,
-       subj:['Math','Science']
-    ),Subject(
-      clas: 7,
-       subj:['SST','Hindi']
-    ),Subject(
-      clas: 8,
-       subj:['GK','Eng']
-    ),Subject(
-      clas: 9,
-       subj:['English','Hindi']
-    ),Subject(
-      clas: 10,
-       subj:['Math','arys']
-    ),
-
-    
-  ];
-  
+ 
   @override
   void initState() {
     super.initState();
@@ -53,31 +57,8 @@ class _StudyMaterial extends State<StudyMaterial> {
   Widget build(BuildContext context) {
     
     Size size = MediaQuery.of(context).size;
-    final styleActive = TextStyle(color: Colors.black);
-    final styleHint = TextStyle(color: Colors.black54);
-    final style = las.isEmpty ? styleHint : styleActive;
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          PopupMenuButton(
-            onSelected: (int s){
-              setState(() {
-                selected = s as String? ;
-               
-              });
-            },
-            itemBuilder: (_){
-              return las.map((e) {
-                return PopupMenuItem(
-                  value:  las.length,
-                  child: Text('${las[e.clas].clas}')
-                  );
-              }
-              ).toList();
-            },
-          )
-          
-        ],
         title: Text('Subjects'),
       ),
       body: Padding(
@@ -85,53 +66,20 @@ class _StudyMaterial extends State<StudyMaterial> {
         child: CustomScrollView(
           controller: controll,
             slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    
-                    Container(
-                          height: 42,
-                          margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black26),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: TextField(
-                            controller: controller,
-                            decoration: InputDecoration(
-                    icon: Icon(Icons.search, color: style.color),
-                    suffixIcon:las.isNotEmpty
-                        ? GestureDetector(
-                            child: Icon(Icons.close, color: style.color),
-                            onTap: () {
-                              controller.clear();
-                              // widget.onChanged('');
-                              FocusScope.of(context).requestFocus(FocusNode());
-                            },
-                          )
-                        : null,
-                    hintText: 'Search your class',
-                    hintStyle: style,
-                    border: InputBorder.none,
-                            ),
-                            style: style,
-                            // onChanged: widget.onChanged,
-                          ),
-                            ),
-                  ],
-                ),
-              ),
               SliverList(
                 delegate:SliverChildBuilderDelegate(
                   (context, item) {
-                  return Padding(
+                  return  Padding(
                     padding: const EdgeInsets.all(5.0),
-                    child: GestureDetector(
+                    child:Column(
+                      children: [
+                        if(selected == 'all')
+                        subjectCard(size, item, context),
+                        if(s != null)
+                        GestureDetector(
                         onTap: () {
-                          Get.toNamed('/study');
-                        },
+                        Get.toNamed('/study');
+                      },
                         child: Container(
                           padding: EdgeInsets.all(15),
                           margin: EdgeInsets.symmetric(vertical: 10),
@@ -140,50 +88,72 @@ class _StudyMaterial extends State<StudyMaterial> {
                             borderRadius: BorderRadius.circular(7),
                             color: cardcolor,
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                las[item].subj[0],
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight:
-                                      Theme.of(context).textTheme.headline2!.fontWeight,
-                                  color: bodycolor,
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                               'Class ${las[item].clas}th',
-                                style: TextStyle(
-                                  fontSize: Theme.of(context).textTheme.headline4!.fontSize,
-                                  fontWeight:
-                                      Theme.of(context).textTheme.headline4!.fontWeight,
-                                  color: bodycolor,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Class ${s!.clas}th',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight:
+                                  Theme.of(context).textTheme.headline2!.fontWeight,
+                              color: bodycolor,
+                            ),
                           ),
                         ),
-                      ),
+                      )
+                      ],
+                    ),
                   );
                 },
-                childCount: las.length,
+                childCount: (selected == 'all')?las.length:s!.clas.length,
                 ) ,
               ),
             ],
         ),
       ),
+      
     );
+  }
+
+  GestureDetector subjectCard(Size size, int item, BuildContext context) {
+    return GestureDetector(
+                        onTap: () {
+                          s = las[item];
+                        Get.toNamed('/study');
+                      },
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          width: size.width * 0.90,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: cardcolor,
+                          ),
+                          child: Text(
+                            'Class ${las[item].clas}th',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight:
+                                  Theme.of(context).textTheme.headline2!.fontWeight,
+                              color: bodycolor,
+                            ),
+                          ),
+                        ),
+                      );
   }
 }
 
 
-class StudyChapters extends StatelessWidget {
+class StudyChapters extends StatefulWidget {
   const StudyChapters({Key? key}) : super(key: key);
 
   @override
+  State<StudyChapters> createState() => _StudyChaptersState();
+}
+
+class _StudyChaptersState extends State<StudyChapters> {
+  String b =s!.subj[0];
+  @override
   Widget build(BuildContext context) {
+    
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -191,7 +161,31 @@ class StudyChapters extends StatelessWidget {
            Get.toNamed('/material');
         }, label: Text('Upload'),icon: Icon(CupertinoIcons.add),),
         appBar: AppBar(
-          title: Text('Study Material'),
+          actions: [
+             PopupMenuButton(
+            onSelected: (String s){
+              setState(() {
+                b = s ;
+               
+              });
+            },
+            itemBuilder: (_){
+              return s!.subj.map((e) {
+                return PopupMenuItem(
+                  onTap: (){
+                    setState(() {
+                      b =e;
+                    });
+                    if(b==e){print('object');}
+                  },
+                  value:  e,
+                  child: Text(e),
+                  );
+              }
+              ).toList();
+            },
+          )],
+          title: Text(b),
         ),
         body: Column(
           children: [
@@ -329,7 +323,7 @@ class StudyChapters extends StatelessWidget {
 
 
 class Subject{
-  int clas;
+  String clas;
   List<String> subj;
-  Subject( {this.clas = 2,this.subj = const ['default','default','default']});
+  Subject( {this.clas = '2',this.subj = const ['default','default','default']});
 }

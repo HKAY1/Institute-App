@@ -126,10 +126,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                       },
                       leading: Icon(
                         draweritems[item].icon,
-                        color: Theme.of(context)
-                            .appBarTheme
-                            .actionsIconTheme!
-                            .color,
+                        color: Colors.blue
                       ),
                       title: Text(
                         draweritems[item].title,
