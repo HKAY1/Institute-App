@@ -8,13 +8,11 @@ class MyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
+    return Card(
+      elevation: 4,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      // padding: EdgeInsets.all(8),
-      width: size.width * 0.85,
-      decoration: BoxDecoration(
-          color: cardcolor, borderRadius: BorderRadius.circular(20)),
+      color: cardcolor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -89,23 +87,3 @@ class MyCard extends StatelessWidget {
   }
 }
 
-class MyBackground extends StatelessWidget {
-  final Widget child;
-
-  const MyBackground({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      child: child,
-      clipBehavior: Clip.antiAlias,
-      height: size.height,
-      width: size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.elliptical(200, 60)),
-        color: bodycolor,
-      ),
-    );
-  }
-}
