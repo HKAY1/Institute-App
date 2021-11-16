@@ -1,29 +1,12 @@
 // ignore_for_file: file_names
 import 'dart:convert';
 
-class MyEvent {
-  final String? name;
-  final String? discription;
-  final String? endTime;
-  final String? startTime;
-  final int endDate;
-  final String? startDate;
-
-  MyEvent(
-      {this.name,
-      this.discription,
-      required this.endDate,
-      this.endTime,
-      this.startDate,
-      this.startTime});
-}
-
 // To parse this JSON data, do
 //
 //     final events = eventsFromJson(jsonString);
 
-Map<String, List<Events>> eventsFromJson(String str) =>
-    Map.from(json.decode(str)).map((k, v) => MapEntry<String, List<Events>>(
+Map<String, List<Events>> eventsFromJson(dynamic str) =>
+    Map.from(str).map((k, v) => MapEntry<String, List<Events>>(
         k, List<Events>.from(v.map((x) => Events.fromJson(x)))));
 
 String eventsToJson(Map<String, List<Events>> data) =>
@@ -33,28 +16,28 @@ String eventsToJson(Map<String, List<Events>> data) =>
 class Events {
   Events({
     this.name,
-    this.discription,
+    this.description,
     this.endDate,
     this.startTime,
     this.endTime,
   });
 
   final String? name;
-  final String? discription;
+  final String? description;
   final int? endDate;
-  final String? startTime;
-  final String? endTime;
+  final int? startTime;
+  final int? endTime;
 
   Events copyWith({
     String? name,
-    String? discription,
+    String? description,
     int? endDate,
-    String? startTime,
-    String? endTime,
+    int? startTime,
+    int? endTime,
   }) =>
       Events(
         name: name ?? this.name,
-        discription: discription ?? this.discription,
+        description: description ?? this.description,
         endDate: endDate ?? this.endDate,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
@@ -62,16 +45,16 @@ class Events {
 
   factory Events.fromJson(Map<String, dynamic> json) => Events(
         name: json["name"],
-        discription: json["discription"],
-        endDate: json["endDate"],
+        description: json["description"],
+        endDate: json["endDateEpoch"],
         startTime: json["startTime"],
         endTime: json["endTime"],
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "discription": discription,
-        "endDate": endDate,
+        "description": description,
+        "endDateEpoch": endDate,
         "startTime": startTime,
         "endTime": endTime,
       };
