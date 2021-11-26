@@ -1,10 +1,18 @@
-// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, unrelated_type_equality_checks, avoid_print
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, unrelated_type_equality_checks, avoid_print, unused_element
 
+
+
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:teacher_institute/controller/teach_material_controller.dart';
 
 class AddMaterial extends StatefulWidget {
   
@@ -15,14 +23,19 @@ class AddMaterial extends StatefulWidget {
 }
 
 class _AddMaterialState extends State<AddMaterial> {
-  //  Event? even;
+  static var baseURL = 'http://192.168.0.117:9000/api';
+  static var client = http.Client();
+  UploadFilecontroller con = Get.put(UploadFilecontroller());
+  final cont = Get.put(MaterialControler());
+  var t = GetStorage();
+  final data = Get.arguments;
   final chaptercontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();
+  final nocontroller = TextEditingController();
   final formkey = GlobalKey();
- String choose = 'Notes';
-  final List<String> type = <String>['Notes','Assignment','Test Series'];
-  int selectedIndex=0; 
-  
+  int selectedIndex=0;
+  bool s=false; 
+   String files = '           ';
   
   @override
   void dispose() {
@@ -35,7 +48,7 @@ class _AddMaterialState extends State<AddMaterial> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Create Material'),
+        title: Text('Create ${data['mat']??''}'),
         
       ),
       body: SingleChildScrollView(
@@ -45,6 +58,7 @@ class _AddMaterialState extends State<AddMaterial> {
             child: Column(
               children: [
               SizedBox(height: 25,),
+              if(data['mat'] == 'Notes')
               TextFormField(
                 style:TextStyle(fontSize: 24),
                 decoration: InputDecoration(
@@ -53,14 +67,24 @@ class _AddMaterialState extends State<AddMaterial> {
                   border: UnderlineInputBorder(),
                 ),
                 onFieldSubmitted: (_){},
-                validator: (title)=>title !=null && title.isEmpty ?'Title should not be empty':null,
-                controller: chaptercontroller,
+                maxLength: 3,
+                keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (v){
+                       if(!GetUtils.isNumericOnly(v??'')){
+                          return "Invalid Entry";
+                       }
+                     },
+                
+                controller: nocontroller,
               ),
               SizedBox(height: 18),
              
               Column(
                 children: [
+                  if(data['mat'] == 'Notes')
                    TextFormField(
+                     validator: (title)=>title !=null && title.isEmpty ?'Title should not be empty':null,
                      minLines: 1,
                      maxLines: 5,
                      maxLength: 50,
@@ -70,46 +94,16 @@ class _AddMaterialState extends State<AddMaterial> {
                   border: OutlineInputBorder(),
                 ),
                 onFieldSubmitted: (_){},
-                controller: discriptioncontroller,
+                controller: chaptercontroller,
               ),
                   SizedBox(height:15),
-                   Text('Choose Type'),
-              Container(
-              height: 50,
-              // color: bodycolor,
-              padding: const EdgeInsets.all(6),
-              child: ListView.builder(
-                itemBuilder: (context, item) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 5.0, right: 5),
-                    child: ChoiceChip(
-            label: Text(type[item]),
-            selected: selectedIndex == item ,
-            selectedColor: Colors.green,
-            onSelected: (selected) {
-              if(selected){
-                selectedIndex = item;
-                setState(() {
-                  choose = type[item];
-                });
-              }
-              print(choose);
-            },
-            backgroundColor: Colors.red,
-            labelStyle: TextStyle(color: Colors.white),
-          ));
-                  
-                },
-                itemCount: type.length,
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
             Visibility(
               visible: selectedIndex == 0,
               child:TextFormField(
+                validator: (topic)=>topic !=null && topic.isEmpty ?'Topic Name should not be empty':null,
                      minLines: 1,
                      maxLines: 5,
-                     maxLength: 50,
+                     maxLength: 40,
                 style:TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   labelText:' Topic Name',
@@ -129,19 +123,73 @@ class _AddMaterialState extends State<AddMaterial> {
                     primary: Colors.white,
                   ),
                   onPressed: () async {
+                    setState(() {
+                        s= true;
+                      });
                     final result = await FilePicker.platform.pickFiles(
-                       allowedExtensions: ['jpg', 'pdf'],
                     );
                        if (result == null) {
                      return;
                      }
                      final file = result.files.first;
-                     OpenFile.open(file.path!);
+                     File path = File(file.path!);
+                     setState(() {
+                       files=result.files.first.name;
+                     });
+                      var token = t.read('token')??'';
+                        con.postFile( type:Get.arguments , token: token, file: path);
+                      
                   },
                   icon: Icon(Icons.upload_rounded),
-                  label: Text('Upload File'),
+                  label: Text('Choose File'),
                 ),
             SizedBox(height:15),
+            Visibility(
+              visible: s ,
+              child: Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.grey[100],
+              border: Border.all(
+                color: Colors.grey,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                     Future<void> deletefile(
+                     {required String token}
+                 )async{
+                     var token = t.read('token')??'';
+                   try{
+                 var response= await http.delete(Uri.parse('$baseURL/file/study-material/$resid'),
+                   headers: {
+                     'Content-Type':'application/json',
+                     'Accept':'application/json',
+                     'Authorization':'Bearer $token',
+                       },);
+                      final  resString = jsonDecode(response.body);
+                       if(resString['success']?? false){
+                        toast(title: 'Success',message: resString['data']);
+                         }
+                        toast(title:'Error',message: 'Failed to remove');
+                        }on TimeoutException{
+                        throw 'API not Responding';
+                       }on SocketException{
+                           throw 'Can\'t connect to API';
+    }
+  }
+                  },
+                  icon: Icon(Icons.remove)
+                ),
+              ],
+            ),
+          ),
+            ),
                TextButton.icon(
                   style: TextButton.styleFrom(
                     minimumSize: Size(150, 50),
@@ -152,12 +200,11 @@ class _AddMaterialState extends State<AddMaterial> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    setState(() {
-                    });
-                    print(choose);
+                    cont.postMaterialtdata(clas: data['class'],subject: data['subject'],chapname:chaptercontroller.text,chapno: nocontroller.text,res: resid,type: data['mat'],topic: discriptioncontroller.text);
                   },
-                  icon: Icon(Icons.add),
                   label: Text('Add Material'),
+                  icon: Icon(Icons.arrow_forward_rounded),
+                  
                 ),
                 ],
               )
@@ -169,3 +216,14 @@ class _AddMaterialState extends State<AddMaterial> {
     );
   }
 }
+void toast({String title ='Error',String message ='Something Went wrong'}){
+    Get.snackbar(
+        title,
+        message,colorText:Colors.black,
+        maxWidth:double.maxFinite,
+        margin:const EdgeInsets.all(0),
+        isDismissible: true,
+        snackPosition: SnackPosition.BOTTOM,
+        dismissDirection: SnackDismissDirection.HORIZONTAL,
+      );
+  }

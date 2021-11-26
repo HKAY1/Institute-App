@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'dart:convert';
-import 'package:imstitute/models/aothorised_modal.dart';
+
+import 'package:teacher_institute/modals/aothorised_modal.dart';
 
 class LoginServices {
   static var client = http.Client();
@@ -20,7 +21,7 @@ class LoginServices {
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
-            body: jsonEncode({"phoneNumber": num, "password": password}),
+            body: jsonEncode({"phoneNumber": num, "password": password,"appRole":"Teacher"}),
           )
           .timeout(const Duration(seconds: 10));
       print(response.body);
@@ -31,7 +32,7 @@ class LoginServices {
       if (data['success']) {
         return UserData.fromJson(data['data']);
       }
-      throw data['error'] ?? 'No data';
+      throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {
@@ -63,7 +64,7 @@ class LoginServices {
       if (data['success'] ?? false) {
         return data['imageUrl'];
       }
-      throw data['error'] ?? 'No data';
+      throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {
@@ -73,6 +74,7 @@ class LoginServices {
 
   static Future<UserData> updateProfileData(
       {required String token,
+      required String gen,
       required String mail,
       required String add,
       required String id}) async {
@@ -84,14 +86,14 @@ class LoginServices {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({'email': mail, 'address': add}),
+        body: jsonEncode({'email': mail, 'address': add,'gender':gen}),
       );
       print(response.body);
       var data = jsonDecode(response.body);
       if (data['success']) {
         return UserData.fromJson(data['data']);
       }
-      throw data['error'] ?? 'No data';
+      throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {
@@ -112,7 +114,7 @@ class LoginServices {
       if (data['success']) {
         return UserData.fromJson(data['data']);
       }
-      throw data['error'] ?? 'No data';
+      throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {

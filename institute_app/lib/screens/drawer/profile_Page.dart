@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Obx(() {
                       return CachedNetworkImage(
                         imageUrl: d.url
-                            .replaceAll('localhost:9000', '192.168.0.109:9000'),
+                            .replaceAll('localhost:9000', '192.168.0.117:9000'),
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(

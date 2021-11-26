@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:teacher_institute/login_page.dart';
 import 'package:teacher_institute/screens/drawer/downloads.dart';
 import 'package:teacher_institute/screens/performance/class.dart';
@@ -11,6 +11,7 @@ import 'package:teacher_institute/screens/performance/student_list.dart';
 import 'package:teacher_institute/screens/study_material/add_material.dart';
 import 'package:teacher_institute/screens/study_material/in_notes.dart';
 import 'package:teacher_institute/screens/study_material/study_material.dart';
+import 'package:teacher_institute/services/bindings.dart';
 import 'package:teacher_institute/studydata/myinternaldata.dart';
 import 'homepage.dart';
 import 'screens/drawer/contactUSPage.dart';
@@ -19,23 +20,22 @@ import 'screens/drawer/faq.dart';
 import 'screens/drawer/profile_Page.dart';
 import 'screens/notification.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: InitialBinding(),
       getPages: [
+        GetPage(
+          name: '/homepage',
+          page: () => const HomePage(),
+        ),
         GetPage(name: '/homepage', page: () => const HomePage()),
         GetPage(name: '/student', page: () => const StudentList()),
         GetPage(name: '/profile', page: () => const ProfilePage()),
@@ -49,11 +49,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/material', page: () => const AddMaterial()),
         GetPage(name: '/innermaterial', page: ()=>  MyInDataList(mdata: note,)),
         GetPage(name: '/login', page: () => const LoginPage()),
-      ],
+        ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 600),
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
+        primaryColor: Colors.white,
         dividerTheme: DividerThemeData(
           color: const Color(0xff978DFB).withOpacity(0.2),
         ),
@@ -103,17 +104,9 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        // primaryColor: const Color(0xff1900FF).withOpacity(0.7),
-        // const Color(0xff02d5fa)
-        scaffoldBackgroundColor:  Colors.white,
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
-          // toolbarHeight: 10,
           shape: MyShapeBorder(10),
-          // ContinuousRectangleBorder(
-          //     borderRadius:
-          //         BorderRadius.vertical(bottom: Radius.circular(5000))),
-
           iconTheme: IconThemeData(color: Colors.white),
           actionsIconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
@@ -131,8 +124,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Institute',
-      home: const LoginPage(),
+      home: (go()) ? const HomePage() : const LoginPage(),
     );
+  }
+
+  bool go() {
+    final g = GetStorage();
+    String d = g.read('token') ?? '';
+    bool data = d.isNotEmpty;
+    return data;
   }
 }
 
@@ -152,3 +152,4 @@ class MyShapeBorder extends ContinuousRectangleBorder {
     ..lineTo(rect.size.width, 0)
     ..close();
 }
+ 

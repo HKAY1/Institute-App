@@ -39,11 +39,19 @@ dependencies:
   percent_indicator: ^3.0.1
   intl: ^0.17.0
   http: ^0.13.4
+  http_parser: ^4.0.0
+  dio: ^4.0.1
+  image_picker: ^0.8.4+3
+  cached_network_image: ^3.1.0
+  shared_preferences: ^2.0.8
+  get_storage: ^2.0.3
   get: ^4.3.8
   fancy_bottom_navigation: ^0.3.3
   bottom_bar_page_transition: ^2.0.0
   file_picker: ^4.2.0
   open_file: ^3.2.1
+  flutter_staggered_animations: ^1.0.0
+  syncfusion_flutter_pdfviewer: ^19.3.55-beta
 
 dev_dependencies:
   flutter_test:

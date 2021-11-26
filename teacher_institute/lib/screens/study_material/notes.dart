@@ -15,26 +15,11 @@ class MyDataList extends StatefulWidget {
 }
 
 class _MyDataListState extends State<MyDataList> {
-  final subjects = <String>[
-    'All Subjects',
-    'Physics',
-    'Chemistry',
-    'Math',
-    'Biology',
-    'Physics',
-    'Chemistry',
-    'Math',
-    'Biology',
-    'Physics',
-    'Chemistry',
-    'Math',
-    'Biology',
-  ];
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      // clipBehavior: Clip.antiAlias,
       height: size.height,
       width: size.width,
       decoration: BoxDecoration(
@@ -43,12 +28,15 @@ class _MyDataListState extends State<MyDataList> {
         //
       ),
       child: (widget.mydata.isEmpty)
-          ? Container(
-              child: Image.asset('images/nodownloads.png'),
-              margin: EdgeInsets.only(top: size.height * 0.1),
-            )
+          ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Container(
+                child: Image.asset('images/nodownloads.png'),
+                margin: EdgeInsets.only(top: size.height * 0.1,),
+              ),
+          )
           :GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 childAspectRatio: 3/4,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20),
@@ -98,20 +86,6 @@ class _MyDataListState extends State<MyDataList> {
                               color: bodycolor,
                             ),
                           ),
-                        Text(
-                          widget.mydata[item].provider,
-                          style: TextStyle(
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .fontSize,
-                            fontWeight: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .fontWeight,
-                            color: bodycolor,
-                          ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
