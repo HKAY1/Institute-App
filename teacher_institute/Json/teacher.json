@@ -1,0 +1,20 @@
+[
+        {
+            "class":"8",
+            "subject":[
+                "Maths","English"
+            ]
+        },
+        {
+            "class":"9",
+            "subject":[
+                "Hindi","English"
+            ]
+        },
+        {
+            "class":"10",
+            "subject":[
+                "Maths","Science"
+            ]
+        }
+    ]

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
-import 'package:teacher_institute/coustom/colorScheme.dart';
+import 'package:get/get.dart';
+import 'package:teacher_institute/controller/authorisation_controller.dart';
 import 'package:teacher_institute/screens/event.dart';
-import 'screens/study_material/study_material.dart';
+import 'package:teacher_institute/screens/study_material/classes_page.dart';
 import 'screens/home.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,17 +17,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var c = Get.put(AuthrisationController());
+  @override
+  void initState() {
+    super.initState();
+    c.refreshProfile();
+  }
+
   int _myindex = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: FancyBottomNavigation(
-            textColor: Colors.blue,
-            circleColor: cardcolor,
-            activeIconColor: Colors.white,
-            inactiveIconColor: Colors.blue,
-            barBackgroundColor: Colors.white,
+            textColor: Colors.white,
+            circleColor: Colors.white,
+            activeIconColor: Colors.blue,
+            inactiveIconColor: Colors.white,
+            barBackgroundColor: Colors.blue,
             tabs: [
               TabData(iconData: Icons.home, title: "Home"),
               TabData(iconData: Icons.calendar_today_rounded, title: "Events"),

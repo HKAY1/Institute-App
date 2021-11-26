@@ -1,100 +1,66 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/screens/study_material/add_material.dart';
 import 'package:teacher_institute/studydata/mydata.dart';
+import 'classes_page.dart';
 import 'notes.dart';
 
-class StudyMaterial extends StatefulWidget {
-  final subjects = <String>[
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'Mathmetics',
-    'English',
-    'Hindi',
-    'Computer Science',
-  ];
-  StudyMaterial({Key? key}) : super(key: key);
-
-  @override
-  State<StudyMaterial> createState() => _StudyMaterial();
-}
-
-class _StudyMaterial extends State<StudyMaterial> {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Subjects'),
-      ),
-      body: ListView.builder(
-        padding: EdgeInsets.only(top: 30, bottom: 30, left: 15, right: 15),
-        itemBuilder: (context, item) {
-          return GestureDetector(
-            onTap: () {
-              Get.toNamed('/study');
-            },
-            child: Container(
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              width: size.width * 0.90,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-                color: cardcolor,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.subjects[item],
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight:
-                          Theme.of(context).textTheme.headline2!.fontWeight,
-                      color: bodycolor,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Flopin Sir',
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline4!.fontSize,
-                      fontWeight:
-                          Theme.of(context).textTheme.headline4!.fontWeight,
-                      color: bodycolor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        itemCount: widget.subjects.length,
-      ),
-    );
-  }
-}
 
 
-class StudyChapters extends StatelessWidget {
+class StudyChapters extends StatefulWidget {
   const StudyChapters({Key? key}) : super(key: key);
 
   @override
+  State<StudyChapters> createState() => _StudyChaptersState();
+}
+
+class _StudyChaptersState extends State<StudyChapters> {
+  List<String> subjects = Get.arguments['subjectList'];
+  String clas = Get.arguments['class'];
+  String subject = Get.arguments['subjectList'][0];
+  final List<String> type = <String>['Notes','Assignment','Test Series'];
+  String mat= 'Notes';
+  @override
   Widget build(BuildContext context) {
+    
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-          floatingActionButton:FloatingActionButton.extended(onPressed: (){
-           Get.toNamed('/material');
-        }, label: Text('Upload'),icon: Icon(CupertinoIcons.add),),
+          floatingActionButton:FloatingActionButton.extended(
+            onPressed: (){
+           Get.toNamed('/material',arguments: {'mat':mat,'class':clas,'subject':subject});
+        },
+         label: Text('Upload'),
+         icon: Icon(CupertinoIcons.add),
+         ),
         appBar: AppBar(
-          title: Text('Study Material'),
+          actions: [
+             PopupMenuButton(
+            onSelected: (String s){
+              setState(() {
+                subject = s ;
+               
+              });
+            },
+            itemBuilder: (_){
+              return subjects.map((e) {
+                return PopupMenuItem(
+                  onTap: (){
+                    setState(() {
+                      subject =e;
+                    });
+                  },
+                  value:  e,
+                  child: Text(e),
+                  );
+              }
+              ).toList();
+            },
+          )],
+          title: Text(subject),
         ),
         body: Column(
           children: [
@@ -108,7 +74,7 @@ class StudyChapters extends StatelessWidget {
                 ),
               ),
               child: TabBar(
-                dragStartBehavior: DragStartBehavior.down,
+                isScrollable: false,
                 indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(
                     25.0,
@@ -117,17 +83,10 @@ class StudyChapters extends StatelessWidget {
                 ),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
-                tabs: const [
-                  Tab(
-                    text: 'Notes',
-                  ),
-                  Tab(
-                    text: 'Assignment',
-                  ),
-                  Tab(
-                    text: 'Text Series',
-                  ),
-                ],
+                onTap: (i){
+                  mat = type[i];
+                },
+                tabs: List.generate(type.length, (i) => Tab(text:type[i]))
               ),
             ),
             Expanded(
@@ -158,58 +117,54 @@ class StudyChapters extends StatelessWidget {
                             clipBehavior: Clip.none,
                             children: [
                               Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                color: cardcolor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Chapter',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline2!
-                                            .copyWith(color: bodycolor),
-                                      ),
-                                      Text(
-                                        'sdccsjdcvhj sjcbjs asdvc shcvhsdcv gacvhag',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4!
-                                            .copyWith(color: bodycolor),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: -10,
-                                left: -5,
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 8, right: 5, top: 5, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Color(0xff75e6da), width: 4),
-                                  ),
-                                  child: Text(
-                                    '21',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline2!
-                                        .copyWith(
-                                          fontSize: 50,
-                                          color: Color(0xff05445e),
-                                        ),
-                                  ),
-                                ),
-                              )
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  color: cardcolor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Chapter',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline2!
+                              .copyWith(color: bodycolor),
+                        ),
+                        Text(
+                          'sdccsjdcvhj sjcbjs asdvc shcvhsdcv gacvhag',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(color: bodycolor),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                         Positioned(
+                  top: -10,
+                  right: -5,
+                  child: Container(
+                    padding:
+                        EdgeInsets.only(left: 8, right: 5, top: 5, bottom: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Color(0xff75e6da), width: 4),
+                    ),
+                    child: Text(
+                      '01',
+                      style: Theme.of(context).textTheme.headline2!.copyWith(
+                            fontSize: 30,
+                            color: Color(0xff05445e),
+                          ),
+                    ),
+                  ),
+                )
                             ],
                           ),
                         );
@@ -229,4 +184,5 @@ class StudyChapters extends StatelessWidget {
     );
   }
 }
+
 

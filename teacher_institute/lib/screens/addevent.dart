@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, unrelated_type_equality_checks, avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:teacher_institute/coustom/colorScheme.dart';
+import 'package:teacher_institute/controller/teach_event_controller.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   //  Event? even;
+  EventController controll = Get.put(EventController());
+
   final titlecontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();
   late DateTime fromDate = DateTime.now();
@@ -63,7 +67,6 @@ class _AddEventState extends State<AddEvent> {
               Text('Choose Class'),
               Container(
                 height: 50,
-                color: bodycolor,
                 padding: const EdgeInsets.all(6),
                 child: ListView.builder(
                   itemBuilder: (context, item) {
@@ -154,7 +157,7 @@ class _AddEventState extends State<AddEvent> {
                     maxLength: 300,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
-                      labelText: ' Discription',
+                      labelText: ' Description',
                       border: OutlineInputBorder(),
                     ),
                     onFieldSubmitted: (_) {},
@@ -170,24 +173,24 @@ class _AddEventState extends State<AddEvent> {
                       primary: Colors.white,
                     ),
                     onPressed: () {
-                      print(
-                          DateTime(fromDate.year, fromDate.month, fromDate.day)
-                              .millisecondsSinceEpoch);
-                      print(DateTime.fromMillisecondsSinceEpoch(
-                          DateTime(fromDate.year, fromDate.month, fromDate.day)
-                              .millisecondsSinceEpoch));
-                      print(fromDate.millisecondsSinceEpoch);
-                      print(selectedTime.format(context));
+                      final dt = DateTime(fromDate. year, fromDate. month, fromDate. day, selectedTime. hour, selectedTime. minute);
+                      final dt1 = DateTime(toDate. year, toDate. month, toDate. day, selectedTime2. hour, selectedTime2. minute);
                       setState(() {
-                        // for(int i = 0;i<isSelect.length;i++)
-                        // if(isSelect[i])
-                        // filter[i] = clas[i].replaceAll('th', '');
                         filter = isSelect.asMap().entries.map((e) {
                           if (e.value) return clas[e.key].replaceAll('th', '');
                         }).toList();
                         filter.removeWhere((element) => element == null);
                       });
-                      print(filter);
+                       controll.postEventdata(
+                        classes: filter,
+                        description: discriptioncontroller.text,
+                        startDatefromEpoch: fromDate.millisecondsSinceEpoch,
+                        endDatefromEpoch: toDate.millisecondsSinceEpoch,
+                        startTime: dt.millisecondsSinceEpoch,
+                        endTime: dt1.millisecondsSinceEpoch,
+                        title: titlecontroller.text
+                         );
+                         
                     },
                     icon: Icon(Icons.add),
                     label: Text('Add Event'),
@@ -205,8 +208,8 @@ class _AddEventState extends State<AddEvent> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: fromDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month + 3, 0),);
     if (picked != null && picked != fromDate)
       setState(() {
         fromDate = picked;
@@ -217,8 +220,8 @@ class _AddEventState extends State<AddEvent> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: toDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month + 3, 0),);
     if (picked != null && picked != toDate)
       setState(() {
         toDate = picked;
