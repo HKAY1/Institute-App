@@ -17,11 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var c = Get.put(AuthrisationController());
   @override
   void initState() {
     super.initState();
-    c.refreshProfile();
   }
 
   int _myindex = 0;

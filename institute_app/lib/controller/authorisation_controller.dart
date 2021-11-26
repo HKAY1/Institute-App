@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:imstitute/custome/customeWidgets.dart';
 import 'package:imstitute/models/aothorised_modal.dart';
 import 'package:imstitute/services/login_service.dart';
 
@@ -12,10 +14,9 @@ class AuthrisationController extends GetxController {
 
   @override
   void onInit() {
-    String d = g.read('token') ?? '';
+    String d = g.read('url') ?? '';
     if (d.isNotEmpty) {
-      refreshProfile();
-      url(g.read('url') ?? '');
+      url(d);
     }
     super.onInit();
   }
@@ -23,9 +24,25 @@ class AuthrisationController extends GetxController {
   void dialog() {
     Get.dialog(
       const Center(
-        child: CircularProgressIndicator(),
+        child: CustomeLoading(
+          color: Colors.blueAccent,
+        ),
       ),
       barrierDismissible: false,
+    );
+  }
+
+  void toast(
+      {String title = 'Error', String message = 'Something Went Wrong'}) {
+    Get.snackbar(
+      title,
+      message,
+      isDismissible: true,
+      colorText: Colors.black,
+      maxWidth: double.maxFinite,
+      margin: const EdgeInsets.all(0),
+      snackPosition: SnackPosition.BOTTOM,
+      dismissDirection: SnackDismissDirection.HORIZONTAL,
     );
   }
 
@@ -35,26 +52,21 @@ class AuthrisationController extends GetxController {
       var data = await LoginServices.login(num: number, password: password);
       refreshUser(data: data);
       // Get.back();
+      url(data.url);
       Get.offAllNamed('/homepage');
     } catch (e) {
       Get.back();
-      Get.snackbar(
-        e.toString(),
-        '',
-        isDismissible: true,
-        snackPosition: SnackPosition.BOTTOM,
-        dismissDirection: SnackDismissDirection.HORIZONTAL,
-      );
+      toast(message: e.toString());
     }
   }
 
-  void updateUserData(String mail, String add) async {
+  void updateUserData(String mail, String add, String gen) async {
     try {
       var t = g.read('token') ?? '';
       var i = g.read('id') ?? '';
       dialog();
       var data = await LoginServices.updateProfileData(
-          token: t, id: i, mail: mail, add: add);
+          token: t, id: i, obj: {"email": mail, "address": add, "gender": gen});
       refreshUser(data: data);
       Get.back();
       Get.snackbar(
@@ -66,48 +78,46 @@ class AuthrisationController extends GetxController {
       );
     } catch (e) {
       Get.back();
+      toast(message: e.toString());
+    }
+  }
+
+  Future<bool> refreshProfile() async {
+    try {
+      var t = g.read('token') ?? '';
+      UserData data = await LoginServices.fetchProfile(t);
+      url(data.url);
+      refreshUser(data: data);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void changePassword(String npass) async {
+    try {
+      Get.back();
+      dialog();
+      await LoginServices.changePass(npass, g.read('token') ?? '');
+      Get.back();
       Get.snackbar(
-        e.toString(),
+        'Password Changed Successfully',
         '',
         isDismissible: true,
         snackPosition: SnackPosition.BOTTOM,
         dismissDirection: SnackDismissDirection.HORIZONTAL,
       );
-    }
-  }
-
-  void refreshProfile() async {
-    try {
-      isLoading(true);
-      UserData data = await LoginServices.fetchProfile(g.read('token') ?? '');
-      refreshUser(data: data);
-      isLoading(false);
     } catch (e) {
-      isLoading(false);
-      Get.dialog(AlertDialog(
-        title: const Text(
-          'Error',
-          style: TextStyle(color: Colors.black),
-        ),
-        content:
-            Text(e.toString(), style: const TextStyle(color: Colors.black)),
-        actions: [
-          TextButton(
-              onPressed: () {
-                g.erase();
-                Get.toNamed('/login');
-              },
-              child: const Text('Login Again'))
-        ],
-      ));
+      Get.back();
+      toast(message: e.toString());
     }
   }
 
-  void uploadImage(File image, String type) async {
+  void uploadImage(Uint8List image, String type, bool web) async {
     try {
       dialog();
       var d = await LoginServices.upload(
-        imageFile: image.path,
+        imagebytes: image,
         token: g.read('token'),
         type: type,
       );
@@ -116,13 +126,8 @@ class AuthrisationController extends GetxController {
       Get.back();
     } catch (e) {
       Get.back();
-      Get.snackbar(
-        e.toString(),
-        '',
-        isDismissible: true,
-        snackPosition: SnackPosition.BOTTOM,
-        dismissDirection: SnackDismissDirection.HORIZONTAL,
-      );
+      print(e);
+      toast(message: e.toString());
     }
   }
 

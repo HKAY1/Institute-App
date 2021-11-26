@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,12 +20,19 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   var d = Get.put(AuthrisationController());
   final ImagePicker _picker = ImagePicker();
+  final FocusNode mailFocus = FocusNode();
+  final FocusNode addFocus = FocusNode();
   late TextEditingController contAdd;
   late TextEditingController contEmail;
+  late TextEditingController contPass = TextEditingController();
+  late TextEditingController contNPass = TextEditingController();
+  String gender = '';
+  var changepassKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    gender = d.userinfo(key: 'gender');
     contAdd = TextEditingController(text: d.userinfo(key: 'address'));
     contEmail = TextEditingController(text: d.userinfo(key: 'email'));
   }
@@ -35,14 +42,30 @@ class _ProfilePageState extends State<ProfilePage> {
     final bottoms = MediaQuery.of(context).viewInsets.bottom;
     Size size = MediaQuery.of(context).size;
 
-    pick_image(ImageSource source) async {
+    void pickImage(ImageSource source) async {
       XFile? image = await _picker.pickImage(
         source: source,
       );
 
       if (image != null) {
-        d.uploadImage(File(image.path),
-            image.path.substring(image.path.lastIndexOf(".") + 1));
+        var bytes = await image.readAsBytes();
+        d.uploadImage(bytes,
+            image.path.substring(image.path.lastIndexOf(".") + 1), false);
+      }
+    }
+
+    void pickImageWeb() async {
+      var image = await FilePicker.platform
+          .pickFiles(type: FileType.image, allowedExtensions: []);
+      if (image != null) {
+        var data = image.files.single.bytes;
+        if (data != null) {
+          d.uploadImage(
+              data,
+              image.files.single.path!
+                  .substring(image.files.single.path!.lastIndexOf(".") + 1),
+              true);
+        }
       }
     }
 
@@ -65,8 +88,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.center,
                     child: Obx(() {
                       return CachedNetworkImage(
+<<<<<<< HEAD
                         imageUrl: d.url
                             .replaceAll('localhost:9000', '192.168.0.117:9000'),
+=======
+                        imageUrl:
+                            d.url.replaceAll('localhost', '192.168.0.117'),
+>>>>>>> 0c07cb6db0efa85254ac726f9a9996330cdcecf5
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(
@@ -99,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onPressed: () {
                         if (kIsWeb) {
-                          pick_image(ImageSource.gallery);
+                          pickImage(ImageSource.gallery);
                         } else {
                           showModalBottomSheet(
                             context: context,
@@ -138,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       padding: EdgeInsets.all(8),
                                     ),
                                     onPressed: () {
-                                      pick_image(ImageSource.gallery);
+                                      pickImage(ImageSource.gallery);
                                       Get.back();
                                     },
                                     child: Column(
@@ -164,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       primary: Colors.pink,
                                     ),
                                     onPressed: () {
-                                      pick_image(ImageSource.camera);
+                                      pickImage(ImageSource.camera);
                                       Get.back();
                                     },
                                     child: Column(
@@ -239,9 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {
-                    print('object');
-                  },
+                  onPressed: () {},
                   child: Text(
                     'Change',
                     style: Theme.of(context)
@@ -253,14 +279,178 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          editfield(header: 'Email Address', enable: true, contr: contEmail),
-          editfield(
-              header: 'Adress', enable: true, length: 300, contr: contAdd),
-          editfield(
-              header: 'Class', detail: d.userinfo(key: 'class').toString()),
-          editfield(header: 'Gender', detail: d.userinfo(key: 'gender')),
+          Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            child: TextFormField(
+              focusNode: mailFocus,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (s) {
+                mailFocus.unfocus();
+              },
+              keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (!GetUtils.isEmail(value ?? '')) {
+                  return "Enater valid Email";
+                }
+              },
+              controller: contEmail,
+              maxLines: null,
+              enabled: true,
+              maxLength: 50,
+              style: Theme.of(context).textTheme.headline3,
+              onChanged: (i) {
+                // email = i;
+              },
+              // controller: TextEditingController()..text = email,
+              decoration: InputDecoration(
+                disabledBorder: InputBorder.none,
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.redAccent,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.black38,
+                  ),
+                ),
+                fillColor: Colors.grey[100],
+                filled: true,
+                label: Text(
+                  'Email Address',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: cardcolor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            child: TextFormField(
+              focusNode: addFocus,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (s) {
+                addFocus.unfocus();
+              },
+              keyboardType: TextInputType.streetAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == '') {
+                  return "";
+                }
+              },
+              controller: contAdd,
+              maxLines: null,
+              maxLength: 300,
+              style: Theme.of(context).textTheme.headline3,
+              onChanged: (i) {
+                // email = i;
+              },
+              // controller: TextEditingController()..text = email,
+              decoration: InputDecoration(
+                disabledBorder: InputBorder.none,
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.redAccent,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.black38,
+                  ),
+                ),
+                fillColor: Colors.grey[100],
+                filled: true,
+                label: Text(
+                  'Address',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: cardcolor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Gender',
+            style: Theme.of(context)
+                .textTheme
+                .headline2!
+                .copyWith(color: Colors.blueAccent),
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              FilterChip(
+                elevation: 10,
+                backgroundColor: Colors.grey,
+                selectedColor: Colors.blueAccent,
+                disabledColor: Colors.white,
+                checkmarkColor: Colors.white,
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(color: Colors.white),
+                label: Text('Male'),
+                selected: gender == 'Male',
+                onSelected: (f) {
+                  setState(() {
+                    gender = 'Male';
+                  });
+                },
+              ),
+              SizedBox(width: 30),
+              FilterChip(
+                elevation: 10,
+                backgroundColor: Colors.grey,
+                selectedColor: Colors.blueAccent,
+                disabledColor: Colors.white,
+                checkmarkColor: Colors.white,
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(color: Colors.white),
+                label: Text('Female'),
+                selected: gender == 'Female',
+                onSelected: (f) {
+                  setState(() {
+                    gender = 'Female';
+                  });
+                },
+              )
+            ],
+          ),
+          SizedBox(height: 30),
+          // editfield(
+          //     header: 'Class', detail: d.userinfo(key: 'class').toString()),
+          // editfield(header: 'Gender', detail: d.userinfo(key: 'gender')),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              changePassword(context);
+            },
             child: Text('Change Password'),
             style: TextButton.styleFrom(
               minimumSize: Size(150, 50),
@@ -289,7 +479,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   primary: Colors.white,
                 ),
                 onPressed: () {
-                  d.updateUserData(contEmail.text, contAdd.text);
+                  d.updateUserData(contEmail.text, contAdd.text, gender);
                 },
                 icon: Icon(Icons.edit),
                 label: Text('Update Profile'),
@@ -301,68 +491,146 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget editfield({
-    required String header,
-    TextEditingController? contr,
-    bool enable = false,
-    String? detail,
-    int length = 40,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      child: TextFormField(
-        keyboardType: (header == 'Email Address')
-            ? TextInputType.emailAddress
-            : TextInputType.streetAddress,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) {
-          if (!GetUtils.isEmail(value ?? '')) {
-            return "Enater valid Email";
-          }
-        },
-        controller: contr,
-        maxLines: null,
-        initialValue: detail,
-        enabled: enable,
-        maxLength: length,
-        style: Theme.of(context).textTheme.headline3,
-        onChanged: (i) {
-          // email = i;
-        },
-        // controller: TextEditingController()..text = email,
-        decoration: InputDecoration(
-          disabledBorder: InputBorder.none,
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.redAccent,
+  void changePassword(BuildContext context) {
+    showModalBottomSheet(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      context: context,
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+          child: Form(
+            key: changepassKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Visibility(
+                //   child: Text('Password Dosen\'t Match'),
+                //   visible: changepassKey.currentState!.validate(),
+                // ),
+                TextFormField(
+                  controller: contPass,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.visiblePassword,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (v) {
+                    if (v == '') {
+                      return '* Required';
+                    }
+                  },
+                  style: Theme.of(context).textTheme.headline3,
+                  decoration: InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.black26,
+                      ),
+                    ),
+                    fillColor: Colors.grey[100],
+                    filled: true,
+                    label: Text(
+                      'New Password',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    hintText: 'Create your new Password',
+                    hintStyle: TextStyle(color: Colors.black12),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  controller: contNPass,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (v) {
+                    if (v != contPass.text) {
+                      return 'Password Doesn\'t Matches';
+                    }
+                  },
+                  style: Theme.of(context).textTheme.headline3,
+                  decoration: InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.black26,
+                      ),
+                    ),
+                    fillColor: Colors.grey[100],
+                    filled: true,
+                    label: Text(
+                      'Confirm Password',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    hintText: 'Confirm your new Password',
+                    hintStyle: TextStyle(color: Colors.black12),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (changepassKey.currentState!.validate()) {
+                      d.changePassword(contPass.text);
+                    }
+                  },
+                  child: Text('Reset Password'),
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(180, 50),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(color: Colors.white),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor,
+                    primary: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.black38,
-            ),
-          ),
-          fillColor: Colors.grey[100],
-          filled: true,
-          label: Text(
-            header,
-            style: Theme.of(context)
-                .textTheme
-                .headline3!
-                .copyWith(color: cardcolor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
