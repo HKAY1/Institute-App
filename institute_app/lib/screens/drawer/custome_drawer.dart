@@ -20,7 +20,7 @@ class CustomeDrawer extends StatefulWidget {
 }
 
 class _CustomeDrawerState extends State<CustomeDrawer> {
-  var controll = Get.find<AuthrisationController>();
+  var controll = Get.put(AuthrisationController());
   final draweritems = [
     DrawerItems(title: 'Performance', icon: Icons.insights_rounded),
     DrawerItems(title: 'Downloads', icon: Icons.download),
@@ -72,8 +72,8 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                                     ),
                                   );
                                 },
-                                imageUrl: controll.url.value.replaceAll(
-                                    'localhost:9000', '192.168.0.109:9000'),
+                                imageUrl: controll.url.value
+                                    .replaceAll('localhost', '192.168.0.117'),
                                 // progressIndicatorBuilder:
                                 //     (context, url, downloadProgress) =>
                                 //         CircularProgressIndicator(

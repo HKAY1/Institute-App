@@ -1,77 +1,197 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:imstitute/models/aothorised_modal.dart';
 import 'package:imstitute/models/eventModals.dart';
 import 'package:imstitute/models/study_modals.dart';
 
 class Services {
   static var client = http.Client();
+  static var baseURL = 'http://192.168.0.117:9000/api';
 
-  static Future<Map<String, List<Events>>> fetchEvent() async {
-    // var token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTcyYWNiOTMxNTQzZjVlY2Q4Nzc2ZmQiLCJpYXQiOjE2MzUzMjEyOTd9.k76ECTqpiCurr7Y-YRkRp4niDdAuHIMRyHJMJ6gG1D0';
-    // var res = await client.get(
-    //     Uri.parse(
-    //         "http://192.168.1.128:9000/api/events?fromDate=1635100200000&toDate=1635445800000"),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Accept': 'application/json',
-    //       'Authorization': 'Bearer $token',
-    //     });
-    // if (res.statusCode == 200) {
-    //   print("works fine");
-    // }
-    // var data = jsonDecode(res.body);
-    // print(data);
-    // return eventsFromJson(data['data']);
-    await Future.delayed(const Duration(seconds: 1));
-    return fakeEventData;
+  static Future<Map<String, List<Events>>> fetchEvent(
+      {required String token, required int from, required int to}) async {
+    try {
+      var res = await client.get(
+          Uri.parse("$baseURL/events?fromDate=$from&toDate=$to"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        return eventsFromJson(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+
+    // await Future.delayed(const Duration(seconds: 1));
+    // return fakeEventData;
   }
 
-  static Future<List<Notes>> fetchStudy() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return fakeNotesData;
-    // String data = await rootBundle.loadString('json/study_material.json');
-    // var jsonResult = json.decode(data);
-    // return List.from(jsonResult['notes'])
-    //     .map((e) => Notes.fromJson(e))
-    //     .toList();
+  static Future<List<SubjData>> fetchSubjects({required String token}) async {
+    try {
+      var res = await client
+          .get(Uri.parse("$baseURL/users/student-subjects"), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        return subjfromjason(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+  }
+
+  static Future<List<Notes>> fetchNotes(
+      {required String token,
+      required String clas,
+      required String subj}) async {
+    // await Future.delayed(const Duration(seconds: 1));
+    // return fakeNotesData;
+    try {
+      var res = await client.get(
+          Uri.parse("$baseURL/study/notes/$clas/$subj/chapters"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        print(data['data']);
+        return notesfrom(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+  }
+
+  static Future<List<Topics>> fetchTopics({
+    required String token,
+    required String id,
+  }) async {
+    try {
+      var res = await client
+          .get(Uri.parse("$baseURL/study/notes/$id/topics"), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        print(data['data']);
+        return topicsfrom(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
   }
 }
 
-var fakeNotesData = [
-  Notes(chapter: 01, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ]),
-  Notes(chapter: 21, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ]),
-  Notes(chapter: 03, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ]),
-  Notes(chapter: 15, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ]),
-  Notes(chapter: 14, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ]),
-  Notes(chapter: 09, title: 'EM Wave', data: [
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
-    Data(topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
-  ])
-];
+// var fakeNotesData = [
+//   Notes(
+//       chapter: '01',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ]),
+//   Notes(
+//       chapter: '21',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ]),
+//   Notes(
+//       chapter: '03',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ]),
+//   Notes(
+//       chapter: '15',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ]),
+//   Notes(
+//       chapter: '14',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ]),
+//   Notes(
+//       chapter: '09',
+//       clas: '10',
+//       subject: 'Math',
+//       id: '10',
+//       name: 'EM Wave',
+//       notesData: [
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge'),
+//         NotesData(
+//             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
+//       ])
+// ];
 
 var fakeEventData = <String, List<Events>>{
   '1633804200000': [

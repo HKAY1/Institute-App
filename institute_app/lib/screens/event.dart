@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imstitute/controller/eventController.dart';
+import 'package:imstitute/custome/customeWidgets.dart';
 import 'package:imstitute/models/eventModals.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -36,6 +37,11 @@ class _CalenderState extends State<Calender> {
         centerTitle: true,
       ),
       body: Obx(() {
+        if (control.isLoading.value) {
+          return CustomeLoading(
+            color: Colors.blueAccent,
+          );
+        }
         return CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -56,9 +62,8 @@ class _CalenderState extends State<Calender> {
                           [];
                     },
                     startingDayOfWeek: StartingDayOfWeek.monday,
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime(
-                        DateTime.now().year, DateTime.now().month + 2, 0),
+                    firstDay: control.fromDate,
+                    lastDay: control.toDate,
                     focusedDay: focusday,
                     formatAnimationDuration: Duration(milliseconds: 300),
                     pageAnimationDuration: Duration(milliseconds: 300),
