@@ -53,8 +53,7 @@ class _CalenderState extends State<Calender> {
         title: Text('Events'),
         centerTitle: true,
       ),
-      body: MyBackground(
-        child: GetX<EventController>(builder: (cont) {
+      body: GetX<EventController>(builder: (cont) {
           if (control.isLoading.value) {
             return Center(child: CircularProgressIndicator());
           }
@@ -121,7 +120,7 @@ class _CalenderState extends State<Calender> {
                             color: Colors.white,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: cardcolor,
                           ),
                           titleCentered: true,
                           formatButtonShowsNext: false,
@@ -350,7 +349,7 @@ class _CalenderState extends State<Calender> {
             ],
           );
         }),
-      ),
+      
       floatingActionButton: AnimatedScale(
         child: FloatingActionButton.extended(
           onPressed: () {

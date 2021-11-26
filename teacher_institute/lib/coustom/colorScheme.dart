@@ -2,5 +2,5 @@
 
 import 'package:flutter/material.dart';
 
-Color bodycolor = Colors.white; //Color(0xffEAE9F8);
-Color cardcolor = const Color(0xff8379F5);
+Color bodycolor = const Color(0xffd4f5f0); //Color(0xffEAE9F8);
+Color cardcolor = const Color(0xff0476d0);
