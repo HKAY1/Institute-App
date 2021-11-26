@@ -2,6 +2,8 @@
 
 // import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:imstitute/controller/authorisation_controller.dart';
 // import 'package:imstitute/colorScheme.dart';
 
 import '../custome/customeWidgets.dart';
@@ -86,7 +88,9 @@ class _HomeState extends State<Home> {
                           .copyWith(color: Colors.red),
                     ),
                   ),
-                  MyCard(),
+                  MyCard(
+                    canjoin: true,
+                  ),
                   // CarouselSlider.builder(
                   //   itemCount: 3,
                   //   itemBuilder: (context, i, j) {
@@ -112,7 +116,9 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, item) {
-                return MyCard();
+                return MyCard(
+                  canjoin: false,
+                );
               },
               childCount: 3,
             ),

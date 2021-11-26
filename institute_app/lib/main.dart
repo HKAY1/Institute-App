@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:imstitute/controller/authorisation_controller.dart';
 import 'package:imstitute/login_page.dart';
 import 'package:imstitute/screens/drawer/contactUSPage.dart';
 import 'package:imstitute/screens/drawer/custome_drawer.dart';
@@ -8,14 +9,13 @@ import 'package:imstitute/screens/drawer/bookmark.dart';
 import 'package:imstitute/screens/drawer/faq.dart';
 import 'package:imstitute/screens/drawer/profile_page.dart';
 import 'package:imstitute/screens/notification.dart';
-import 'package:imstitute/screens/study_material/notes_page.dart';
-import 'bindings.dart';
+import 'package:imstitute/screens/study_material/pdf_view.dart';
+import 'package:imstitute/screens/study_material/topic_page.dart';
 import 'homepage.dart';
 import 'screens/drawer/performance.dart';
 import 'screens/study_material/study_subjects.dart';
 
 void main() async {
-  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -24,12 +24,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: InitialBinding(),
       getPages: [
-        GetPage(
-          name: '/homepage',
-          page: () => const HomePage(),
-        ),
+        GetPage(name: '/homepage', page: () => const HomePage()),
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/notification', page: () => const NotificatioPage()),
         GetPage(name: '/contactus', page: () => const ContactUs()),
@@ -39,7 +35,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/faq', page: () => const FAQPage()),
         GetPage(name: '/study', page: () => const SubjectMaterial()),
         GetPage(name: '/login', page: () => const LoginPage()),
-        GetPage(name: '/inchapter', page: () => const InChapter()),
+        GetPage(name: '/inchapter', page: () => const TopicPage()),
+        GetPage(name: '/pdfView', page: () => const PdfView()),
       ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 600),
@@ -115,26 +112,48 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Institute',
-      home: (go()) ? const HomePage() : const LoginPage(),
-      // FutureBuilder(
-      //   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const Center(child: Text('Please wait its loading...'));
-      //     } else {
-      //       if (snapshot.data ?? false) return const HomePage();
-      //       return const LoginPage();
-      //     }
-      //   },
-      //   future: go(),
-      // ),
+      home: FutureBuilder(
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Splash();
+          } else {
+            if (snapshot.data ?? false) return const HomePage();
+            return const LoginPage();
+          }
+        },
+        future: Init.instance.initialize(),
+      ),
+      // (go()) ? const HomePage() : const LoginPage(),
     );
   }
+}
 
-  bool go() {
+class Splash extends StatelessWidget {
+  const Splash({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Color(0xff75e6da),
+      // body: Center(child: Image.asset('assets/images/monkey_profile.jpg')),
+    );
+  }
+}
+
+class Init {
+  Init._();
+  static final instance = Init._();
+  Future<bool> initialize() async {
+    await GetStorage.init();
+    var c = Get.put(AuthrisationController());
     final g = GetStorage();
     String d = g.read('token') ?? '';
-    bool data = d.isNotEmpty;
-    return data;
+    if (d.isNotEmpty) {
+      bool bol = await c.refreshProfile();
+      return bol;
+    } else {
+      return false;
+    }
   }
 }
 
