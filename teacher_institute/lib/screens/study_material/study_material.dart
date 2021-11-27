@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
 import 'package:teacher_institute/studydata/mydata.dart';
-import 'classes_page.dart';
 import 'notes.dart';
 
 
@@ -21,7 +20,7 @@ class _StudyChaptersState extends State<StudyChapters> {
   List<String> subjects = Get.arguments['subjectList'];
   String clas = Get.arguments['class'];
   String subject = Get.arguments['subjectList'][0];
-  final List<String> type = <String>['Notes','Assignment','Test Series'];
+  final List<String> type = <String>['Notes','Assignment','Sample_paper'];
   String mat= 'Notes';
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class _StudyChaptersState extends State<StudyChapters> {
                     });
                   },
                   value:  e,
-                  child: Text(e),
+                  child: Text(e,style:Theme.of(context).textTheme.headline4),
                   );
               }
               ).toList();
@@ -173,7 +172,7 @@ class _StudyChaptersState extends State<StudyChapters> {
                     mydata: assignment,
                   ),
                   MyDataList(
-                    mydata: testseries,
+                    mydata: samplepaper,
                   ),
                 ],
               ),

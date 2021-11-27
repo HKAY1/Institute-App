@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:teacher_institute/animation/login_animation.dart';
 import 'package:teacher_institute/controller/authorisation_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -93,7 +94,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     Timer(const Duration(milliseconds: 2500), () {
       controller1.forward();
     });
-
     controller2.forward();
   }
 
@@ -114,16 +114,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xff05445e),
+      backgroundColor: Colors.blue,
       body: SizedBox(
         height: size.height,
         child: Stack(
           children: [
             Positioned(
-              top: size.height * (animation2.value + .58),
-              left: size.width * .21,
+              top: size.height * .1,
+              left: size.width * .8,
               child: CustomPaint(
-                painter: MyPainter(50),
+                painter: MyPainter(animation4.value),
               ),
             ),
             Positioned(
@@ -134,24 +134,31 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: size.height * .5,
-              left: size.width * (animation2.value + .8),
-              child: CustomPaint(
-                painter: MyPainter(30),
-              ),
-            ),
-            Positioned(
-              top: size.height * animation3.value,
+              top: (size.height * 0.3) * animation3.value,
               left: size.width * (animation1.value + .1),
               child: CustomPaint(
                 painter: MyPainter(60),
               ),
             ),
             Positioned(
-              top: size.height * .1,
-              left: size.width * .8,
+              top: size.height * (animation2.value + .55),
+              left: size.width * .21,
               child: CustomPaint(
-                painter: MyPainter(animation4.value),
+                painter: MyPainter(animation4.value - 120),
+              ),
+            ),
+            Positioned(
+              top: size.height * .6,
+              left: size.width * (animation2.value + .8),
+              child: CustomPaint(
+                painter: MyPainter(animation4.value - 150),
+              ),
+            ),
+            Positioned(
+              bottom: size.height * (animation2.value + .1),
+              right: size.width * (animation3.value - .1),
+              child: CustomPaint(
+                painter: MyPainter(60),
               ),
             ),
             SingleChildScrollView(
@@ -159,166 +166,190 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // Expanded(
                     // flex: 5,
                     // child:
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: size.height * .1),
-                      child: const Text(
-                        'Institute',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1,
-                          wordSpacing: 4,
+                      child: const FadeAnimation(
+                        1,
+                        Text(
+                          'Institute',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                            wordSpacing: 4,
+                          ),
                         ),
                       ),
                     ),
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    FadeAnimation(
+                      1.2,
+                      component1(
+                        label: 'Phone Number',
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "* Required";
+                            } else if (value.length < 10) {
+                              return 'Enter Valid Phone Number';
+                            } else if (!GetUtils.isNumericOnly(value)) {
+                              return 'Invalid Number';
+                            } else {
+                              return null;
+                            }
+                          },
+                          focusNode: userFocus,
+                          onFieldSubmitted: (t) {
+                            userFocus.unfocus();
+                            passFocus.requestFocus();
+                          },
+                          maxLength: 10,
+                          textInputAction: TextInputAction.next,
+                          controller: usercontroll,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          cursorColor: Colors.white,
+                          keyboardType: TextInputType.phone,
+                          decoration: const InputDecoration(
+                            counterText: '',
+                            hoverColor: Colors.transparent,
+                            fillColor: Colors.transparent,
+                            filled: true,
+                            prefixIcon: Icon(
+                              Icons.account_circle_rounded,
+                              color: Colors.white,
+                            ),
+                            errorStyle: TextStyle(
+                              fontSize: 12,
+                              color: Colors.redAccent,
+                            ),
+                            border: InputBorder.none,
+                            hintMaxLines: 1,
+                            hintText: 'Enter Your Phone Number',
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white54,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    FadeAnimation(
+                      1.4,
+                      component1(
+                        label: 'Password',
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "* Required";
+                            } else {
+                              return null;
+                            }
+                          },
+                          focusNode: passFocus,
+                          controller: passcontroll,
+                          onFieldSubmitted: (t) {
+                            passFocus.unfocus();
+                            loginFocus.requestFocus();
+                          },
+                          textInputAction: TextInputAction.done,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          cursorColor: Colors.white,
+                          obscureText: !isvisible,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hoverColor: Colors.transparent,
+                            suffixIcon: IconButton(
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onPressed: () {
+                                setState(() {
+                                  isvisible = !isvisible;
+                                });
+                              },
+                              icon: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 400),
+                                child: (isvisible)
+                                    ? const Icon(
+                                        Icons.visibility,
+                                        color: Colors.white,
+                                        key: Key('first'),
+                                      )
+                                    : const Icon(
+                                        Icons.visibility_off,
+                                        color: Colors.white,
+                                        key: Key('second'),
+                                      ),
+                                transitionBuilder: (child, anim) {
+                                  return SizeTransition(
+                                    axis: Axis.vertical,
+                                    child: child,
+                                    sizeFactor: anim,
+                                  );
+                                },
+                              ),
+                            ),
+                            fillColor: Colors.transparent,
+                            filled: true,
+                            prefixIcon: const Icon(
+                              Icons.lock_outline,
+                              color: Colors.white,
+                            ),
+                            border: InputBorder.none,
+                            hintMaxLines: 1,
+                            hintText: 'Your Password....',
+                            hintStyle: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white54,
+                            ),
+                            errorStyle: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    FadeAnimation(
+                      1.6,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          component1(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "* Required";
-                                } else if(value.length<10){
-                                  return "Enter Valid Phone Number";
-                                }
-                                else if(!GetUtils.isNumericOnly(value)){
-                                  return "Invalid Phone Number";}
-                                else {
-                                  return null;
-                                }
-                              },
-                              autofocus: true,
-                              focusNode: userFocus,
-                              onFieldSubmitted: (t) {
-                                userFocus.unfocus();
-                                passFocus.requestFocus();
-                              },
-                              maxLength: 10,
-                              textInputAction: TextInputAction.next,
-                              controller: usercontroll,
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(.8),
-                                  fontSize: 20),
-                              cursorColor: Colors.white,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                counterText: '',
-                                hoverColor: Colors.transparent,
-                                fillColor: Colors.transparent,
-                                filled: true,
-                                prefixIcon: Icon(
-                                  Icons.account_circle_rounded,
-                                  color: Colors.white.withOpacity(.7),
-                                ),
-                                border: InputBorder.none,
-                                hintMaxLines: 1,
-                                hintText: ' Phone Number',
-                                hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white.withOpacity(.5)),
-                              ),
-                            ),
+                          component2(
+                            text: 'LOGIN',
+                            voidCallback: () async {
+                              if (formKey.currentState!.validate()) {
+                                await logincontroll.login(
+                                    number: usercontroll.text,
+                                    password: passcontroll.text);
+                              } else {
+                                Get.snackbar(
+                                  'User Name and Password Required',
+                                  '',
+                                  isDismissible: true,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  dismissDirection:
+                                      SnackDismissDirection.HORIZONTAL,
+                                );
+                              }
+                            },
                           ),
-                          const SizedBox(height: 20),
-                          // component1(
-                          //     Icons.email_outlined, 'Email...', false, true),
-                          // const SizedBox(height: 20),
-                          component1(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "* Required";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              focusNode: passFocus,
-                              controller: passcontroll,
-                              onFieldSubmitted: (t) {
-                                passFocus.unfocus();
-                                loginFocus.requestFocus();
-                              },
-                              textInputAction: TextInputAction.done,
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(.8),
-                                  fontSize: 20),
-                              cursorColor: Colors.white,
-                              obscureText: !isvisible,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hoverColor: Colors.transparent,
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isvisible = !isvisible;
-                                    });
-                                  },
-                                  icon: (isvisible)
-                                      ? const Icon(Icons.visibility,
-                                          color: Colors.white)
-                                      : const Icon(Icons.visibility_off,
-                                          color: Colors.white),
-                                ),
-                                fillColor: Colors.transparent,
-                                filled: true,
-                                prefixIcon: Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.white.withOpacity(.7),
-                                ),
-                                border: InputBorder.none,
-                                hintMaxLines: 1,
-                                hintText: ' Password....',
-                                hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white.withOpacity(.5)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  component2(
-                                    text: 'LOGIN',
-                                    voidCallback: () async {
-                                      if (formKey.currentState!.validate()) {
-                                        await logincontroll.login(
-                                            number: usercontroll.text,
-                                            password: passcontroll.text);
-                                      } else {
-                                        Get.snackbar(
-                                          'User Name and Password Required',
-                                          '',
-                                          isDismissible: true,
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          dismissDirection:
-                                              SnackDismissDirection.HORIZONTAL,
-                                        );
-                                      }
-                                    },
-                                  ),
-                                  SizedBox(width: size.width / 20),
-                                  component2(
-                                    text: 'Forgot Password',
-                                    voidCallback: () {
-                                      print('object');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
+                          SizedBox(width: size.width / 20),
+                          component2(
+                            text: 'Forgot Password',
+                            voidCallback: () {},
                           ),
                         ],
                       ),
@@ -351,58 +382,116 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget component1({required Widget child}) {
+  Widget component1({required Widget child, required String label}) {
     // Size size = MediaQuery.of(context).size;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaY: 15,
-          sigmaX: 15,
-        ),
-        child: Container(
-          // height: 100,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          width: 400,
-          alignment: Alignment.center,
-          // padding: EdgeInsets.only(right: size.width / 30),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(.05),
-            borderRadius: BorderRadius.circular(15),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
           ),
-          child: child,
         ),
-      ),
+        Container(
+          child: child,
+          width: 450,
+          margin: const EdgeInsets.fromLTRB(20, 5, 20, 20),
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
+    // ClipRRect(
+    //   borderRadius: BorderRadius.circular(15),
+    //   child: BackdropFilter(
+    //     filter: ImageFilter.blur(
+    //       sigmaY: 15,
+    //       sigmaX: 15,
+    //     ),
+    //     child: Container(
+    //       // height: 100,
+    //       padding: const EdgeInsets.symmetric(vertical: 10),
+    //       width: 400,
+    //       alignment: Alignment.center,
+    //       // padding: EdgeInsets.only(right: size.width / 30),
+    //       decoration: BoxDecoration(
+    //         color: Colors.white.withOpacity(.09),
+    //         borderRadius: BorderRadius.circular(15),
+    //       ),
+    //       child: child,
+    //     ),
+    //   ),
+    // );
   }
 
   Widget component2({required String text, VoidCallback? voidCallback}) {
     // Size size = MediaQuery.of(context).size;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
-        child: InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: voidCallback,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-            height: 60,
-            // width: 170,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.05),
-              borderRadius: BorderRadius.circular(15),
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      onTap: voidCallback,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        height: 60,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.blue.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6.0,
+              offset: Offset(0, 2),
             ),
-            child: Text(
-              text,
-              style: TextStyle(color: Colors.white.withOpacity(.8)),
-            ),
-          ),
+          ],
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white.withOpacity(.8)),
         ),
       ),
     );
+    // ClipRRect(
+    //   borderRadius: BorderRadius.circular(15),
+    //   child: BackdropFilter(
+    //     filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
+    //     child: InkWell(
+    //       highlightColor: Colors.transparent,
+    //       splashColor: Colors.transparent,
+    //       onTap: voidCallback,
+    // child: Container(
+    //   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+    //   height: 60,
+    //   // width: 170,
+    //   alignment: Alignment.center,
+    //   decoration: BoxDecoration(
+    //     color: Colors.white.withOpacity(.05),
+    //     borderRadius: BorderRadius.circular(15),
+    //   ),
+    //   child: Text(
+    //     text,
+    //     style: TextStyle(color: Colors.white.withOpacity(.8)),
+    //   ),
+    // ),
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -413,15 +502,15 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..shader = const LinearGradient(
-              colors: [Color(0xff75e6da), Color(0xff0e86d4)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight)
-          .createShader(Rect.fromCircle(
-        center: const Offset(0, 0),
-        radius: radius,
-      ));
+    final paint = Paint()..color = Colors.white38;
+    // ..shader = const LinearGradient(
+    //         colors: [Color(0xff75e6da), Color(0xff0e86d4)],
+    //         begin: Alignment.topLeft,
+    //         end: Alignment.bottomRight)
+    //     .createShader(Rect.fromCircle(
+    //   center: const Offset(0, 0),
+    //   radius: radius,
+    // ));
 
     canvas.drawCircle(Offset.zero, radius, paint);
   }
@@ -431,11 +520,3 @@ class MyPainter extends CustomPainter {
     return true;
   }
 }
-
-// class MyBehavior extends ScrollBehavior {
-//   @override
-//   Widget buildViewportChrome(
-//       BuildContext context, Widget child, AxisDirection axisDirection) {
-//     return child;
-//   }
-// }

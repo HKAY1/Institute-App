@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:teacher_institute/controller/teach_material_controller.dart';
+import 'package:teacher_institute/coustom/customeWidgets.dart';
 
 class AddMaterial extends StatefulWidget {
   
@@ -25,7 +26,6 @@ class AddMaterial extends StatefulWidget {
 class _AddMaterialState extends State<AddMaterial> {
   static var baseURL = 'http://192.168.0.117:9000/api';
   static var client = http.Client();
-  UploadFilecontroller con = Get.put(UploadFilecontroller());
   final cont = Get.put(MaterialControler());
   var t = GetStorage();
   final data = Get.arguments;
@@ -60,7 +60,7 @@ class _AddMaterialState extends State<AddMaterial> {
               SizedBox(height: 25,),
               if(data['mat'] == 'Notes')
               TextFormField(
-                style:TextStyle(fontSize: 24),
+                style:Theme.of(context).textTheme.headline2,
                 decoration: InputDecoration(
                   labelText:'Chapter No.',
                   hintText: 'eg :- 1 ',
@@ -88,7 +88,7 @@ class _AddMaterialState extends State<AddMaterial> {
                      minLines: 1,
                      maxLines: 5,
                      maxLength: 50,
-                style:TextStyle(fontSize: 14),
+                style:Theme.of(context).textTheme.headline2,
                 decoration: InputDecoration(
                   labelText:' Chapter Name',
                   border: OutlineInputBorder(),
@@ -104,7 +104,7 @@ class _AddMaterialState extends State<AddMaterial> {
                      minLines: 1,
                      maxLines: 5,
                      maxLength: 40,
-                style:TextStyle(fontSize: 14),
+                style:Theme.of(context).textTheme.headline2,
                 decoration: InputDecoration(
                   labelText:' Topic Name',
                   border: OutlineInputBorder(),
@@ -123,6 +123,11 @@ class _AddMaterialState extends State<AddMaterial> {
                     primary: Colors.white,
                   ),
                   onPressed: () async {
+                    if(cont.isfileLoading == true){
+                      Center(
+                        child:CustomeLoading(color: Colors.blue,) ,
+                      );
+                    }
                     setState(() {
                         s= true;
                       });
@@ -137,7 +142,7 @@ class _AddMaterialState extends State<AddMaterial> {
                        files=result.files.first.name;
                      });
                       var token = t.read('token')??'';
-                        con.postFile( type:Get.arguments , token: token, file: path);
+                        cont.postFile(name:files, type:Get.arguments , token: token, file: path);
                       
                   },
                   icon: Icon(Icons.upload_rounded),
@@ -159,30 +164,11 @@ class _AddMaterialState extends State<AddMaterial> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Text(files,style:Theme.of(context).textTheme.headline2,),
                 IconButton(
                   onPressed: () {
-                     Future<void> deletefile(
-                     {required String token}
-                 )async{
-                     var token = t.read('token')??'';
-                   try{
-                 var response= await http.delete(Uri.parse('$baseURL/file/study-material/$resid'),
-                   headers: {
-                     'Content-Type':'application/json',
-                     'Accept':'application/json',
-                     'Authorization':'Bearer $token',
-                       },);
-                      final  resString = jsonDecode(response.body);
-                       if(resString['success']?? false){
-                        toast(title: 'Success',message: resString['data']);
-                         }
-                        toast(title:'Error',message: 'Failed to remove');
-                        }on TimeoutException{
-                        throw 'API not Responding';
-                       }on SocketException{
-                           throw 'Can\'t connect to API';
-    }
-  }
+                    var token = t.read('token')??'';
+                     cont.deletefile(token: token);
                   },
                   icon: Icon(Icons.remove)
                 ),
@@ -200,7 +186,10 @@ class _AddMaterialState extends State<AddMaterial> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
+                    if(data['mat']=='Notes')
                     cont.postMaterialtdata(clas: data['class'],subject: data['subject'],chapname:chaptercontroller.text,chapno: nocontroller.text,res: resid,type: data['mat'],topic: discriptioncontroller.text);
+                    if(data['mat']=='Assignment'||data['mat']=='Sample_paper')
+                    cont.postAssampletMaterialtdata(res: resid, sub: data['subject'], clas: data['class'], topic: discriptioncontroller.text,type:data['mat'] );
                   },
                   label: Text('Add Material'),
                   icon: Icon(Icons.arrow_forward_rounded),

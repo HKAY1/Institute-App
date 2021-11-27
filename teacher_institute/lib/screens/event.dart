@@ -29,7 +29,7 @@ class _CalenderState extends State<Calender> {
           .millisecondsSinceEpoch
           .toString();
   DateTime selecteday = DateTime.now();
-  var events = <MyEvent>[];
+  var events = <Events>[];
 
   @override
   void initState() {
@@ -309,10 +309,10 @@ class _CalenderState extends State<Calender> {
                                             'End Date ${DateFormat('EEE, MMM d').format(
                                               DateTime
                                                   .fromMillisecondsSinceEpoch(
-                                                      cont
+                                                      control
                                                           .eventList[eventkey]![
                                                               item]
-                                                          .endDate),
+                                                          .endDate??DateTime.now().millisecondsSinceEpoch),
                                             )}',
                                             style: Theme.of(context)
                                                 .textTheme
@@ -329,7 +329,7 @@ class _CalenderState extends State<Calender> {
                                       SizedBox(height: 10),
                                       Text(
                                         cont.eventList[eventkey]![item]
-                                                .discription ??
+                                                .description ??
                                             'No Data',
                                         style: Theme.of(context)
                                             .textTheme

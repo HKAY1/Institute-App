@@ -88,13 +88,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.center,
                     child: Obx(() {
                       return CachedNetworkImage(
-<<<<<<< HEAD
-                        imageUrl: d.url
-                            .replaceAll('localhost:9000', '192.168.0.117:9000'),
-=======
                         imageUrl:
                             d.url.replaceAll('localhost', '192.168.0.117'),
->>>>>>> 0c07cb6db0efa85254ac726f9a9996330cdcecf5
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(

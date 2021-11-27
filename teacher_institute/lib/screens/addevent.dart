@@ -15,7 +15,7 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   //  Event? even;
-  EventController controll = Get.put(EventController());
+  final controll = Get.put(EventController());
 
   final titlecontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();

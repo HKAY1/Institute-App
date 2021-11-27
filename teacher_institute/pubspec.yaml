@@ -52,6 +52,8 @@ dependencies:
   open_file: ^3.2.1
   flutter_staggered_animations: ^1.0.0
   syncfusion_flutter_pdfviewer: ^19.3.55-beta
+  simple_animations: ^4.0.1
+  mime_type: ^1.0.0
 
 dev_dependencies:
   flutter_test:

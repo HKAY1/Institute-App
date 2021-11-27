@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_declarations
+// ignore_for_file: prefer_const_declarations, prefer_typing_uninitialized_variables
 
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime_type/mime_type.dart';
+import 'package:teacher_institute/controller/teach_material_controller.dart';
 import 'package:teacher_institute/modals/teacher_eventmodal.dart';
 import 'package:teacher_institute/modals/teacher_studymodal.dart';
 
@@ -12,29 +14,33 @@ class Services {
   static var client = http.Client();
   static var baseURL = 'http://192.168.0.117:9000/api';
   //to fetch data of events
-  static Future<Map<String, List<MyEvent>>> fetchEvent() async {
-    
-    // var token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTcyYWNiOTMxNTQzZjVlY2Q4Nzc2ZmQiLCJpYXQiOjE2MzUzMjEyOTd9.k76ECTqpiCurr7Y-YRkRp4niDdAuHIMRyHJMJ6gG1D0';
-    // var res = await client.get(
-    //     Uri.parse(
-    //         "http://192.168.1.128:9000/api/events?fromDate=1635100200000&toDate=1635445800000"),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Accept': 'application/json',
-    //       'Authorization': 'Bearer $token',
-    //     });
-    // if (res.statusCode == 200) {
-    //   print("works fine");
-    // }
-    // var data = jsonDecode(res.body);
-    // print(data);
-    // return eventsFromJson(data['data']);
-    await Future.delayed(const Duration(seconds: 1));
-    return fakeData;
+  
+  static Future<Map<String, List<Events>>> fetchEvent(
+      {required String token, required int from, required int to}) async {
+    try {
+      var res = await client.get(
+          Uri.parse("$baseURL/events?fromDate=$from&toDate=$to"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        return eventsFromJson(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+
+    // await Future.delayed(const Duration(seconds: 1));
+    // return fakeEventData;
   }
   //to fetch data of class and subject of teacher
-  static Future<List<Teacher>> fetchmaterial(
+  static Future<List<Teacher>> fetchclassmaterial(
     {required String token}
   )async{
   try{
@@ -144,6 +150,7 @@ class Services {
   //For Assingnment and sample paper
   static Future<void> postAssampletMaterialtdata( 
      {
+       required String type,
        required String clas,
        required String subject,
      required String res,
@@ -151,6 +158,7 @@ class Services {
      required String topic,}) async {
       try{
       final bod = jsonEncode({
+        "type":type,
         "file":res,
         "name":topic,
         "class":clas,
@@ -180,6 +188,7 @@ class Services {
 //For file upload
   static Future<String>postFile(
    {
+     required String name,
    required String type,
     required String token,
     required File file,}
@@ -187,11 +196,14 @@ class Services {
     
     try{
       var dio = Dio();
-      String fileName = file.path.split('/').last;
+      var mimetype;
+      if(file.existsSync()){
+        mimetype =mime(name);
+      }
     FormData formData = FormData.fromMap({
         "file":
-            await MultipartFile.fromFile(file.path),
-            "name":fileName,
+            await MultipartFile.fromFile(file.path,contentType:mimetype ),
+            "name":name,
             "type":type
     });
     //   final bod = jsonEncode({
@@ -200,7 +212,7 @@ class Services {
     //     "file":formData,
     // });
     
-    var response= await dio.post('$baseURL/files/upload/study-material',
+    var response= await dio.post('$baseURL/file/upload-study-material',
   options:Options( headers : {
       'Content-Type':'application/json',
       'Accept':'application/json',
@@ -220,62 +232,29 @@ class Services {
       throw 'Can\'t connect to API';
     }
   }
+  //for delete choosen file 
+                 static Future<void> deletefile(
+                     {required String token}
+                 )async{
+                   try{
+                 var response= await http.delete(Uri.parse('$baseURL/file/study-material/$resid'),
+                   headers: {
+                     'Content-Type':'application/json',
+                     'Accept':'application/json',
+                     'Authorization':'Bearer $token',
+                       },);
+                      final  resString = jsonDecode(response.body);
+                        print(resString['success']);
+                         if(resString['success']?? false){
+                            return ;
+                               }
+                           throw resString['error']['message']??'No Data';
+                               }on TimeoutException{
+                                   throw 'API not Responding';
+                                }on SocketException{
+                                   throw 'Can\'t connect to API';
+                            }
+                         }
 }
-//for file delete
 
-
-var fakeData = <String, List<MyEvent>>{
-  '1633804200000': [
-    MyEvent(
-      name: 'PTM Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:20 PM',
-      endTime: '12:30 AM',
-    ),
-    MyEvent(
-      name: 'Guu Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:20 PM',
-      endTime: '12:30 AM',
-    ),
-    MyEvent(
-      name: 'poi Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
-    ),
-  ],
-  '1635445800000': [
-    MyEvent(
-      name: 'PTM Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
-    ),
-    MyEvent(
-      name: 'Guu Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
-    ),
-    MyEvent(
-      name: 'poi Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
-    ),
-    MyEvent(
-      name: 'poi Notice',
-      discription: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: '12:30 AM',
-      endTime: '12:30 AM',
-    ),
-  ],
-};
+  
