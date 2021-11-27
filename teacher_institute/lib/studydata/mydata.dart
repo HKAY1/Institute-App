@@ -84,41 +84,41 @@ final assignment = <MyData>[
       tag: 'Assignment')
 ];
 
-final testseries = <MyData>[
+final samplepaper = <MyData>[
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series'),
+      tag: 'Sample_paper'),
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series'),
+      tag: 'Sample_paper'),
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series'),
+      tag: 'Sample_paper'),
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series'),
+      tag: 'Sample_paper'),
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series'),
+      tag: 'Sample_paper'),
   MyData(
     title: 'Ch-1',
       detail:
           'Electromagnetic Induction (Part-1)',
       provider: 'By Harry',
-      tag: 'Test Series')
+      tag: 'Sample_paper')
 ];

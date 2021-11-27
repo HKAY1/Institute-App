@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:teacher_institute/controller/teach_event_controller.dart';
 import 'package:teacher_institute/coustom/colorScheme.dart';
+import 'package:teacher_institute/coustom/customeWidgets.dart';
 import 'package:teacher_institute/modals/teacher_eventmodal.dart';
 import 'package:teacher_institute/screens/addevent.dart';
 
@@ -18,45 +19,32 @@ class Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<Calender> {
-  late ScrollController scontroll;
-  bool _isvisible = true;
   EventController control = Get.put(EventController());
   CalendarFormat format = CalendarFormat.month;
+  bool _isvisible = true;
   DateTime focusday = DateTime.now();
   String eventkey =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .millisecondsSinceEpoch
           .toString();
   DateTime selecteday = DateTime.now();
-  var events = <MyEvent>[];
-
-  @override
-  void initState() {
-    super.initState();
-    scontroll = ScrollController();
-    scontroll.addListener(() {
-      setState(() {
-        _isvisible =
-            scontroll.position.atEdge && scontroll.position.pixels == 0;
-      });
-    });
-  }
+  var events = <Events>[];
 
   @override
   Widget build(BuildContext context) {
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         title: Text('Events'),
         centerTitle: true,
       ),
-      body: GetX<EventController>(builder: (cont) {
+      body: Obx(() {
         if (control.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return CustomeLoading(
+            color: Colors.blueAccent,
+          );
         }
         return CustomScrollView(
-          controller: scontroll,
           slivers: [
             SliverToBoxAdapter(
               child: Card(
@@ -67,18 +55,17 @@ class _CalenderState extends State<Calender> {
                     borderRadius: BorderRadius.circular(50)),
                 elevation: 10,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: TableCalendar(
                     eventLoader: (date) {
                       var formate = DateTime(date.year, date.month, date.day);
-                      return cont.eventList[
+                      return control.eventList[
                               formate.millisecondsSinceEpoch.toString()] ??
                           [];
                     },
                     startingDayOfWeek: StartingDayOfWeek.monday,
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime(
-                        DateTime.now().year, DateTime.now().month + 2, 0),
+                    firstDay: control.fromDate,
+                    lastDay: control.toDate,
                     focusedDay: focusday,
                     formatAnimationDuration: Duration(milliseconds: 300),
                     pageAnimationDuration: Duration(milliseconds: 300),
@@ -158,6 +145,7 @@ class _CalenderState extends State<Calender> {
                           )
                         ],
                       ),
+                      defaultTextStyle: TextStyle(color: Colors.black),
                       defaultDecoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
@@ -211,134 +199,158 @@ class _CalenderState extends State<Calender> {
                 ),
               ),
             ),
-            if (cont.eventList.containsKey(eventkey))
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, item) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      elevation: 15,
-                      margin: EdgeInsets.all(10),
-                      child: ExpansionPanelList(
-                        dividerColor: Colors.red,
-                        expandedHeaderPadding:
-                            EdgeInsets.only(bottom: 3, top: 3),
-                        animationDuration: Duration(milliseconds: 450),
-                        expansionCallback: (i, exp) {
-                          setState(() {
-                            itemData[item].expanded = !exp;
-                          });
-                        },
-                        children: [
-                          ExpansionPanel(
-                            backgroundColor: cardcolor,
-                            canTapOnHeader: true,
-                            isExpanded: itemData[item].expanded,
-                            headerBuilder: (context, isex) {
-                              return Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text(
-                                      '9 NOV',
-                                      style: TextStyle(
-                                          fontSize: 25, color: bodycolor),
-                                    ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 15, right: 5),
-                                        child: Text(
-                                          cont.eventList[eventkey]![item]
-                                                  .name ??
-                                              'no data',
-                                          style: TextStyle(
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .headline2!
-                                                .fontSize,
-                                            fontWeight: Theme.of(context)
-                                                .textTheme
-                                                .headline2!
-                                                .fontWeight,
-                                            color: bodycolor,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'By Harry',
-                                        style: TextStyle(
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .fontSize,
-                                          fontWeight: Theme.of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .fontWeight,
-                                          color: bodycolor,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                    ],
-                                  ),
-                                ],
-                              );
+            (control.eventList.containsKey(eventkey))
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, item) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          elevation: 15,
+                          margin: EdgeInsets.all(10),
+                          child: ExpansionPanelList(
+                            dividerColor: Colors.red,
+                            expandedHeaderPadding:
+                                EdgeInsets.only(bottom: 3, top: 3),
+                            animationDuration: Duration(milliseconds: 450),
+                            expansionCallback: (i, exp) {
+                              setState(() {
+                                itemData[item].expanded = !exp;
+                              });
                             },
-                            body: Container(
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          'End Date ${DateFormat('EEE, MMM d').format(
+                            children: [
+                              ExpansionPanel(
+                                backgroundColor: cardcolor,
+                                canTapOnHeader: true,
+                                isExpanded: itemData[item].expanded,
+                                headerBuilder: (context, isex) {
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Text(
+                                          DateFormat('MMM d').format(
                                             DateTime.fromMillisecondsSinceEpoch(
-                                                cont.eventList[eventkey]![item]
-                                                    .endDate),
-                                          )}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3,
+                                                int.parse(eventkey)),
+                                          ),
+                                          style: TextStyle(
+                                              fontSize: 25, color: bodycolor),
                                         ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0, bottom: 15, right: 5),
+                                            child: Text(
+                                              control.eventList[eventkey]![item]
+                                                      .name ??
+                                                  'no data',
+                                              style: TextStyle(
+                                                fontSize: Theme.of(context)
+                                                    .textTheme
+                                                    .headline2!
+                                                    .fontSize,
+                                                fontWeight: Theme.of(context)
+                                                    .textTheme
+                                                    .headline2!
+                                                    .fontWeight,
+                                                color: bodycolor,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            'By Harry',
+                                            style: TextStyle(
+                                              fontSize: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .fontSize,
+                                              fontWeight: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .fontWeight,
+                                              color: bodycolor,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                                body: Container(
+                                    padding: EdgeInsets.all(10),
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              'End Date ${DateFormat('EEE, MMM d').format(
+                                                DateTime.fromMillisecondsSinceEpoch(
+                                                    control
+                                                            .eventList[
+                                                                eventkey]![item]
+                                                            .endDate ??
+                                                        DateTime.now()
+                                                            .millisecondsSinceEpoch),
+                                              )}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline3,
+                                            ),
+                                            Text(
+                                              'From ${DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(control.eventList[eventkey]![item].startTime ?? DateTime.now().millisecondsSinceEpoch))} to ${DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(control.eventList[eventkey]![item].endTime ?? DateTime.now().millisecondsSinceEpoch))}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline3,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
                                         Text(
-                                          'From ${cont.eventList[eventkey]![item].startTime}',
+                                          control.eventList[eventkey]![item]
+                                                  .description ??
+                                              'No Data',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headline3,
+                                              .headline4,
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      cont.eventList[eventkey]![item]
-                                              .discription ??
-                                          'No Data',
-                                      style:
-                                          Theme.of(context).textTheme.headline4,
-                                    ),
-                                  ],
-                                )),
-                          )
-                        ],
+                                    )),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: control.eventList[eventkey]!.length,
+                    ),
+                  )
+                : SliverToBoxAdapter(
+                    child: Center(
+                      heightFactor: 4,
+                      child: Text(
+                        'No Event',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline2!
+                            .copyWith(color: cardcolor),
                       ),
-                    );
-                  },
-                  childCount: cont.eventList[eventkey]!.length,
-                ),
-              ),
+                    ),
+                  ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 30),
+            )
           ],
         );
       }),
@@ -355,5 +367,6 @@ class _CalenderState extends State<Calender> {
         scale: _isvisible ? 1 : 0,
       ),
     );
+    
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:teacher_institute/controller/authorisation_controller.dart';
 import 'package:teacher_institute/login_page.dart';
 import 'package:teacher_institute/screens/drawer/downloads.dart';
 import 'package:teacher_institute/screens/performance/class.dart';
@@ -8,7 +9,6 @@ import 'package:teacher_institute/screens/performance/student_list.dart';
 import 'package:teacher_institute/screens/study_material/add_material.dart';
 import 'package:teacher_institute/screens/study_material/in_notes.dart';
 import 'package:teacher_institute/screens/study_material/study_material.dart';
-import 'package:teacher_institute/services/bindings.dart';
 import 'package:teacher_institute/studydata/myinternaldata.dart';
 import 'homepage.dart';
 import 'screens/drawer/contactUSPage.dart';
@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: InitialBinding(),
       getPages: [
         GetPage(
           name: '/homepage',
@@ -125,15 +124,48 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Institute',
-      home: (go()) ? const HomePage() : const LoginPage(),
+      home: FutureBuilder(
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Splash();
+          } else {
+            if (snapshot.data ?? false) return const HomePage();
+            return const LoginPage();
+          }
+        },
+        future: Init.instance.initialize(),
+      ),
+      // (go()) ? const HomePage() : const LoginPage(),
     );
   }
+}
 
-  bool go() {
+class Splash extends StatelessWidget {
+  const Splash({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Color(0xff75e6da),
+      // body: Center(child: Image.asset('assets/images/monkey_profile.jpg')),
+    );
+  }
+}
+
+class Init {
+  Init._();
+  static final instance = Init._();
+  Future<bool> initialize() async {
+    await GetStorage.init();
+    var c = Get.put(AuthrisationController());
     final g = GetStorage();
     String d = g.read('token') ?? '';
-    bool data = d.isNotEmpty;
-    return data;
+    if (d.isNotEmpty) {
+      bool bol = await c.refreshProfile();
+      return bol;
+    } else {
+      return false;
+    }
   }
 }
 
