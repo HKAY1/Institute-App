@@ -39,6 +39,7 @@ class Services {
     // await Future.delayed(const Duration(seconds: 1));
     // return fakeEventData;
   }
+
   //to fetch data of class and subject of teacher
   static Future<List<Teacher>> fetchclassmaterial(
     {required String token}
@@ -59,94 +60,93 @@ class Services {
     throw resString['error']['message']??'No Data';
     }on TimeoutException{
       throw 'API not Responding';
-    }on SocketException{
+    } on SocketException {
       throw 'Can\'t connect to API';
     }
   }
-  
+
   //to post event
-  
-  static Future<void> postEvent( 
-     {required String title ,
-    required String description,
-    required String token,
-    required List<String?> classes,
-    required int startDatefromEpoch,
-    required int endDatefromEpoch,
-    required int startTime,
-    required int endTime}) async {
-      try{
+
+  static Future<void> postEvent(
+      {required String title,
+      required String description,
+      required String token,
+      required List<String?> classes,
+      required int startDatefromEpoch,
+      required int endDatefromEpoch,
+      required int startTime,
+      required int endTime}) async {
+    try {
       final bod = jsonEncode({
-    "name": title,
-    "class": classes,
-    "startDateEpoch": startDatefromEpoch,
-    "startTime": startTime,
-    "endDateEpoch": endDatefromEpoch,
-    "endTime": endTime,
-    "description": description,
-    });
-    
-    var response= await http.post(Uri.parse('$baseURL/events'),
-    headers: {
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-      'Authorization':'Bearer $token',
-    },
-    body:bod
-    );
-    final  resString = jsonDecode(response.body);
-    if(resString['success']?? false){
-      return ;
-    }
-    throw resString['error']['message']??'No Data';
-    }on TimeoutException{
+        "name": title,
+        "class": classes,
+        "startDateEpoch": startDatefromEpoch,
+        "startTime": startTime,
+        "endDateEpoch": endDatefromEpoch,
+        "endTime": endTime,
+        "description": description,
+      });
+
+      var response = await http.post(Uri.parse('$baseURL/events'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: bod);
+      final resString = jsonDecode(response.body);
+      if (resString['success'] ?? false) {
+        return;
+      }
+      throw resString['error']['message'] ?? 'No Data';
+    } on TimeoutException {
       throw 'API not Responding';
-    }on SocketException{
+    } on SocketException {
       throw 'Can\'t connect to API';
     }
   }
+
   //For Notes
-  static Future<void> postNotesMaterialtdata( 
-     {
-     required String res,
-     required String token,
-     required String clas,
-     required String subject, 
-      String? chapno,
-      String? chapname,
-     required String topic,}) async {
-      try{
+  static Future<void> postNotesMaterialtdata({
+    required String res,
+    required String token,
+    required String clas,
+    required String subject,
+    String? chapno,
+    String? chapname,
+    required String topic,
+  }) async {
+    try {
       final bod = jsonEncode({
-        
-        "chapterNumber":chapno,
-        "class":clas,
-        "subject":subject,
-        "chapterName":chapname,
-        "topic":{
-          "name":topic,
-          "file":res,
+        "chapterNumber": chapno,
+        "class": clas,
+        "subject": subject,
+        "chapterName": chapname,
+        "topic": {
+          "name": topic,
+          "file": res,
         }
-    });
-    
-    var response= await http.post(Uri.parse('$baseURL/study/notes/chapters'),
-    headers: {
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-      'Authorization':'Bearer $token',
-    },
-    body:bod
-    );
-    final  resString = jsonDecode(response.body);
-    if(resString['success']?? false){
-      return ;
-    }
-    throw resString['error']['message']??'No Data';
-    }on TimeoutException{
+      });
+
+      var response = await http.post(Uri.parse('$baseURL/study/notes/chapters'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: bod);
+      final resString = jsonDecode(response.body);
+      if (resString['success'] ?? false) {
+        return;
+      }
+      throw resString['error']['message'] ?? 'No Data';
+    } on TimeoutException {
       throw 'API not Responding';
-    }on SocketException{
+    } on SocketException {
       throw 'Can\'t connect to API';
     }
   }
+
   //For Assingnment and sample paper
   static Future<void> postAssampletMaterialtdata( 
      {
@@ -180,21 +180,20 @@ class Services {
     throw resString['error']['message']??'No Data';
     }on TimeoutException{
       throw 'API not Responding';
-    }on SocketException{
+    } on SocketException {
       throw 'Can\'t connect to API';
     }
-  
   }
+
 //For file upload
   static Future<String>postFile(
    {
      required String name,
    required String type,
     required String token,
-    required File file,}
-  )async{
-    
-    try{
+    required File file,
+  }) async {
+    try {
       var dio = Dio();
       var mimetype;
       if(file.existsSync()){
@@ -228,7 +227,7 @@ class Services {
     throw resString['error']['message']??'No Data';
     }on TimeoutException{
       throw 'API not Responding';
-    }on SocketException{
+    } on SocketException {
       throw 'Can\'t connect to API';
     }
   }

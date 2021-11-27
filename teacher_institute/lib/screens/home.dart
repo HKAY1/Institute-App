@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:imstitute/colorScheme.dart';
 
@@ -12,7 +11,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: CustomeDrawer(),
       appBar: AppBar(
@@ -32,20 +31,19 @@ class Home extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, bottom: 20, left: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20.0, bottom: 20, left: 20),
                     child: Text(
                       ' Ongoing Classes',
                       style: Theme.of(context).textTheme.headline2,
                     ),
                   ),
-                   MyCard(),
+                  MyCard(),
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, bottom: 10),
                     child: Text(
@@ -65,7 +63,6 @@ class Home extends StatelessWidget {
               childCount: 3,
             ),
           ),
-          
         ],
       ),
     );

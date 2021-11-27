@@ -31,7 +31,7 @@ class _StudyMaterial extends State<StudyMaterial> {
             ),
           );
         } else {
-          if (cont.subj.isEmpty) {
+          if (cont.subjlist.isEmpty) {
             return Container(
               child: Image.asset('images/nodownloads.png'),
               margin: EdgeInsets.only(top: size.height * 0.1),
@@ -53,8 +53,9 @@ class _StudyMaterial extends State<StudyMaterial> {
             ),
             itemBuilder: (context, item) {
               return GestureDetector(
-                onTap: () async {
-                  Get.toNamed('/study', arguments: cont.subj[item].subject);
+                onTap: () {
+                  cont.subject(cont.subjlist[item].subject);
+                  Get.toNamed('/study');
                 },
                 child: Container(
                   padding: EdgeInsets.all(10),
@@ -69,7 +70,7 @@ class _StudyMaterial extends State<StudyMaterial> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        cont.subj[item].subject,
+                        cont.subjlist[item].subject,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight:
@@ -79,7 +80,7 @@ class _StudyMaterial extends State<StudyMaterial> {
                       ),
                       // SizedBox(height: 20),
                       Text(
-                        cont.subj[item].teacherName,
+                        cont.subjlist[item].teacherName,
                         style: TextStyle(
                           fontSize:
                               Theme.of(context).textTheme.headline4!.fontSize,
@@ -93,7 +94,7 @@ class _StudyMaterial extends State<StudyMaterial> {
                 ),
               );
             },
-            itemCount: cont.subj.length,
+            itemCount: cont.subjlist.length,
           );
         }
       }),

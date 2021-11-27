@@ -12,8 +12,6 @@ class PdfView extends StatefulWidget {
 
 class _PdfViewState extends State<PdfView> {
   final file = Get.arguments as FileClass;
-  // final url =
-  //     'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +23,7 @@ class _PdfViewState extends State<PdfView> {
       ),
       body: SfPdfViewer.network(
         file.url.replaceAll('localhost', '192.168.0.117'),
-        onDocumentLoadFailed: (d) {
-          print(d.error);
-        },
+        onDocumentLoadFailed: (d) {},
       ),
     );
   }

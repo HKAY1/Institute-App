@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:imstitute/custome/customeWidgets.dart';
 import 'package:imstitute/models/eventModals.dart';
 
 import '../services/services.dart';

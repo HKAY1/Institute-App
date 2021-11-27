@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -126,7 +125,6 @@ class AuthrisationController extends GetxController {
       Get.back();
     } catch (e) {
       Get.back();
-      print(e);
       toast(message: e.toString());
     }
   }

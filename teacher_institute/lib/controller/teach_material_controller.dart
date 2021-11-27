@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables
 
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:teacher_institute/modals/teacher_studymodal.dart';
 import 'package:teacher_institute/services/event_services.dart';
-  
 
-  var resid;
+var resid;
+
 class MaterialControler extends GetxController {
   var g = GetStorage();
   @override
@@ -20,17 +19,18 @@ class MaterialControler extends GetxController {
     super.onInit();
   }
 
-  
-void toast({String title ='Error',String message ='Something Went wrong'}){
+  void toast(
+      {String title = 'Error', String message = 'Something Went wrong'}) {
     Get.snackbar(
-        title,
-        message,colorText:Colors.black,
-        maxWidth:double.maxFinite,
-        margin:const EdgeInsets.all(0),
-        isDismissible: true,
-        snackPosition: SnackPosition.BOTTOM,
-        dismissDirection: SnackDismissDirection.HORIZONTAL,
-      );
+      title,
+      message,
+      colorText: Colors.black,
+      maxWidth: double.maxFinite,
+      margin: const EdgeInsets.all(0),
+      isDismissible: true,
+      snackPosition: SnackPosition.BOTTOM,
+      dismissDirection: SnackDismissDirection.HORIZONTAL,
+    );
   }
   var isfiledelete = true.obs;
   var issampleLoading = true.obs;
@@ -126,8 +126,7 @@ try{
     issampleLoading(false);
     toast(message:e.toString());
   }
- }
-}
+}}
 
 
  

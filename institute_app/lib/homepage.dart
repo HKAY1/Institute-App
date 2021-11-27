@@ -3,8 +3,6 @@
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:imstitute/controller/authorisation_controller.dart';
 import 'package:imstitute/screens/event.dart';
 import 'screens/study_material/study_material.dart';
 import 'screens/home.dart';
