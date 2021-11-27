@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:get/get.dart';
@@ -188,12 +187,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "* Required";
-                                } else if(value.length<10){
+                                } else if (value.length < 10) {
                                   return "Enter Valid Phone Number";
-                                }
-                                else if(!GetUtils.isNumericOnly(value)){
-                                  return "Invalid Phone Number";}
-                                else {
+                                } else if (!GetUtils.isNumericOnly(value)) {
+                                  return "Invalid Phone Number";
+                                } else {
                                   return null;
                                 }
                               },
@@ -312,9 +310,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   SizedBox(width: size.width / 20),
                                   component2(
                                     text: 'Forgot Password',
-                                    voidCallback: () {
-                                      print('object');
-                                    },
+                                    voidCallback: () {},
                                   ),
                                 ],
                               ),

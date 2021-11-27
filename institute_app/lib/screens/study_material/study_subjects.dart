@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imstitute/controller/study_material_controller.dart';
-import 'package:imstitute/controller/subject_controller.dart';
 import 'package:imstitute/custome/colorScheme.dart';
 import 'package:imstitute/custome/customeWidgets.dart';
 import 'package:imstitute/models/study_modals.dart';
-import '../../mydata.dart';
+import 'package:imstitute/screens/study_material/assignment_page.dart';
 import 'package:intl/intl.dart';
-import 'assignment_page.dart';
 
 class SubjectMaterial extends StatefulWidget {
   const SubjectMaterial({Key? key}) : super(key: key);
@@ -25,7 +23,7 @@ class _SubjectMaterialState extends State<SubjectMaterial> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(Get.arguments ?? 'subject'),
+          title: Text(cont.subject.value),
         ),
         body: Column(
           children: [
@@ -66,24 +64,80 @@ class _SubjectMaterialState extends State<SubjectMaterial> {
               child: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  GetBuilder<SubjectController>(
-                    init: SubjectController(Get.arguments),
+                  // Center(
+                  //   child: Text(
+                  //     'No Data',
+                  //     style: Theme.of(context).textTheme.headline2,
+                  //   ),
+                  // ),
+                  GetBuilder<StudyController>(
+                    init: cont,
+                    initState: (c) {
+                      cont.fetchNotes();
+                    },
                     builder: (cont) {
                       if (cont.loadingNote.value) {
                         return const Center(
                             child: CustomeLoading(
                           color: Colors.blueAccent,
                         ));
+                      } else if (cont.notes.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'No Data',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                        );
                       }
                       return chapterCard(cont.notes);
                     },
                   ),
-                  MyDataList(
-                    mydata: assignment,
-                  ),
-                  MyDataList(
-                    mydata: testseries,
-                  ),
+                  GetBuilder<StudyController>(
+                      init: cont,
+                      initState: (c) {
+                        cont.fetchSecondaryMaterial('Assignment');
+                      },
+                      builder: (controller) {
+                        if (controller.loadingAss.value) {
+                          return const Center(
+                              child: CustomeLoading(
+                            color: Colors.blueAccent,
+                          ));
+                        } else if (controller.assignment.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No Data',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          );
+                        }
+                        return SecondaryMaterial(
+                          data: controller.assignment,
+                        );
+                      }),
+                  GetBuilder<StudyController>(
+                      init: cont,
+                      initState: (c) {
+                        cont.fetchSecondaryMaterial('Sample_Paper');
+                      },
+                      builder: (controller) {
+                        if (controller.loadingSample.value) {
+                          return const Center(
+                              child: CustomeLoading(
+                            color: Colors.blueAccent,
+                          ));
+                        } else if (controller.samplePapers.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No Data',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          );
+                        }
+                        return SecondaryMaterial(
+                          data: controller.samplePapers,
+                        );
+                      }),
                 ],
               ),
             ),
@@ -109,10 +163,12 @@ class _SubjectMaterialState extends State<SubjectMaterial> {
       ),
       itemBuilder: (context, item) {
         return GestureDetector(
-          onTap: () => Get.toNamed('/inchapter', arguments: {
-            "chapterId": notelist[item].chapterid,
-            "chapter": notelist[item].chapterName,
-          }),
+          onTap: () {
+            cont.chapterId(notelist[item].chapterid);
+            Get.toNamed('/inchapter', arguments: {
+              "chapter": notelist[item].chapterName,
+            });
+          },
           child: Stack(
             clipBehavior: Clip.none,
             children: [

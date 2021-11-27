@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../coustom/colorScheme.dart';
-import '../../coustom/customeWidgets.dart';
 // import 'package:imstitute/customeWidgets.dart';
 
 class FAQPage extends StatelessWidget {
@@ -17,13 +16,13 @@ class FAQPage extends StatelessWidget {
         title: Text("FAQ's"),
         centerTitle: true,
       ),
-      body:ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          itemCount: itemData.length,
-          itemBuilder: (context, item) {
-            return MyExpandedList(item: item);
-          },
-        ),
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        itemCount: itemData.length,
+        itemBuilder: (context, item) {
+          return MyExpandedList(item: item);
+        },
+      ),
     );
   }
 }

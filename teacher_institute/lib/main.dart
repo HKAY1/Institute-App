@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:teacher_institute/login_page.dart';
@@ -47,9 +44,13 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/faq', page: () => const FAQPage()),
         GetPage(name: '/study', page: () => const StudyChapters()),
         GetPage(name: '/material', page: () => const AddMaterial()),
-        GetPage(name: '/innermaterial', page: ()=>  MyInDataList(mdata: note,)),
+        GetPage(
+            name: '/innermaterial',
+            page: () => MyInDataList(
+                  mdata: note,
+                )),
         GetPage(name: '/login', page: () => const LoginPage()),
-        ],
+      ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 600),
       debugShowCheckedModeBanner: false,
@@ -152,4 +153,3 @@ class MyShapeBorder extends ContinuousRectangleBorder {
     ..lineTo(rect.size.width, 0)
     ..close();
 }
- 

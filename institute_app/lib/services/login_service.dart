@@ -155,7 +155,6 @@ class LoginServices {
         'Authorization': 'Bearer $token',
       });
       var data = jsonDecode(response.body);
-      print(data['success']);
       bool s = !data['success'];
       if (s) {
         throw data['error'] ?? 'No data';

@@ -1,25 +1,4 @@
-// class StudentSubj {
-//   StudentSubj({
-//     required this.success,
-//     required this.subjData,
-//   });
-//   late final bool success;
-//   late final List<SubjData> subjData;
-
-//   StudentSubj.fromJson(Map<String, dynamic> json) {
-//     success = json['success'];
-//     subjData =
-//         List.from(json['data']).map((e) => SubjData.fromJson(e)).toList();
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final _data = <String, dynamic>{};
-//     _data['success'] = success;
-//     _data['data'] = subjData.map((e) => e.toJson()).toList();
-//     return _data;
-//   }
-// }
-
+//Modals for Student Subjects
 List<SubjData> subjfromjason(json) =>
     List.from(json).map((e) => SubjData.fromJson(e)).toList();
 List<Map<String, dynamic>> subjtojson(List<SubjData> subj) =>
@@ -58,6 +37,7 @@ class SubjData {
   }
 }
 
+//Modals for Chapter Notes
 List<Notes> notesfrom(json) =>
     List.from(json).map((e) => Notes.fromJson(e)).toList();
 List<Map<String, dynamic>> notesto(List<Notes> subj) =>
@@ -88,6 +68,34 @@ class Notes {
   }
 }
 
+//Modals For Secondary Materials Like Assignment or Sample-Paper
+List<SecondaryMatModal> secmatfrom(json) =>
+    List.from(json).map((e) => SecondaryMatModal.fromJson(e)).toList();
+List<Map<String, dynamic>> secmatto(List<SecondaryMatModal> subj) =>
+    subj.map((e) => e.toJson()).toList();
+
+class SecondaryMatModal {
+  SecondaryMatModal({
+    required this.topic,
+    required this.file,
+  });
+  late final String topic;
+  late final FileClass file;
+
+  SecondaryMatModal.fromJson(Map<String, dynamic> json) {
+    topic = json['topic'];
+    file = FileClass.fromJson(json['file']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['topic'] = topic;
+    _data['file'] = file.toJson();
+    return _data;
+  }
+}
+
+//Modals for Chapter Topics
 List<Topics> topicsfrom(json) =>
     List.from(json).map((e) => Topics.fromJson(e)).toList();
 List<Map<String, dynamic>> topicsto(List<Topics> subj) =>
@@ -118,6 +126,7 @@ class Topics {
   }
 }
 
+//PDF File Modal Class
 class FileClass {
   FileClass({
     required this.name,
@@ -145,50 +154,4 @@ class FileClass {
         "name": name,
         "url": url,
       };
-}
-
-class Assignment {
-  Assignment({
-    required this.topic,
-    required this.chapter,
-    required this.file,
-  });
-  late final String topic;
-  late final int chapter;
-  late final String file;
-
-  Assignment.fromJson(Map<String, dynamic> json) {
-    topic = json['topic'];
-    chapter = json['chapter'];
-    file = json['file'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['topic'] = topic;
-    _data['chapter'] = chapter;
-    _data['file'] = file;
-    return _data;
-  }
-}
-
-class Tests {
-  Tests({
-    required this.topic,
-    required this.file,
-  });
-  late final String topic;
-  late final String file;
-
-  Tests.fromJson(Map<String, dynamic> json) {
-    topic = json['topic'];
-    file = json['file'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['topic'] = topic;
-    _data['file'] = file;
-    return _data;
-  }
 }

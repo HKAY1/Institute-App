@@ -2,138 +2,121 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:imstitute/mydata.dart';
-import 'package:imstitute/screens/drawer/bookmark.dart';
-import 'package:imstitute/screens/study_material/pdf_view.dart';
+import 'package:imstitute/models/study_modals.dart';
 import '../../custome/colorScheme.dart';
 
-class MyDataList extends StatefulWidget {
-  final List<MyData> mydata;
-  MyDataList({Key? key, required this.mydata}) : super(key: key);
+class SecondaryMaterial extends StatefulWidget {
+  final List<SecondaryMatModal> data;
+  SecondaryMaterial({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<MyDataList> createState() => _MyDataListState();
+  State<SecondaryMaterial> createState() => _SecondaryMaterialState();
 }
 
-class _MyDataListState extends State<MyDataList> {
+class _SecondaryMaterialState extends State<SecondaryMaterial> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return (widget.mydata.isEmpty)
-        ? Container(
-            child: Image.asset('images/nodownloads.png'),
-            margin: EdgeInsets.only(top: size.height * 0.1),
-          )
-        : GestureDetector(
-            onTap: () {
-              Get.to(() => PdfView());
-            },
-            child: ListView.builder(
-              itemBuilder: (context, item) {
-                return Container(
-                  margin: EdgeInsets.only(top: 15, bottom: 10),
-                  padding: EdgeInsets.all(8),
-                  width: size.width * 0.85,
-                  decoration: BoxDecoration(
-                      color: cardcolor,
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return ListView.builder(
+      itemBuilder: (context, item) {
+        return GestureDetector(
+          onTap: () {
+            Get.toNamed('pdfView', arguments: widget.data[item].file);
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 15, bottom: 10),
+            padding: EdgeInsets.all(8),
+            width: size.width * 0.85,
+            decoration: BoxDecoration(
+                color: cardcolor, borderRadius: BorderRadius.circular(30)),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 20),
+                  child: Text(
+                    'Ch-1',
+                    style: TextStyle(fontSize: 25, color: bodycolor),
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 15, right: 5),
                         child: Text(
-                          'Ch-1',
-                          style: TextStyle(fontSize: 25, color: bodycolor),
+                          widget.data[item].topic,
+                          style: TextStyle(
+                            fontSize:
+                                Theme.of(context).textTheme.headline3!.fontSize,
+                            fontWeight: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .fontWeight,
+                            color: bodycolor,
+                          ),
                         ),
                       ),
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0, bottom: 15, right: 5),
-                              child: Text(
-                                widget.mydata[item].detail,
-                                style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .fontSize,
-                                  fontWeight: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .fontWeight,
-                                  color: bodycolor,
-                                ),
-                              ),
+                      Text(
+                        'by Ravi',
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline4!.fontSize,
+                          fontWeight:
+                              Theme.of(context).textTheme.headline4!.fontWeight,
+                          color: bodycolor,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            Text(
-                              widget.mydata[item].provider,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 8,
+                            ),
+                            child: Text(
+                              'Assignment',
                               style: TextStyle(
                                 fontSize: Theme.of(context)
                                     .textTheme
-                                    .headline4!
+                                    .headline5!
                                     .fontSize,
                                 fontWeight: Theme.of(context)
                                     .textTheme
-                                    .headline4!
+                                    .headline5!
                                     .fontWeight,
                                 color: bodycolor,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.6),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 4,
-                                    horizontal: 8,
-                                  ),
-                                  child: Text(
-                                    widget.mydata[item].tag,
-                                    style: TextStyle(
-                                      fontSize: Theme.of(context)
-                                          .textTheme
-                                          .headline5!
-                                          .fontSize,
-                                      fontWeight: Theme.of(context)
-                                          .textTheme
-                                          .headline5!
-                                          .fontWeight,
-                                      color: bodycolor,
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    downloadList.add(widget.mydata[item]);
-                                  },
-                                  icon: Icon(
-                                    Icons.download,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.download,
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ],
                   ),
-                );
-              },
-              itemCount: widget.mydata.length,
-              padding:
-                  EdgeInsets.only(top: 00, bottom: 40, left: 20, right: 20),
+                ),
+              ],
             ),
-          );
+          ),
+        );
+      },
+      itemCount: widget.data.length,
+      padding: EdgeInsets.only(top: 00, bottom: 40, left: 20, right: 20),
+    );
   }
 }

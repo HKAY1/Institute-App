@@ -20,9 +20,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   var d = Get.put(AuthrisationController());
   final ImagePicker _picker = ImagePicker();
-   List<String> type = <String>['Male','Female'];
-   List<String>sort=[];
-  int selectedgender=0;
+  List<String> type = <String>['Male', 'Female'];
+  List<String> sort = [];
+  int selectedgender = 0;
   late TextEditingController contAdd;
   late TextEditingController contEmail;
   late String gen;
@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     contAdd = TextEditingController(text: d.userinfo(key: 'address'));
     contEmail = TextEditingController(text: d.userinfo(key: 'email'));
-    gen=d.userinfo(key: 'gender');
+    gen = d.userinfo(key: 'gender');
   }
 
   @override
@@ -244,9 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {
-                    print('object');
-                  },
+                  onPressed: () {},
                   child: Text(
                     'Change',
                     style: Theme.of(context)
@@ -261,38 +259,38 @@ class _ProfilePageState extends State<ProfilePage> {
           editfield(header: 'Email Address', enable: true, contr: contEmail),
           editfield(
               header: 'Address', enable: true, length: 300, contr: contAdd),
-              Container(
-              height: 50,
-              // color: bodycolor,
-              padding: const EdgeInsets.all(6),
-              child: ListView.builder(
-                itemBuilder: (context, item) {
-                  if(gen=='Female'){selectedgender=1;}
-                  return Padding(
+          Container(
+            height: 50,
+            // color: bodycolor,
+            padding: const EdgeInsets.all(6),
+            child: ListView.builder(
+              itemBuilder: (context, item) {
+                if (gen == 'Female') {
+                  selectedgender = 1;
+                }
+                return Padding(
                     padding: const EdgeInsets.only(left: 5.0, right: 5),
                     child: FilterChip(
-            label: Text(type[item]),
-            checkmarkColor: Colors.white,
-            selected: selectedgender == item ,
-            selectedColor: Colors.blue,
-            onSelected: (selected) {
-              if(selected){
-                selectedgender = item;
-                setState(() {
-                  gen = type[item];
-                });
-              }
-              print(gen);
-            },
-            backgroundColor: Colors.grey,
-            labelStyle: TextStyle(color: Colors.white),
-          ));
-                  
-                },
-                itemCount: type.length,
-                scrollDirection: Axis.horizontal,
-              ),
+                      label: Text(type[item]),
+                      checkmarkColor: Colors.white,
+                      selected: selectedgender == item,
+                      selectedColor: Colors.blue,
+                      onSelected: (selected) {
+                        if (selected) {
+                          selectedgender = item;
+                          setState(() {
+                            gen = type[item];
+                          });
+                        }
+                      },
+                      backgroundColor: Colors.grey,
+                      labelStyle: TextStyle(color: Colors.white),
+                    ));
+              },
+              itemCount: type.length,
+              scrollDirection: Axis.horizontal,
             ),
+          ),
           editfield(header: 'Institute', detail: gen),
           TextButton(
             onPressed: () {},
@@ -324,7 +322,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   primary: Colors.white,
                 ),
                 onPressed: () {
-                  d.updateUserData(contEmail.text, contAdd.text,gen);
+                  d.updateUserData(contEmail.text, contAdd.text, gen);
                 },
                 icon: Icon(Icons.edit),
                 label: Text('Update Profile'),

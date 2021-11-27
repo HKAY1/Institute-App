@@ -7,8 +7,14 @@ import '../services/services.dart';
 
 class StudyController extends GetxController {
   var g = GetStorage();
+  var token = ''.obs;
+  var clas = ''.obs;
+  var subject = ''.obs;
+  var chapterId = ''.obs;
   @override
   void onInit() {
+    token(g.read('token') ?? '');
+    clas(g.read('class') ?? '');
     subjects();
     super.onInit();
   }
@@ -36,33 +42,86 @@ class StudyController extends GetxController {
     );
   }
 
-  // var notes = <Notes>[].obs;
-  // var loadingNote = true.obs;
-  var subj = <SubjData>[].obs;
+// Get Subject of Student
+  var subjlist = <SubjData>[].obs;
   var loadingSubj = true.obs;
-
-  // Future<void> fetchNotes(String s) async {
-  //   loadingNote(true);
-  //   try {
-  //     var clas = g.read('class');
-  //     var token = g.read('token');
-  //     var note = await Services.fetchNotes(clas: clas, token: token, subj: s);
-  //     notes(note);
-  //     loadingNote(false);
-  //   } catch (e) {
-  //     loadingNote(false);
-  //     toast(message: e.toString());
-  //   }
-  // }
 
   void subjects() async {
     loadingSubj(true);
     try {
-      var s = await Services.fetchSubjects(token: g.read('token') ?? '');
-      subj(s);
+      var s = await Services.fetchSubjects(token: token.value);
+      subjlist(s);
       loadingSubj(false);
     } catch (e) {
       loadingSubj(false);
+      toast(message: e.toString());
+    }
+  }
+
+//Get Notes of Subjects
+  var notes = <Notes>[];
+  var loadingNote = true.obs;
+
+  void fetchNotes() async {
+    loadingNote(true);
+    try {
+      var n = await Services.fetchNotes(
+          token: token.value, subj: subject.value, clas: clas.value);
+      notes = n;
+      loadingNote(false);
+      update();
+    } catch (e) {
+      loadingNote(false);
+      update();
+      toast(message: e.toString());
+    }
+  }
+
+// Get Secondary Material like Assignments or Sample papers
+  var assignment = <SecondaryMatModal>[];
+  var loadingAss = true.obs;
+  var samplePapers = <SecondaryMatModal>[];
+  var loadingSample = true.obs;
+
+  void fetchSecondaryMaterial(String smat) async {
+    (smat == 'Assignment') ? loadingAss(true) : loadingSample(true);
+    try {
+      var n = await Services.fetchwork(
+          token: token.value,
+          clas: clas.value,
+          subj: subject.value,
+          smat: smat);
+      if (smat == 'Assignment') {
+        assignment = n;
+        loadingAss(false);
+        update();
+      } else if (smat == 'Sample_Paper') {
+        samplePapers = n;
+        loadingSample(false);
+        update();
+      }
+    } catch (e) {
+      (smat == 'Assignment') ? loadingAss(false) : loadingSample(false);
+      update();
+      toast(message: e.toString());
+    }
+  }
+
+// Get Topics of Subjects
+  var topics = <Topics>[];
+  var loadingTopics = true.obs;
+
+  void fetchTopics() async {
+    loadingTopics(true);
+    try {
+      var n = await Services.fetchTopics(
+          token: token.value, chapterid: chapterId.value);
+      topics = n;
+      loadingTopics(false);
+      update();
+    } catch (e) {
+      loadingTopics(false);
+      update();
       toast(message: e.toString());
     }
   }

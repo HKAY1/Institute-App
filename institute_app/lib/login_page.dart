@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
-import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:imstitute/animation/login_animation.dart';
 import 'package:imstitute/controller/authorisation_controller.dart';

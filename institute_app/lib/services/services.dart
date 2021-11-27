@@ -9,6 +9,8 @@ class Services {
   static var client = http.Client();
   static var baseURL = 'http://192.168.0.117:9000/api';
 
+// API for Fetching Events
+
   static Future<Map<String, List<Events>>> fetchEvent(
       {required String token, required int from, required int to}) async {
     try {
@@ -29,10 +31,9 @@ class Services {
     } on SocketException {
       throw 'Can\'t Connect to API';
     }
-
-    // await Future.delayed(const Duration(seconds: 1));
-    // return fakeEventData;
   }
+
+// API for Fetching Subjects
 
   static Future<List<SubjData>> fetchSubjects({required String token}) async {
     try {
@@ -54,12 +55,12 @@ class Services {
     }
   }
 
+// API for Fetching Notes of subjects
+
   static Future<List<Notes>> fetchNotes(
       {required String token,
       required String clas,
       required String subj}) async {
-    // await Future.delayed(const Duration(seconds: 1));
-    // return fakeNotesData;
     try {
       var res = await client.get(
           Uri.parse("$baseURL/study/notes/$clas/$subj/chapters"),
@@ -70,7 +71,6 @@ class Services {
           }).timeout(const Duration(seconds: 10));
       var data = jsonDecode(res.body);
       if (data['success']) {
-        print(data['data']);
         return notesfrom(data['data']);
       }
       throw data['error']['message'] ?? 'No data';
@@ -81,21 +81,49 @@ class Services {
     }
   }
 
+//API for Fetching Topics Of Chapters
+
   static Future<List<Topics>> fetchTopics({
     required String token,
-    required String id,
+    required String chapterid,
   }) async {
     try {
       var res = await client
-          .get(Uri.parse("$baseURL/study/notes/$id/topics"), headers: {
+          .get(Uri.parse("$baseURL/study/notes/$chapterid/topics"), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       }).timeout(const Duration(seconds: 10));
       var data = jsonDecode(res.body);
       if (data['success']) {
-        print(data['data']);
         return topicsfrom(data['data']);
+      }
+      throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+  }
+
+// API for Fetching Assignments/Sample_Papers
+  static Future<List<SecondaryMatModal>> fetchwork({
+    required String token,
+    required String clas,
+    required String subj,
+    required String smat,
+  }) async {
+    try {
+      var res = await client.get(
+          Uri.parse("$baseURL/study/secondary-material/$clas/$subj?type=$smat"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 10));
+      var data = jsonDecode(res.body);
+      if (data['success']) {
+        return secmatfrom(data['data']);
       }
       throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
@@ -192,59 +220,3 @@ class Services {
 //             topic: 'florine /detalta', file: 'dgcwdgcvdghecvgehdvchgedcvhge')
 //       ])
 // ];
-
-var fakeEventData = <String, List<Events>>{
-  '1633804200000': [
-    Events(
-      name: 'PTM Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-    Events(
-      name: 'Guu Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-    Events(
-      name: 'poi Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-  ],
-  '1635445800000': [
-    Events(
-      name: 'PTM Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-    Events(
-      name: 'Guu Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-    Events(
-      name: 'poi Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-    Events(
-      name: 'poi Notice',
-      description: "teri esi ki tesi",
-      endDate: 1633804200000,
-      startTime: 1635445800000,
-      endTime: 1635445800000,
-    ),
-  ],
-};
