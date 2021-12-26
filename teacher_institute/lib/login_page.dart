@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:teacher_institute/animation/login_animation.dart';
 import 'package:teacher_institute/controller/authorisation_controller.dart';

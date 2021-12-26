@@ -13,7 +13,7 @@ import 'package:imstitute/screens/study_material/pdf_view.dart';
 import 'package:imstitute/screens/study_material/topic_page.dart';
 import 'homepage.dart';
 import 'screens/drawer/performance.dart';
-import 'screens/study_material/study_subjects.dart';
+import 'screens/study_material/student_study_material.dart';
 
 void main() async {
   runApp(const MyApp());

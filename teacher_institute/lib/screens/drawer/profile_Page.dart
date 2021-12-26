@@ -1,8 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,26 +46,25 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (image != null) {
-        var bytes = await image.readAsBytes();
-        d.uploadImage(bytes,
+        d.uploadImage(image.path,
             image.path.substring(image.path.lastIndexOf(".") + 1), false);
       }
     }
 
-    void pickImageWeb() async {
-      var image = await FilePicker.platform
-          .pickFiles(type: FileType.image, allowedExtensions: []);
-      if (image != null) {
-        var data = image.files.single.bytes;
-        if (data != null) {
-          d.uploadImage(
-              data,
-              image.files.single.path!
-                  .substring(image.files.single.path!.lastIndexOf(".") + 1),
-              true);
-        }
-      }
-    }
+    // void pickImageWeb() async {
+    //   var image = await FilePicker.platform
+    //       .pickFiles(type: FileType.image, allowedExtensions: []);
+    //   if (image != null) {
+    //     var data = image.files.single.bytes;
+    //     if (data != null) {
+    //       d.uploadImage(
+    //           data,
+    //           image.files.single.path!
+    //               .substring(image.files.single.path!.lastIndexOf(".") + 1),
+    //           true);
+    //     }
+    //   }
+    // }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -88,8 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.center,
                     child: Obx(() {
                       return CachedNetworkImage(
-                        imageUrl:
-                            d.url.replaceAll('localhost', '192.168.0.117'),
+                        imageUrl: d.url.replaceAll('localhost', '192.168.1.18'),
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(

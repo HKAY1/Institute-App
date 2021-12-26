@@ -1,11 +1,8 @@
-// ignore_for_file: file_names, unused_element
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:teacher_institute/modals/teacher_eventmodal.dart';
-import 'package:teacher_institute/services/event_services.dart';
+import 'package:teacher_institute/services/services.dart';
 
 class EventController extends GetxController {
   var g = GetStorage();
@@ -79,4 +76,4 @@ class EventController extends GetxController {
       toast(message: e.toString());
     }
   }
- }
+}

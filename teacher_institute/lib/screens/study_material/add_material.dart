@@ -1,16 +1,7 @@
-// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, unrelated_type_equality_checks, avoid_print, unused_element
-
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:teacher_institute/controller/teach_material_controller.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
+import 'package:teacher_institute/controller/teach_add_material_controller.dart';
 
 class AddMaterial extends StatefulWidget {
   const AddMaterial({Key? key}) : super(key: key);
@@ -20,18 +11,21 @@ class AddMaterial extends StatefulWidget {
 }
 
 class _AddMaterialState extends State<AddMaterial> {
-  static var baseURL = 'http://192.168.0.117:9000/api';
-  static var client = http.Client();
-  final cont = Get.put(MaterialControler());
-  var t = GetStorage();
-  final data = Get.arguments;
+  final cont = Get.put(AddMaterialControler());
+  final data = Get.arguments ?? {};
   final chaptercontroller = TextEditingController();
   final discriptioncontroller = TextEditingController();
-  final nocontroller = TextEditingController();
+  final chapterNoController = TextEditingController();
   final formkey = GlobalKey();
-  int selectedIndex = 0;
   bool s = false;
-  String files = '           ';
+
+  @override
+  void initState() {
+    cont.clas(data['class']);
+    cont.subject(data['subject']);
+    cont.type(data['type']);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -45,189 +39,202 @@ class _AddMaterialState extends State<AddMaterial> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Create ${data['mat'] ?? ''}'),
+        title: Text(cont.type.value),
       ),
-      body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 20,left: 12),
-          child: Form(
-            key: formkey,
-            child: Column(
-              children: [
-              SizedBox(height: 25,),
-              if(data['mat'] == 'Notes')
-              TextFormField(
-                style:Theme.of(context).textTheme.headline2,
-                decoration: InputDecoration(
-                  labelText:'Chapter No.',
-                  hintText: 'eg :- 1 ',
-                  border: UnderlineInputBorder(),
-                ),
-                onFieldSubmitted: (_){},
-                maxLength: 3,
-                keyboardType: TextInputType.number,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (v){
-                       if(!GetUtils.isNumericOnly(v??'')){
-                          return "Invalid Entry";
-                       }
-                     },
-                
-                controller: nocontroller,
-              ),
-              if (data['mat'] == 'Notes')
-                TextFormField(
-                  style: TextStyle(fontSize: 24, color: Colors.black),
-                  decoration: InputDecoration(
-                    labelText: 'Chapter No.',
-                    hintText: 'eg :- 1 ',
-                    border: UnderlineInputBorder(),
-                  ),
-                  onFieldSubmitted: (_) {},
-                  maxLength: 3,
-                  keyboardType: TextInputType.number,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (v) {
-                    if (!GetUtils.isNumericOnly(v ?? '')) {
-                      return "Invalid Entry";
-                    }
-                  },
-                  controller: nocontroller,
-                ),
-              SizedBox(height: 18),
+      body: Form(
+        key: formkey,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          children: [
+            if (cont.type.value == 'Notes')
               Column(
                 children: [
-                  if(data['mat'] == 'Notes')
-                   TextFormField(
-                     validator: (title)=>title !=null && title.isEmpty ?'Title should not be empty':null,
-                     minLines: 1,
-                     maxLines: 5,
-                     maxLength: 50,
-                style:Theme.of(context).textTheme.headline2,
-                decoration: InputDecoration(
-                  labelText:' Chapter Name',
-                  border: OutlineInputBorder(),
-                ),
-                onFieldSubmitted: (_){},
-                controller: chaptercontroller,
-              ),
-                  SizedBox(height:15),
-            Visibility(
-              visible: selectedIndex == 0,
-              child:TextFormField(
-                validator: (topic)=>topic !=null && topic.isEmpty ?'Topic Name should not be empty':null,
-                     minLines: 1,
-                     maxLines: 5,
-                     maxLength: 40,
-                style:Theme.of(context).textTheme.headline2,
-                decoration: InputDecoration(
-                  labelText:' Topic Name',
-                  border: OutlineInputBorder(),
-                ),
-                onFieldSubmitted: (_){},
-                controller: discriptioncontroller,
-              ), ),
-            SizedBox(height:15),
-               TextButton.icon(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size(150, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    backgroundColor: Colors.blue,
-                    primary: Colors.white,
+                  TextFormField(
+                    autofocus: false,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(color: Colors.black54),
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[200],
+                      filled: true,
+                      hintText: 'Chapter No. eg :- 1 ',
+                      hintStyle: const TextStyle(color: Colors.black45),
+                      border: const UnderlineInputBorder(),
+                    ),
+                    onFieldSubmitted: (_) {},
+                    maxLength: 3,
+                    keyboardType: TextInputType.number,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (v) {
+                      if (!GetUtils.isNumericOnly(v ?? '')) {
+                        return "Invalid Entry";
+                      }
+                    },
+                    controller: chapterNoController,
                   ),
-                  onPressed: () async {
-                    if(cont.isfileLoading == true){
-                      Center(
-                        child:CustomeLoading(color: Colors.blue,) ,
-                      );
-                    }
-                    setState(() {
-                        s= true;
-                      });
-                    final result = await FilePicker.platform.pickFiles(
-                    );
-                       if (result == null) {
-                     return;
-                     }
-                     final file = result.files.first;
-                     File path = File(file.path!);
-                     setState(() {
-                       files=result.files.first.name;
-                     });
-                      var token = t.read('token')??'';
-                        cont.postFile(name:files, type:Get.arguments , token: token, file: path);
-                      
-                  },
-                  icon: Icon(Icons.upload_rounded),
-                  label: Text('Choose File'),
-                ),
-            SizedBox(height:15),
-            Visibility(
-              visible: s ,
-              child: Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey[100],
-              border: Border.all(
-                color: Colors.grey,
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    autofocus: false,
+                    validator: (title) => (title != null || title!.isEmpty)
+                        ? 'Title should not be empty'
+                        : null,
+                    maxLength: 50,
+                    maxLines: null,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(color: Colors.black54),
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[200],
+                      filled: true,
+                      hintText: ' Chapter Name',
+                      hintStyle: const TextStyle(color: Colors.black45),
+                      border: const OutlineInputBorder(),
+                    ),
+                    onFieldSubmitted: (_) {},
+                    controller: chaptercontroller,
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
+            TextFormField(
+              autofocus: false,
+              validator: (topic) => (topic != null && topic.isEmpty)
+                  ? 'Topic Name should not be empty'
+                  : null,
+              minLines: 1,
+              maxLines: 5,
+              maxLength: 40,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline2!
+                  .copyWith(color: Colors.black54),
+              decoration: InputDecoration(
+                fillColor: Colors.grey[200],
+                filled: true,
+                hintText: ' Topic Name',
+                hintStyle: const TextStyle(color: Colors.black45),
+                border: const OutlineInputBorder(),
+              ),
+              onFieldSubmitted: (_) {},
+              controller: discriptioncontroller,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(files,style:Theme.of(context).textTheme.headline2,),
-                IconButton(
-                  onPressed: () {
-                    var token = t.read('token')??'';
-                     cont.deletefile(token: token);
-                  },
-                  icon: Icon(Icons.remove)
-                ),
+                Obx(() {
+                  if (cont.file.containsKey('id') &&
+                      cont.file.containsKey('name') &&
+                      cont.file.containsKey('url')) {
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey[100],
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            cont.file['name'],
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              cont.deletefile();
+                            },
+                            icon: const Icon(Icons.cancel_rounded),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  if (cont.loadingProgress.value < 100) {
+                    print('in progress --> ${cont.loadingProgress.value}');
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      color: Colors.green,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: cont.loadingProgress.value,
+                        ),
+                      ),
+                    );
+                  }
+                  return TextButton.icon(
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(150, 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      backgroundColor: Colors.blue,
+                      primary: Colors.white,
+                    ),
+                    onPressed: () async {
+                      final result = await FilePicker.platform.pickFiles();
+                      if (result == null) {
+                        return;
+                      } else if (result.files.first.path == null) {
+                        return;
+                      }
+                      final file = result.files.first;
+                      cont.postFile(
+                        name: file.name,
+                        path: file.path ?? '',
+                      );
+                    },
+                    icon: const Icon(Icons.upload_rounded),
+                    label: const Text('Choose File'),
+                  );
+                }),
               ],
             ),
-          ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(() {
+                  return TextButton.icon(
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(150, 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      backgroundColor: Colors.blue,
+                      primary: Colors.white,
+                    ),
+                    onPressed: (!cont.file.isNotEmpty)
+                        ? null
+                        : () {
+                            if (cont.type.value == 'Notes') {
+                              cont.postNotes(
+                                chapname: chaptercontroller.text,
+                                chapno: chapterNoController.text,
+                                topic: discriptioncontroller.text,
+                              );
+                            }
+                            if (cont.type.value == 'Assignment' ||
+                                cont.type.value == 'Sample Paper') {
+                              cont.postSecondaryMaterial(
+                                topic: discriptioncontroller.text,
+                              );
+                            }
+                          },
+                    label: const Text('Add Material'),
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                  );
+                }),
+              ],
             ),
-               TextButton.icon(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size(150, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    backgroundColor: Colors.blue,
-                    primary: Colors.white,
-                  ),
-                  onPressed: () {
-                    if(data['mat']=='Notes')
-                    cont.postMaterialtdata(clas: data['class'],subject: data['subject'],chapname:chaptercontroller.text,chapno: nocontroller.text,res: resid,type: data['mat'],topic: discriptioncontroller.text);
-                    if(data['mat']=='Assignment'||data['mat']=='Sample_paper')
-                    cont.postAssampletMaterialtdata(res: resid, sub: data['subject'], clas: data['class'], topic: discriptioncontroller.text,type:data['mat'] );
-                  },
-                  label: Text('Add Material'),
-                  icon: Icon(Icons.arrow_forward_rounded),
-                  
-                ),
-                ],
-              )
-            ],
-          ),
+          ],
         ),
       ),
     );
   }
-}
-
-void toast({String title = 'Error', String message = 'Something Went wrong'}) {
-  Get.snackbar(
-    title,
-    message,
-    colorText: Colors.black,
-    maxWidth: double.maxFinite,
-    margin: const EdgeInsets.all(0),
-    isDismissible: true,
-    snackPosition: SnackPosition.BOTTOM,
-    dismissDirection: SnackDismissDirection.HORIZONTAL,
-  );
 }

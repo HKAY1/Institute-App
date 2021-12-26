@@ -83,13 +83,13 @@ class SecondaryMatModal {
   late final FileClass file;
 
   SecondaryMatModal.fromJson(Map<String, dynamic> json) {
-    topic = json['topic'];
+    topic = json['name'];
     file = FileClass.fromJson(json['file']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['topic'] = topic;
+    _data['name'] = topic;
     _data['file'] = file.toJson();
     return _data;
   }

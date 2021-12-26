@@ -21,7 +21,7 @@ class Calender extends StatefulWidget {
 class _CalenderState extends State<Calender> {
   EventController control = Get.put(EventController());
   CalendarFormat format = CalendarFormat.month;
-  bool _isvisible = true;
+  final bool _isvisible = true;
   DateTime focusday = DateTime.now();
   String eventkey =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -367,6 +367,5 @@ class _CalenderState extends State<Calender> {
         scale: _isvisible ? 1 : 0,
       ),
     );
-    
   }
 }

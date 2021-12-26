@@ -45,8 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (image != null) {
-        var bytes = await image.readAsBytes();
-        d.uploadImage(bytes,
+        d.uploadImage(image.path,
             image.path.substring(image.path.lastIndexOf(".") + 1), false);
       }
     }
@@ -85,8 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.center,
                     child: Obx(() {
                       return CachedNetworkImage(
-                        imageUrl:
-                            d.url.replaceAll('localhost', '192.168.0.117'),
+                        imageUrl: d.url.replaceAll('localhost', '192.168.1.18'),
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(

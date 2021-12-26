@@ -7,7 +7,7 @@ import 'package:imstitute/models/study_modals.dart';
 
 class Services {
   static var client = http.Client();
-  static var baseURL = 'http://192.168.0.117:9000/api';
+  static var baseURL = 'http://192.168.1.18:9000/api';
 
 // API for Fetching Events
 
@@ -33,7 +33,7 @@ class Services {
     }
   }
 
-// API for Fetching Subjects
+// API for Fetching Subjects of Studentes
 
   static Future<List<SubjData>> fetchSubjects({required String token}) async {
     try {

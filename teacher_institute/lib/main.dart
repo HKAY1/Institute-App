@@ -7,9 +7,9 @@ import 'package:teacher_institute/screens/drawer/downloads.dart';
 import 'package:teacher_institute/screens/performance/class.dart';
 import 'package:teacher_institute/screens/performance/student_list.dart';
 import 'package:teacher_institute/screens/study_material/add_material.dart';
-import 'package:teacher_institute/screens/study_material/in_notes.dart';
+import 'package:teacher_institute/screens/study_material/pdf_view.dart';
 import 'package:teacher_institute/screens/study_material/study_material.dart';
-import 'package:teacher_institute/studydata/myinternaldata.dart';
+import 'package:teacher_institute/screens/study_material/topic_page.dart';
 import 'homepage.dart';
 import 'screens/drawer/contactUSPage.dart';
 import 'screens/drawer/custome_drawer.dart';
@@ -42,13 +42,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/downloads', page: () => const Downloads()),
         GetPage(name: '/faq', page: () => const FAQPage()),
         GetPage(name: '/study', page: () => const StudyChapters()),
-        GetPage(name: '/material', page: () => const AddMaterial()),
-        GetPage(
-            name: '/innermaterial',
-            page: () => MyInDataList(
-                  mdata: note,
-                )),
+        GetPage(name: '/addmaterial', page: () => const AddMaterial()),
+        GetPage(name: '/inchapter', page: () => const TopicPage()),
+        GetPage(name: '/topic', page: () => const TopicPage()),
         GetPage(name: '/login', page: () => const LoginPage()),
+        GetPage(name: '/pdfView', page: () => const PdfView())
       ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 600),

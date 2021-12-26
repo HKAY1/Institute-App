@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'dart:convert';
@@ -9,7 +7,7 @@ import 'package:imstitute/models/aothorised_modal.dart';
 
 class LoginServices {
   static var client = http.Client();
-  static var baseURL = 'http://192.168.0.117:9000/api';
+  static var baseURL = 'http://192.168.1.18:9000/api';
 
   static Future<UserData> login({
     required String num,
@@ -69,50 +67,49 @@ class LoginServices {
 
 //Api Call for Upload/Update User Profile
   static Future<String> upload({
-    String imageFile = '',
-    required Uint8List imagebytes,
+    required String imagePath,
     required String token,
     required String type,
   }) async {
-    // var request = http.MultipartRequest(
-    //   "POST",
-    //   Uri.parse('$baseURL/file/upload-profile-image'),
-    // );
+    var request = http.MultipartRequest(
+      "POST",
+      Uri.parse('$baseURL/file/upload-profile-image'),
+    );
     Map<String, String> headers = {"Authorization": 'Bearer $token'};
-    // request.headers.addAll(headers);
+    request.headers.addAll(headers);
 
-    // try {
-    //   var pic = await http.MultipartFile.fromPath("file", imageFile,
-    //       contentType: MediaType('image', type));
-    //   request.files.add(pic);
-    //   var response = await request.send();
-    //   request.fields['name'] = 'Gaand MAra MC';
-    //   //Get the response from the server
-    //   var responseData = await response.stream.toBytes();
-    //   var responseString = String.fromCharCodes(responseData);
-    //   final data = jsonDecode(responseString);
-    //   if (data['success'] ?? false) {
-    //     return data['imageUrl'];
-    //   }
-    //   throw data['error']['message'] ?? 'No data';
     try {
-      FormData formData = FormData.fromMap({
-        'name': 'sabka baap',
-        'file': http.MultipartFile.fromPath(
-          'image',
-          File.fromRawPath(imagebytes).path,
-          filename: 'file',
-          contentType: MediaType('image', type),
-        )
-      });
-      var response = await Dio().post(
-        "$baseURL/file/upload-profile-image",
-        data: formData,
-        options: Options(
-          headers: headers,
-        ),
-      );
-      return 'Hogya';
+      var pic = await http.MultipartFile.fromPath("file", imagePath,
+          contentType: MediaType('image', type));
+      request.files.add(pic);
+      var response = await request.send();
+      request.fields['name'] = 'Gaand MAra MC';
+      //Get the response from the server
+      var responseData = await response.stream.toBytes();
+      var responseString = String.fromCharCodes(responseData);
+      final data = jsonDecode(responseString);
+      if (data['success'] ?? false) {
+        return data['imageUrl'];
+      }
+      throw data['error']['message'] ?? 'No data';
+      // try {
+      //   FormData formData = FormData.fromMap({
+      //     'name': 'sabka baap',
+      //     'file': http.MultipartFile.fromPath(
+      //       'image',
+      //       File.fromRawPath(imagebytes).path,
+      //       filename: 'file',
+      //       contentType: MediaType('image', type),
+      //     )
+      //   });
+      //   var response = await Dio().post(
+      //     "$baseURL/file/upload-profile-image",
+      //     data: formData,
+      //     options: Options(
+      //       headers: headers,
+      //     ),
+      //   );
+      //   return 'Hogya';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {

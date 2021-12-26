@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -113,11 +111,11 @@ class AuthrisationController extends GetxController {
     }
   }
 
-  void uploadImage(Uint8List image, String type, bool web) async {
+  void uploadImage(String path, String type, bool web) async {
     try {
       dialog();
       var d = await LoginServices.upload(
-        imagebytes: image,
+        imageFile: path,
         token: g.read('token'),
         type: type,
       );
@@ -126,7 +124,6 @@ class AuthrisationController extends GetxController {
       Get.back();
     } catch (e) {
       Get.back();
-      print(e);
       toast(message: e.toString());
     }
   }

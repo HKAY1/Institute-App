@@ -1,81 +1,44 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_final_fields
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imstitute/controller/study_material_controller.dart';
+import 'package:imstitute/custome/colorScheme.dart';
+import 'package:imstitute/custome/customeWidgets.dart';
+import 'package:imstitute/models/study_modals.dart';
+import 'package:imstitute/screens/study_material/secondary_material.dart';
 import 'package:intl/intl.dart';
-import 'package:teacher_institute/controller/teacher_study_material_controller.dart';
-import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/coustom/customeWidgets.dart';
-import 'package:teacher_institute/modals/teacher_studymodal.dart';
-import 'package:teacher_institute/screens/study_material/secondary_material.dart';
 
-class StudyChapters extends StatefulWidget {
-  const StudyChapters({Key? key}) : super(key: key);
+class SubjectMaterial extends StatefulWidget {
+  const SubjectMaterial({Key? key}) : super(key: key);
 
   @override
-  State<StudyChapters> createState() => _StudyChaptersState();
+  State<SubjectMaterial> createState() => _SubjectMaterialState();
 }
 
-class _StudyChaptersState extends State<StudyChapters> {
-  var controller = Get.put(StudyController());
-  List<String> subjects = Get.arguments ?? [];
-  final List<String> type = <String>['Notes', 'Assignment', 'Sample Paper'];
-  String mat = 'Notes';
+class _SubjectMaterialState extends State<SubjectMaterial> {
+  var cont = Get.put(StudyController());
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Get.toNamed('/addmaterial', arguments: {
-              'type': mat,
-              'class': controller.clas.value,
-              'subject': controller.subject.value
-            });
-          },
-          label: Text('Upload'),
-          icon: Icon(CupertinoIcons.add),
-        ),
         appBar: AppBar(
-          actions: [
-            PopupMenuButton(
-              // onSelected: (String s) {
-              //   controller.subject(s);
-              // },
-              itemBuilder: (_) {
-                return subjects.map((e) {
-                  return PopupMenuItem(
-                    onTap: () {
-                      controller.subject(e);
-                    },
-                    value: e,
-                    child:
-                        Text(e, style: Theme.of(context).textTheme.headline4),
-                  );
-                }).toList();
-              },
-            )
-          ],
-          title: Text(
-            controller.subject.value,
-            style: TextStyle(color: Colors.white),
-          ),
+          title: Text(cont.subject.value),
         ),
         body: Column(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(10, 30, 10, 5),
+              margin: const EdgeInsets.fromLTRB(20, 30, 20, 5),
               height: 45,
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(
                   25.0,
                 ),
               ),
               child: TabBar(
-                // isScrollable: false,
+                physics: const NeverScrollableScrollPhysics(),
+                // dragStartBehavior: DragStartBehavior.down,
                 indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(
                     25.0,
@@ -84,39 +47,57 @@ class _StudyChaptersState extends State<StudyChapters> {
                 ),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
-                onTap: (i) {
-                  mat = type[i];
-                },
-                tabs: List.generate(
-                  type.length,
-                  (i) => Tab(text: type[i]),
-                ),
+                tabs: const [
+                  Tab(
+                    text: 'Notes',
+                  ),
+                  Tab(
+                    text: 'Assignment',
+                  ),
+                  Tab(
+                    text: 'Text Series',
+                  ),
+                ],
               ),
             ),
             Expanded(
-              child: Obx(() {
-                if (controller.subject.isEmpty) {
-                  return Center(
-                    child: Text(
-                      'Unable To Load',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                  );
-                }
-                return TabBarView(
-                  children: [
-                    GetBuilder<StudyController>(
-                      init: controller,
+              child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  GetBuilder<StudyController>(
+                    init: cont,
+                    initState: (c) {
+                      cont.fetchNotes();
+                    },
+                    builder: (cont) {
+                      if (cont.loadingNote.value) {
+                        return const Center(
+                            child: CustomeLoading(
+                          color: Colors.blueAccent,
+                        ));
+                      } else if (cont.notes.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'No Data',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                        );
+                      }
+                      return chapterCard(cont.notes);
+                    },
+                  ),
+                  GetBuilder<StudyController>(
+                      init: cont,
                       initState: (c) {
-                        controller.fetchNotes();
+                        cont.fetchSecondaryMaterial('Assignment');
                       },
-                      builder: (cont) {
-                        if (cont.loadingNote.value) {
+                      builder: (controller) {
+                        if (controller.loadingAss.value) {
                           return const Center(
                               child: CustomeLoading(
                             color: Colors.blueAccent,
                           ));
-                        } else if (cont.notes.isEmpty) {
+                        } else if (controller.assignment.isEmpty) {
                           return Center(
                             child: Text(
                               'No Data',
@@ -124,44 +105,21 @@ class _StudyChaptersState extends State<StudyChapters> {
                             ),
                           );
                         }
-                        return chapterCard(cont.notes);
-                      },
-                    ),
-                    GetBuilder<StudyController>(
-                        init: controller,
-                        initState: (c) {
-                          controller.fetchSecondaryMaterial('Assignment');
-                        },
-                        builder: (controller) {
-                          if (controller.loadingAss.value) {
-                            return const Center(
-                                child: CustomeLoading(
-                              color: Colors.blueAccent,
-                            ));
-                          } else if (controller.assignment.isEmpty) {
-                            return Center(
-                              child: Text(
-                                'No Data',
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                            );
-                          }
-                          return SecondaryMaterial(
-                            data: controller.assignment,
-                          );
-                        }),
-                    GetBuilder<StudyController>(
-                      init: controller,
+                        return SecondaryMaterial(
+                          data: controller.assignment,
+                        );
+                      }),
+                  GetBuilder<StudyController>(
+                      init: cont,
                       initState: (c) {
-                        controller.fetchSecondaryMaterial('Sample_Paper');
+                        cont.fetchSecondaryMaterial('Sample_Paper');
                       },
                       builder: (controller) {
                         if (controller.loadingSample.value) {
                           return const Center(
-                            child: CustomeLoading(
-                              color: Colors.blueAccent,
-                            ),
-                          );
+                              child: CustomeLoading(
+                            color: Colors.blueAccent,
+                          ));
                         } else if (controller.samplePapers.isEmpty) {
                           return Center(
                             child: Text(
@@ -173,11 +131,9 @@ class _StudyChaptersState extends State<StudyChapters> {
                         return SecondaryMaterial(
                           data: controller.samplePapers,
                         );
-                      },
-                    ),
-                  ],
-                );
-              }),
+                      }),
+                ],
+              ),
             ),
           ],
         ),
@@ -202,7 +158,7 @@ class _StudyChaptersState extends State<StudyChapters> {
       itemBuilder: (context, item) {
         return GestureDetector(
           onTap: () {
-            controller.chapterId(notelist[item].chapterid);
+            cont.chapterId(notelist[item].chapterid);
             Get.toNamed('/inchapter', arguments: {
               "chapter": notelist[item].chapterName,
             });

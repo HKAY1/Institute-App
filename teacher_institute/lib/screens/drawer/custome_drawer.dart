@@ -73,7 +73,7 @@ class _CustomeDrawerState extends State<CustomeDrawer> {
                                   );
                                 },
                                 imageUrl: controll.url.value.replaceAll(
-                                    'localhost:9000', '192.168.0.117:9000'),
+                                    'localhost:9000', '192.168.1.18:9000'),
                                 // progressIndicatorBuilder:
                                 //     (context, url, downloadProgress) =>
                                 //         CircularProgressIndicator(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:imstitute/models/study_modals.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:teacher_institute/modals/teacher_studymodal.dart';
 
 class PdfView extends StatefulWidget {
   const PdfView({Key? key}) : super(key: key);
