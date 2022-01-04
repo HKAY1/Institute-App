@@ -113,7 +113,10 @@ class AddMaterialControler extends GetxController {
           filename: name,
           token: token.value,
           mattype: (type.value == 'Sample Paper') ? 'Sample_Paper' : type.value,
-          filepath: path);
+          filepath: path,
+          onProgress: (send, total) {
+            loadingProgress((send / total) * 100);
+          });
       file(data);
     } catch (e) {
       loadingProgress(null);

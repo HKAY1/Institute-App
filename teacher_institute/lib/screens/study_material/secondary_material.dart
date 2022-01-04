@@ -2,74 +2,82 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teacher_institute/coustom/colorScheme.dart';
-import 'package:teacher_institute/modals/teacher_studymodal.dart';
+import 'package:teacher_institute/controller/teacher_study_material_controller.dart';
+import 'package:teacher_institute/coustom/customeWidgets.dart';
+import 'package:teacher_institute/screens/study_material/pdf_preview.dart';
 
 class SecondaryMaterial extends StatefulWidget {
-  final List<SecondaryMatModal> data;
-  SecondaryMaterial({Key? key, required this.data}) : super(key: key);
+  final String mat;
+  SecondaryMaterial({Key? key, required this.mat}) : super(key: key);
 
   @override
-  State<SecondaryMaterial> createState() => _MyInDataListState();
+  State<SecondaryMaterial> createState() => _SecondaryMaterialState();
 }
 
-class _MyInDataListState extends State<SecondaryMaterial> {
+class _SecondaryMaterialState extends State<SecondaryMaterial> {
+  final cont = Get.put(StudyController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return ListView.builder(
-      itemBuilder: (context, item) {
-        return GestureDetector(
-          onTap: () {
-            Get.toNamed('pdfView', arguments: widget.data[item].file);
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 15, bottom: 10),
-            padding: EdgeInsets.all(8),
-            width: size.width * 0.85,
-            decoration: BoxDecoration(
-                color: cardcolor, borderRadius: BorderRadius.circular(30)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8, right: 5),
-                  child: Text(
-                    widget.data[item].topic,
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline2!.fontSize,
-                      fontWeight:
-                          Theme.of(context).textTheme.headline3!.fontWeight,
-                      color: bodycolor,
-                    ),
-                  ),
-                ),
-                Text(
-                  'Tera Baap',
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.headline3!.fontSize,
-                    fontWeight:
-                        Theme.of(context).textTheme.headline3!.fontWeight,
-                    color: bodycolor,
-                  ),
-                ),
-                Text(
-                  'ravi',
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.headline4!.fontSize,
-                    fontWeight:
-                        Theme.of(context).textTheme.headline4!.fontWeight,
-                    color: bodycolor,
-                  ),
-                ),
-              ],
+    return GetBuilder<StudyController>(
+      init: cont,
+      initState: (c) {
+        cont.fetchSecondaryMaterial(widget.mat);
+      },
+      builder: (controller) {
+        if ((widget.mat == 'Assignment')
+            ? cont.loadingAss.value
+            : cont.loadingSample.value) {
+          return const Center(
+              child: CustomeLoading(
+            color: Colors.blueAccent,
+          ));
+        } else if ((widget.mat == 'Assignment')
+            ? cont.assignment.isNotEmpty
+            : cont.samplePapers.isNotEmpty) {
+          return GridView.builder(
+            padding: const EdgeInsets.all(20),
+            itemCount: (widget.mat == 'Assignment')
+                ? cont.assignment.length
+                : cont.samplePapers.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount:
+                  MediaQuery.of(context).orientation == Orientation.landscape
+                      ? 4
+                      : 2,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              childAspectRatio: 3 / 2,
             ),
+            itemBuilder: (context, item) {
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(
+                    'pdfView',
+                    arguments: (widget.mat == 'Assignment')
+                        ? cont.assignment[item].file
+                        : cont.samplePapers[item].file,
+                  );
+                },
+                child: PdfPreview(
+                  name: (widget.mat == 'Assignment')
+                      ? cont.assignment[item].topic
+                      : cont.samplePapers[item].topic,
+                  url: (widget.mat == 'Assignment')
+                      ? cont.assignment[item].file.url
+                      : cont.samplePapers[item].file.url,
+                ),
+              );
+            },
+          );
+        }
+        return Center(
+          child: Text(
+            'No Data',
+            style: Theme.of(context).textTheme.headline2,
           ),
         );
       },
-      itemCount: widget.data.length,
-      padding: EdgeInsets.only(top: 00, bottom: 40, left: 20, right: 20),
     );
   }
 }

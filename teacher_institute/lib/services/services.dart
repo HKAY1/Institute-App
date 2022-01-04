@@ -4,13 +4,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart' as myget;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
-import 'package:teacher_institute/controller/teach_add_material_controller.dart';
 import 'package:teacher_institute/modals/teacher_eventmodal.dart';
 import 'package:teacher_institute/modals/teacher_studymodal.dart';
+
+typedef ProgressCallback = void Function(int count, int total);
 
 class Services {
   static var client = http.Client();
@@ -274,8 +274,8 @@ class Services {
     required String mattype,
     required String token,
     required String filepath,
+    required ProgressCallback? onProgress,
   }) async {
-    final cont = myget.Get.put(AddMaterialControler());
     try {
       String? mimetype = mime(filepath);
       var dio = Dio();
@@ -292,9 +292,8 @@ class Services {
 
       var response = await dio.post('$baseURL/file/upload-study-materials',
           options: Options(headers: headers),
-          data: formdata, onSendProgress: (s, r) {
-        cont.loadingProgress(((s / r) * 100));
-      });
+          data: formdata,
+          onSendProgress: onProgress);
       var data = response.data;
       if (data['success'] ?? false) {
         final file = FileClass.fromJson(data['data']);

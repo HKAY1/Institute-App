@@ -2,6 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teacher_institute/controller/teach_add_material_controller.dart';
+import 'package:teacher_institute/modals/teacher_studymodal.dart';
+import 'package:teacher_institute/screens/study_material/pdf_preview.dart';
 
 class AddMaterial extends StatefulWidget {
   const AddMaterial({Key? key}) : super(key: key);
@@ -36,6 +38,7 @@ class _AddMaterialState extends State<AddMaterial> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -44,7 +47,7 @@ class _AddMaterialState extends State<AddMaterial> {
       body: Form(
         key: formkey,
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           children: [
             if (cont.type.value == 'Notes')
               Column(
@@ -129,27 +132,38 @@ class _AddMaterialState extends State<AddMaterial> {
                       cont.file.containsKey('name') &&
                       cont.file.containsKey('url')) {
                     return Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[100],
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      margin: const EdgeInsets.all(20),
+                      child: Stack(
+                        clipBehavior: Clip.none,
                         children: [
-                          Text(
-                            cont.file['name'],
-                            style: Theme.of(context).textTheme.headline2,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              cont.deletefile();
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                'pdfView',
+                                arguments: FileClass(
+                                    name: cont.file['name'],
+                                    url: cont.file['url'],
+                                    id: cont.file['id']),
+                              );
                             },
-                            icon: const Icon(Icons.cancel_rounded),
+                            child: PdfPreview(
+                              name: cont.file['name'],
+                              url: cont.file['url'],
+                            ),
+                          ),
+                          Positioned(
+                            top: -24,
+                            right: -24,
+                            child: IconButton(
+                              onPressed: () {
+                                cont.deletefile();
+                              },
+                              iconSize: 40,
+                              icon: const Icon(
+                                Icons.cancel_rounded,
+                                color: Colors.redAccent,
+                              ),
+                            ),
                           ),
                         ],
                       ),

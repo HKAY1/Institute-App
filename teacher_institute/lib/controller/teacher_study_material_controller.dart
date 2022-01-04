@@ -31,15 +31,6 @@ class StudyController extends GetxController {
     );
   }
 
-  // void dialog() {
-  //   Get.dialog(
-  //     Center(
-  //       child: CustomeLoading(),
-  //     ),
-  //     barrierDismissible: false,
-  //   );
-  // }
-
 // Get CLass details of Teacher
   var classlist = <Teacher>[].obs;
   var loadingClass = true.obs;
