@@ -132,10 +132,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: (size.height * 0.3) * animation3.value,
-              left: size.width * (animation1.value + .1),
+              top: (size.height * 0.8) * animation3.value,
+              left: size.width * (animation1.value + .4),
               child: CustomPaint(
-                painter: MyPainter(60),
+                painter: MyPainter(30),
               ),
             ),
             Positioned(
