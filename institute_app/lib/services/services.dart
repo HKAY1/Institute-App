@@ -7,7 +7,7 @@ import 'package:imstitute/models/study_modals.dart';
 
 class Services {
   static var client = http.Client();
-  static var baseURL = 'http://192.168.1.18:9000/api';
+  static var baseURL = 'https://pure-crag-69424.herokuapp.com/api';
 
 // API for Fetching Events
 

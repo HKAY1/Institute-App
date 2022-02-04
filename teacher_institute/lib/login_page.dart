@@ -102,8 +102,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  var usercontroll = TextEditingController();
-  var passcontroll = TextEditingController();
+  var usercontroll = TextEditingController(text: '1234567899');
+  var passcontroll = TextEditingController(text: 'password');
   var formKey = GlobalKey<FormState>();
   bool isvisible = false;
 
@@ -146,10 +146,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: size.height * .6,
+              bottom: size.height * .4,
               left: size.width * (animation2.value + .8),
               child: CustomPaint(
-                painter: MyPainter(animation4.value - 150),
+                painter: MyPainter(animation4.value - 160),
               ),
             ),
             Positioned(

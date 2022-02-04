@@ -53,6 +53,7 @@ class AuthrisationController extends GetxController {
       url(data.url);
       Get.offAllNamed('/homepage');
     } catch (e) {
+      print(e.toString());
       Get.back();
       toast(message: e.toString());
     }

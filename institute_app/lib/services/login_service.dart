@@ -7,7 +7,7 @@ import 'package:imstitute/models/aothorised_modal.dart';
 
 class LoginServices {
   static var client = http.Client();
-  static var baseURL = 'http://192.168.1.18:9000/api';
+  static var baseURL = 'https://pure-crag-69424.herokuapp.com/api';
 
   static Future<UserData> login({
     required String num,
@@ -18,6 +18,7 @@ class LoginServices {
           .post(
             Uri.parse('$baseURL/auth/login'),
             headers: <String, String>{
+              "Access-Control-Allow-Origin": "*",
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode({
@@ -26,7 +27,7 @@ class LoginServices {
               "appRole": "Student"
             }),
           )
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 30));
       var data = jsonDecode(response.body);
       if (data['success']) {
         return UserData.fromJson(data['data']);

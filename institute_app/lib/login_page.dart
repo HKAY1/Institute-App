@@ -133,9 +133,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             ),
             Positioned(
               top: (size.height * 0.8) * animation3.value,
-              left: size.width * (animation1.value + .4),
+              left: size.width * (animation1.value + .04),
               child: CustomPaint(
-                painter: MyPainter(30),
+                painter: MyPainter(15),
               ),
             ),
             Positioned(
@@ -146,10 +146,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: size.height * .6,
+              bottom: size.height * .4,
               left: size.width * (animation2.value + .8),
               child: CustomPaint(
-                painter: MyPainter(animation4.value - 150),
+                painter: MyPainter(animation4.value - 160),
               ),
             ),
             Positioned(
@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 painter: MyPainter(60),
               ),
             ),
+            const SizedBox(),
             SingleChildScrollView(
               child: Form(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
