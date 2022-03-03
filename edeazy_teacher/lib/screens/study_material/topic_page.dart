@@ -16,7 +16,7 @@ class _TopicPageState extends State<TopicPage> {
   var controller = Get.put(StudyController());
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Chapter ${Get.arguments['chapter']}'),

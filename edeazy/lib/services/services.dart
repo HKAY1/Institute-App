@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:html';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:edeazy/models/eventModals.dart';
@@ -11,19 +12,19 @@ class Services {
 
 // API for Fetching Events
 
-  static Future<Map<String, List<Events>>> fetchEvent(
+  static Future<List<Events>> fetchEvent(
       {required String token, required int from, required int to}) async {
     try {
       var res = await client.get(
-          Uri.parse("$baseURL/events?fromDate=$from&toDate=$to"),
+          Uri.parse("$baseURL/organisation/events?fromDate=$from&toDate=$to"),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
-          }).timeout(const Duration(seconds: 10));
+          }).timeout(const Duration(seconds: 30));
       var data = jsonDecode(res.body);
       if (data['success']) {
-        return eventsFromJson(data['data']);
+        return eventFromJson(data['data']);
       }
       throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
@@ -37,15 +38,16 @@ class Services {
 
   static Future<List<SubjData>> fetchSubjects({required String token}) async {
     try {
-      var res = await client
-          .get(Uri.parse("$baseURL/users/student-subjects"), headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      }).timeout(const Duration(seconds: 10));
+      var res = await client.get(
+          Uri.parse("$baseURL/organisation/lectures/user-subjects"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 30));
       var data = jsonDecode(res.body);
       if (data['success']) {
-        return subjfromjason(data['data']);
+        return subjfromjason(data['data'][0]['subjects']);
       }
       throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
@@ -68,7 +70,7 @@ class Services {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
-          }).timeout(const Duration(seconds: 10));
+          }).timeout(const Duration(seconds: 30));
       var data = jsonDecode(res.body);
       if (data['success']) {
         return notesfrom(data['data']);
@@ -93,7 +95,7 @@ class Services {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
-      }).timeout(const Duration(seconds: 10));
+      }).timeout(const Duration(seconds: 30));
       var data = jsonDecode(res.body);
       if (data['success']) {
         return topicsfrom(data['data']);
@@ -120,12 +122,34 @@ class Services {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
-          }).timeout(const Duration(seconds: 10));
+          }).timeout(const Duration(seconds: 30));
       var data = jsonDecode(res.body);
       if (data['success']) {
         return secmatfrom(data['data']);
       }
       throw data['error']['message'] ?? 'No data';
+    } on TimeoutException {
+      throw 'Api Not Responding';
+    } on SocketException {
+      throw 'Can\'t Connect to API';
+    }
+  }
+
+  static Future<String> fetchLectures({
+    required String token,
+  }) async {
+    try {
+      var res = await client.get(
+          Uri.parse("http://192.168.1.25:2331/api/lectures/time-table"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }).timeout(const Duration(seconds: 30));
+      var data = res.body;
+      print('Data ====>  $data');
+      return data;
+      // throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
       throw 'Api Not Responding';
     } on SocketException {

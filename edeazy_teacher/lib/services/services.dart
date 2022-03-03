@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
@@ -255,7 +256,7 @@ class Services {
         'Authorization': 'Bearer $token',
       }).timeout(const Duration(seconds: 10));
       var data = jsonDecode(res.body);
-      print(data);
+      debugPrint(data);
       if (data['success']) {
         return topicsfrom(data['data']);
       }
@@ -321,7 +322,7 @@ class Services {
         },
       ).timeout(const Duration(seconds: 10));
       final resString = jsonDecode(response.body);
-      print(resString);
+      debugPrint(resString);
       if (resString['success'] ?? false) {
         return;
       }

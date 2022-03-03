@@ -41,16 +41,19 @@ class AuthrisationController extends GetxController {
         dismissDirection: DismissDirection.horizontal);
   }
 
-  Future<void> login({required String number, required String password}) async {
+  Future<void> login(
+      {required String userName, required String password}) async {
     try {
       dialog();
-      var data = await LoginServices.login(num: number, password: password);
+      var data =
+          await LoginServices.login(userName: userName, password: password);
       refreshUser(data: data);
+      debugPrint(data.toJson().toString());
       // Get.back();
       url(data.url);
       Get.offAllNamed('/homepage');
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       Get.back();
       toast(message: e.toString());
     }
@@ -76,7 +79,7 @@ class AuthrisationController extends GetxController {
     try {
       var t = g.read('token') ?? '';
       UserData data = await LoginServices.fetchProfile(t);
-      url(data.url);
+      url(data.toString());
       refreshUser(data: data);
       return true;
     } catch (e) {
@@ -122,15 +125,16 @@ class AuthrisationController extends GetxController {
 
   void refreshUser({required UserData data}) {
     g.write('token', data.token);
+    g.write('organisationId', data.organisationId);
     g.write('name', data.name);
     g.write('url', data.url);
     g.write('email', data.email);
     g.write('phone', data.phoneNumber.toString());
-    g.write('class', data.clas);
+    g.write('lectures', data.lectures);
     g.write('address', data.address);
     g.write('id', data.id);
     g.write('gender', data.gender);
-    g.write('subjects', data.subjects);
+    // g.write('subjects', data.subjects);
   }
 
   String userinfo({required String key}) {

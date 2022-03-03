@@ -42,7 +42,7 @@ class StudyController extends GetxController {
     );
   }
 
-// Get Subject of Student
+// Get Subjects of Student
   var subjlist = <SubjData>[].obs;
   var loadingSubj = true.obs;
 

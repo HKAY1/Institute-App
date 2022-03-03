@@ -43,10 +43,11 @@ class _HomePageState extends State<HomePage> {
               });
             }),
         body: BottomBarPageTransition(
-            // transitionType: TransitionType.slide,
-            builder: (_, i) => mylist.elementAt(i),
-            currentIndex: _myindex,
-            totalLength: mylist.length),
+          // transitionType: TransitionType.slide,
+          builder: (_, i) => mylist.elementAt(i),
+          currentIndex: _myindex,
+          totalLength: mylist.length,
+        ),
       ),
     );
   }
