@@ -55,6 +55,7 @@ class AuthrisationController extends GetxController {
     } catch (e) {
       Get.back();
       printError();
+      debugPrint(e.toString());
       toast(message: e.toString());
     }
   }

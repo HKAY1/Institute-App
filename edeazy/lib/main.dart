@@ -133,8 +133,32 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xff75e6da),
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            LinearProgressIndicator(
+              minHeight: 10,
+              color: Colors.white38,
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Loading...',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+                wordSpacing: 4,
+              ),
+            )
+          ],
+        ),
+      ),
       // body: Center(child: Image.asset('assets/images/monkey_profile.jpg')),
     );
   }

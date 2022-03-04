@@ -73,6 +73,7 @@ class _AddMaterialState extends State<AddMaterial> {
                       if (!GetUtils.isNumericOnly(v ?? '')) {
                         return "Invalid Entry";
                       }
+                      return null;
                     },
                     controller: chapterNoController,
                   ),
@@ -198,7 +199,7 @@ class _AddMaterialState extends State<AddMaterial> {
                     );
                   }
                   if (cont.loadingProgress.value < 100) {
-                    print('in progress --> ${cont.loadingProgress.value}');
+                    debugPrint('in progress --> ${cont.loadingProgress.value}');
                     Container(
                       width: MediaQuery.of(context).size.width * 0.6,
                       color: Colors.green,

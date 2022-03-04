@@ -286,6 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (!GetUtils.isEmail(value ?? '')) {
                   return "Enater valid Email";
                 }
+                return null;
               },
               controller: contEmail,
               maxLines: null,
@@ -344,6 +345,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (value == '') {
                   return "";
                 }
+                return null;
               },
               controller: contAdd,
               maxLines: null,
@@ -510,6 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (v == '') {
                       return '* Required';
                     }
+                    return null;
                   },
                   style: Theme.of(context).textTheme.headline3,
                   decoration: InputDecoration(
@@ -558,6 +561,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (v != contPass.text) {
                       return 'Password Doesn\'t Matches';
                     }
+                    return null;
                   },
                   style: Theme.of(context).textTheme.headline3,
                   decoration: InputDecoration(

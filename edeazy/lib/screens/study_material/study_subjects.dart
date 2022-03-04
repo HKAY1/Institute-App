@@ -55,43 +55,85 @@ class _StudyMaterial extends State<StudyMaterial> {
             itemBuilder: (context, item) {
               return GestureDetector(
                 onTap: () {
-                  cont.subject(cont.subjlist[item].subject);
-                  Get.toNamed('/study');
+                  // cont.subject(cont.subjlist[item].subject);
+                  // Get.toNamed('/study');
                 },
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  width: size.width * 0.90,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    color: cardcolor,
-                    // gradient: getGradient(),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        cont.subjlist[item].subject,
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight:
-                              Theme.of(context).textTheme.headline2!.fontWeight,
-                          color: Colors.white,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      width: size.width * 0.90,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: cardcolor,
+                        // gradient: getGradient(),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            cont.subjlist[item].subject ?? '',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: Theme.of(context)
+                                  .textTheme
+                                  .headline2!
+                                  .fontWeight,
+                              color: Colors.white,
+                            ),
+                          ),
+                          // SizedBox(height: 20),
+                          Text(
+                            cont.subjlist[item].teacher ?? 'Anonymus',
+                            style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .fontSize,
+                              fontWeight: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .fontWeight,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: -5,
+                      top: 5,
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 15.0,
+                                spreadRadius: 3.0,
+                                offset: Offset(10.0, 10.0),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(2)),
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Batch ${cont.subjlist[item].batch ?? 1}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .fontWeight,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      // SizedBox(height: 20),
-                      Text(
-                        cont.subjlist[item].teacherName,
-                        style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline4!.fontSize,
-                          fontWeight:
-                              Theme.of(context).textTheme.headline4!.fontWeight,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },

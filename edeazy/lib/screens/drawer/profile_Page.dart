@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:edeazy/controller/authorisation_controller.dart';
 import 'package:edeazy/custome/colorScheme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController contNPass = TextEditingController();
   String gender = '';
   var changepassKey = GlobalKey<FormState>();
+  final photoController = PhotoViewController();
 
   @override
   void initState() {
@@ -36,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bottoms = MediaQuery.of(context).viewInsets.bottom;
     Size size = MediaQuery.of(context).size;
 
     void pickImage(ImageSource source) async {
@@ -71,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text('Profile'),
       ),
       body: ListView(
-        padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: bottoms),
+        padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 20),
         children: [
           SizedBox(
             height: 150,
@@ -84,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.center,
                     child: Obx(() {
                       return CachedNetworkImage(
-                        imageUrl: d.url.replaceAll('localhost', '192.168.1.18'),
+                        imageUrl: d.url.string,
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) =>
                                 CircularProgressIndicator(
@@ -270,118 +271,59 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            child: TextFormField(
-              focusNode: mailFocus,
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (s) {
-                mailFocus.unfocus();
-              },
-              keyboardType: TextInputType.emailAddress,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (!GetUtils.isEmail(value ?? '')) {
-                  return "Enater valid Email";
-                }
-              },
-              controller: contEmail,
-              maxLines: null,
-              enabled: true,
-              maxLength: 50,
-              style: Theme.of(context).textTheme.headline3,
-              onChanged: (i) {
-                // email = i;
-              },
-              // controller: TextEditingController()..text = email,
-              decoration: InputDecoration(
-                disabledBorder: InputBorder.none,
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.redAccent,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.black38,
-                  ),
-                ),
-                fillColor: Colors.grey[100],
-                filled: true,
-                label: Text(
-                  'Email Address',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3!
-                      .copyWith(color: cardcolor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
-                ),
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.grey[100],
+              border: Border.all(
+                color: Colors.grey,
               ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Email Address',
+                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                        fontSize: 10,
+                        color: Colors.black38,
+                      ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  d.userinfo(key: 'email'),
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ],
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            child: TextFormField(
-              focusNode: addFocus,
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (s) {
-                addFocus.unfocus();
-              },
-              keyboardType: TextInputType.streetAddress,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (value == '') {
-                  return "";
-                }
-              },
-              controller: contAdd,
-              maxLines: null,
-              maxLength: 300,
-              style: Theme.of(context).textTheme.headline3,
-              onChanged: (i) {
-                // email = i;
-              },
-              // controller: TextEditingController()..text = email,
-              decoration: InputDecoration(
-                disabledBorder: InputBorder.none,
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.redAccent,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.black38,
-                  ),
-                ),
-                fillColor: Colors.grey[100],
-                filled: true,
-                label: Text(
-                  'Address',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3!
-                      .copyWith(color: cardcolor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
-                ),
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.grey[100],
+              border: Border.all(
+                color: Colors.grey,
               ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Address',
+                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                        fontSize: 10,
+                        color: Colors.black38,
+                      ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  d.userinfo(key: 'address'),
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ],
             ),
           ),
           Text(
@@ -392,51 +334,47 @@ class _ProfilePageState extends State<ProfilePage> {
                 .copyWith(color: Colors.blueAccent),
           ),
           SizedBox(height: 20),
-          Row(
-            children: [
-              FilterChip(
-                elevation: 10,
-                backgroundColor: Colors.grey,
-                selectedColor: Colors.blueAccent,
-                disabledColor: Colors.white,
-                checkmarkColor: Colors.white,
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .copyWith(color: Colors.white),
-                label: Text('Male'),
-                selected: gender == 'Male',
-                onSelected: (f) {
-                  setState(() {
-                    gender = 'Male';
-                  });
-                },
-              ),
-              SizedBox(width: 30),
-              FilterChip(
-                elevation: 10,
-                backgroundColor: Colors.grey,
-                selectedColor: Colors.blueAccent,
-                disabledColor: Colors.white,
-                checkmarkColor: Colors.white,
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .copyWith(color: Colors.white),
-                label: Text('Female'),
-                selected: gender == 'Female',
-                onSelected: (f) {
-                  setState(() {
-                    gender = 'Female';
-                  });
-                },
-              )
-            ],
+          IgnorePointer(
+            ignoring: true,
+            child: Row(
+              children: [
+                FilterChip(
+                  elevation: 10,
+                  backgroundColor: Colors.grey,
+                  selectedColor: Colors.blueAccent,
+                  disabledColor: Colors.white,
+                  checkmarkColor: Colors.white,
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: Colors.white),
+                  label: Text('Male'),
+                  selected: gender == 'Male',
+                  onSelected: (f) {
+                    // setState(() {
+                    //   gender = 'Male';
+                    // });
+                  },
+                ),
+                SizedBox(width: 30),
+                FilterChip(
+                  elevation: 10,
+                  backgroundColor: Colors.grey,
+                  selectedColor: Colors.blueAccent,
+                  disabledColor: Colors.white,
+                  checkmarkColor: Colors.white,
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: Colors.white),
+                  label: Text('Female'),
+                  selected: gender == 'Female',
+                  onSelected: (f) {},
+                )
+              ],
+            ),
           ),
           SizedBox(height: 30),
-          // editfield(
-          //     header: 'Class', detail: d.userinfo(key: 'class').toString()),
-          // editfield(header: 'Gender', detail: d.userinfo(key: 'gender')),
           TextButton(
             onPressed: () {
               changePassword(context);
@@ -455,27 +393,6 @@ class _ProfilePageState extends State<ProfilePage> {
               primary: Colors.white,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Align(
-              child: TextButton.icon(
-                style: TextButton.styleFrom(
-                  minimumSize: Size(150, 50),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  backgroundColor:
-                      Theme.of(context).appBarTheme.backgroundColor,
-                  primary: Colors.white,
-                ),
-                onPressed: () {
-                  d.updateUserData(contEmail.text, contAdd.text, gender);
-                },
-                icon: Icon(Icons.edit),
-                label: Text('Update Profile'),
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -509,6 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (v == '') {
                       return '* Required';
                     }
+                    return null;
                   },
                   style: Theme.of(context).textTheme.headline3,
                   decoration: InputDecoration(
@@ -557,6 +475,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (v != contPass.text) {
                       return 'Password Doesn\'t Matches';
                     }
+                    return null;
                   },
                   style: Theme.of(context).textTheme.headline3,
                   decoration: InputDecoration(

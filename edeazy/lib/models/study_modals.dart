@@ -5,36 +5,29 @@ List<Map<String, dynamic>> subjtojson(List<SubjData> subj) =>
     subj.map((e) => e.toJson()).toList();
 
 class SubjData {
+  String? classId;
+  int? batch;
+  String? subject;
+  String? teacher;
   SubjData({
-    required this.id,
-    required this.clas,
-    required this.subject,
-    required this.teacherId,
-    required this.teacherName,
+    this.classId,
+    this.batch,
+    this.subject,
+    this.teacher,
   });
-  late final String id;
-  late final String clas;
-  late final String subject;
-  late final String teacherId;
-  late final String teacherName;
 
-  SubjData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    clas = json['class'];
-    subject = json['subject'];
-    teacherId = json['teacherId'];
-    teacherName = json['teacherName'];
-  }
+  factory SubjData.fromJson(Map<String, dynamic> json) => SubjData(
+        classId: json['classId'],
+        batch: json['batch'],
+        subject: json['name'],
+        teacher: json['teacher'],
+      );
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['_id'] = id;
-    _data['class'] = clas;
-    _data['subject'] = subject;
-    _data['teacherId'] = teacherId;
-    _data['teacherName'] = teacherName;
-    return _data;
-  }
+  Map<String, dynamic> toJson() => {
+        'classId': classId,
+        'batch': batch,
+        'teacher': teacher,
+      };
 }
 
 //Modals for Chapter Notes

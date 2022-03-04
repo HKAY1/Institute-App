@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  var usercontroll = TextEditingController(text: '1111111111');
+  var usercontroll = TextEditingController(text: 'kzxvh739');
   var passcontroll = TextEditingController(text: 'password');
   var formKey = GlobalKey<FormState>();
   bool isvisible = false;
@@ -131,32 +131,32 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 painter: MyPainter(animation4.value - 30),
               ),
             ),
+            // Positioned(
+            //   top: (size.height * 0.8) * animation3.value,
+            //   left: size.width * (animation1.value + .04),
+            //   child: CustomPaint(
+            //     painter: MyPainter(15),
+            //   ),
+            // ),
             Positioned(
-              top: (size.height * 0.8) * animation3.value,
-              left: size.width * (animation1.value + .04),
-              child: CustomPaint(
-                painter: MyPainter(15),
-              ),
-            ),
-            Positioned(
-              top: size.height * (animation2.value + .55),
+              top: size.height * (animation3.value + .1),
               left: size.width * .21,
               child: CustomPaint(
-                painter: MyPainter(animation4.value - 120),
+                painter: MyPainter(animation4.value - 130),
               ),
             ),
+            // Positioned(
+            //   bottom: size.height * .4,
+            //   left: size.width * (animation2.value + .8),
+            //   child: CustomPaint(
+            //     painter: MyPainter(animation4.value - 160),
+            //   ),
+            // ),
             Positioned(
-              bottom: size.height * .4,
-              left: size.width * (animation2.value + .8),
-              child: CustomPaint(
-                painter: MyPainter(animation4.value - 160),
-              ),
-            ),
-            Positioned(
-              bottom: size.height * (animation2.value + .1),
+              bottom: size.height * (animation2.value + .2),
               right: size.width * (animation3.value - .1),
               child: CustomPaint(
-                painter: MyPainter(60),
+                painter: MyPainter(animation4.value - 160),
               ),
             ),
             const SizedBox(),
@@ -189,15 +189,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     FadeAnimation(
                       1.2,
                       component1(
-                        label: 'Phone Number',
+                        label: 'UserName',
                         child: TextFormField(
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "* Required";
-                            } else if (value.length < 10) {
-                              return 'Enter Valid Phone Number';
-                            } else if (!GetUtils.isNumericOnly(value)) {
-                              return 'Invalid Number';
                             } else {
                               return null;
                             }
@@ -215,7 +211,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             fontFamily: 'OpenSans',
                           ),
                           cursorColor: Colors.white,
-                          keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
                             counterText: '',
                             hoverColor: Colors.transparent,
@@ -331,7 +326,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             voidCallback: () async {
                               if (formKey.currentState!.validate()) {
                                 await logincontroll.login(
-                                    number: usercontroll.text,
+                                    userName: usercontroll.text,
                                     password: passcontroll.text);
                               } else {
                                 Get.snackbar(

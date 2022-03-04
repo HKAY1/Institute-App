@@ -10,7 +10,7 @@ class LoginServices {
   static var baseURL = 'https://pure-crag-69424.herokuapp.com/api';
 
   static Future<UserData> login({
-    required String num,
+    required String userName,
     required String password,
   }) async {
     try {
@@ -22,13 +22,16 @@ class LoginServices {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode({
-              "phoneNumber": num,
+              "userName": userName,
               "password": password,
               "appRole": "Student"
             }),
           )
           .timeout(const Duration(seconds: 30));
       var data = jsonDecode(response.body);
+      // if (data['isAccountVerified']) {
+      //   throw 'Account Verification Failed';
+      // }
       if (data['success']) {
         return UserData.fromJson(data['data']);
       }
@@ -153,8 +156,7 @@ class LoginServices {
         'Authorization': 'Bearer $token',
       });
       var data = jsonDecode(response.body);
-      bool s = !data['success'];
-      if (s) {
+      if (data['success'] ?? true) {
         throw data['error'] ?? 'No data';
       }
       return UserData.fromJson(data['data']);

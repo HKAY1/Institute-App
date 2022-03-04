@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors
 import 'dart:io';
+import 'package:edeazy/animation/live_card_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
@@ -26,10 +27,17 @@ class MyCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(width: 8),
-          CircleAvatar(
-            minRadius: 40,
-            maxRadius: 50,
-            backgroundImage: Image.asset('images/monkey_profile.jpg').image,
+          LiveAnimation(
+            minRadius: 23,
+            ripplesCount: 15,
+            repeat: true,
+            color: Colors.redAccent,
+            animate: canjoin,
+            child: CircleAvatar(
+              minRadius: 40,
+              maxRadius: 50,
+              backgroundImage: Image.asset('images/monkey_profile.jpg').image,
+            ),
           ),
           Expanded(
             child: Container(
@@ -342,11 +350,11 @@ class _MeetingState extends State<Meeting> {
     );
   }
 
-  void _onAudioOnlyChanged(value) {
-    setState(() {
-      isAudioOnly = !value;
-    });
-  }
+  // void _onAudioOnlyChanged(value) {
+  //   setState(() {
+  //     isAudioOnly = !value;
+  //   });
+  // }
 
   Future<void> _joinMeeting() async {
     // Enable or disable any feature flag here

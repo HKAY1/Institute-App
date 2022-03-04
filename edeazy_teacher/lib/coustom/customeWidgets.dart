@@ -410,11 +410,11 @@ class _MeetingState extends State<Meeting> {
     );
   }
 
-  void _onAudioOnlyChanged(value) {
-    setState(() {
-      isAudioOnly = !value;
-    });
-  }
+  // void _onAudioOnlyChanged(value) {
+  //   setState(() {
+  //     isAudioOnly = !value;
+  //   });
+  // }
 
   Future<void> _joinMeeting() async {
     // Enable or disable any feature flag here
