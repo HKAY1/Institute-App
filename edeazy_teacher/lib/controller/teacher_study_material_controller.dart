@@ -30,7 +30,7 @@ class StudyController extends GetxController {
       maxWidth: double.maxFinite,
       margin: const EdgeInsets.all(0),
       snackPosition: SnackPosition.BOTTOM,
-      dismissDirection: DismissDirection.horizontal,
+      dismissDirection:DismissDirection.horizontal,
     );
   }
 

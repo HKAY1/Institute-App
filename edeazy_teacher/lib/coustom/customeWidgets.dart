@@ -1,166 +1,15 @@
 // ignore_for_file: file_names, prefer_const_constructors
 import 'dart:io';
+import 'package:edeazy_teacher/animation/live_card_animation.dart';
 import 'package:edeazy_teacher/controller/authorisation_controller.dart';
 import 'package:edeazy_teacher/controller/jitsii_controller.dart';
+import 'package:edeazy_teacher/controller/lectures_controller.dart';
+import 'package:edeazy_teacher/modals/lecture_modal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
-import 'colorScheme.dart';
-
-class MyCard extends StatefulWidget {
-  
-  final bool canjoin;
-  final String subject;
-  final String name;
-  final String timing;
-  const MyCard({
-   Key? key,
-   required this.canjoin,
-   required this.subject,
-   required this.name,
-   required this.timing
-   }) : super(key: key);
-
-  
-
-  @override
-  State<MyCard> createState() => _MyCardState();
-}
-
-class _MyCardState extends State<MyCard> {
-  @override
-  Widget build(BuildContext context) {
-    // final d = Get.put(Jitsiicontroller());
-    // VoidCallback? isjoin ;
-    var time = DateTime(2022,02,26,17,30);
-
-  //   Stream<bool> active = (() async* {
-  // await Future<void>.delayed(Duration(seconds: 2));
-
-  // if(time.isAtSameMomentAs(DateTime.now())){
-  //   setState(() {
-  //         isjoin = true;
-  //       });
-        
-
-  // }
-
-    // for(int i=0;i<d.classlist.length;i++){
-    //   await Future<void>.delayed(Duration(seconds: 1));
-    //   if(time.isAfter(d.classlist[i].startTime)&&time.isBefore(d.classlist[i].endTime)) {
-    //     setState(() {
-    //       isjoin = true;
-    //     });
-    //     }
-    // }
-//     yield true;
-// })();
-    return Card(
-      elevation: 4,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      color: cardcolor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Row(
-             mainAxisSize: MainAxisSize.min,
-             mainAxisAlignment: MainAxisAlignment.spaceAround,
-             children: [
-               SizedBox(width: 8),
-               CircleAvatar(
-                 minRadius: 40,
-                 maxRadius: 50,
-                 backgroundImage: Image.asset('images/monkey_profile.jpg').image,
-               ),
-               Expanded(
-                 child: Container(
-                   margin: EdgeInsets.only(left: 8),
-                   padding:
-                       EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
-                   decoration: BoxDecoration(
-                       color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                   child: Column(
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text(
-                         widget.subject,
-                         style: Theme.of(context).textTheme.headline4,
-                       ),
-                       SizedBox(height: 10),
-                       Text(
-                         'Electromagnetic Induction',
-                         style: Theme.of(context).textTheme.headline3,
-                       ),
-                       SizedBox(height: 10),
-                       Text(
-                         widget.name,
-                         style: Theme.of(context).textTheme.headline4,
-                       ),
-                       SizedBox(height: 10),
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           Text(
-                             widget.timing,
-                             style: Theme.of(context).textTheme.headline5,
-                           ),
-                           StreamBuilder<bool>(
-                                 stream: Stream.periodic(Duration(seconds: 1),(i){
-                                   if(DateTime.now().isAfter(time)){
-                                      return true;
-                                 }
-                                 return false;
-                                 }),
-                                 initialData: false,
-                                 builder: (context, snapshot) {
-
-                                   if((snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) && (snapshot.hasData && snapshot. data == true)){
-                                     return TextButton(
-                                       style: TextButton.styleFrom(
-                                           backgroundColor: cardcolor,
-                                           shape: RoundedRectangleBorder(
-                                               borderRadius: BorderRadius.circular(20))),
-                                       onPressed: () {},
-                                       child: Text(
-                                         'Join',
-                                         style: TextStyle(color: Colors.white),
-                                       ),
-                                     );
-                                   }
-                                   return TextButton(
-                                       style: TextButton.styleFrom(
-                                           backgroundColor: Colors.grey,
-                                           shape: RoundedRectangleBorder(
-                                               borderRadius: BorderRadius.circular(20))),
-                                       onPressed: () {
-                                         Navigator.push(
-                                           context,
-                                           MaterialPageRoute(
-                                             builder: (context) => Meeting(),
-                                           ),
-                                         );
-                                       },
-                                       child: Text(
-                                         'Join',
-                                         style: TextStyle(color: Colors.white),
-                                       ),
-                                     ); 
-                                 } 
-                               ),
-                         ],
-                      ),
-                    ],
-                   
-                  ),
-                ),
-              ),
-            ],
-      )
-    );
-  }
-  void joinButton (){}
-}
 
 class CustomeLoading extends StatefulWidget {
   const CustomeLoading({
@@ -249,7 +98,9 @@ class _CustomeLoadingState extends State<CustomeLoading>
 }
 
 class Meeting extends StatefulWidget {
-  const Meeting({Key? key}) : super(key: key);
+  const Meeting({
+    Key? key,
+    }) : super(key: key);
 
   @override
   _MeetingState createState() => _MeetingState();
@@ -258,6 +109,9 @@ class Meeting extends StatefulWidget {
 class _MeetingState extends State<Meeting> {
   final controll = Get.put(Jitsiicontroller());
   var d = Get.put(AuthrisationController());
+  var l = Lecture();
+  var time = DateTime.now();
+    var meeting = {};
   bool? isAudioOnly = true;
   bool isAudioMuted = true;
   bool isVideoMuted = true;
@@ -348,7 +202,9 @@ class _MeetingState extends State<Meeting> {
             ),
             SizedBox(width: 25),
             TextButton(
-              onPressed: _joinMeeting,
+              onPressed: () {
+                _joinMeeting();
+              },
               child: Text(
                 'Join',
                 style: TextStyle(color: Colors.white),
@@ -433,20 +289,19 @@ class _MeetingState extends State<Meeting> {
         featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
       }
     }
-    var subject ='';
-    var cla=''; 
+     
     var time = DateTime.now();
-    for(int i=0;i<controll.classlist.length;i++){
-      if(time.isAfter(controll.classlist[i].startTime)&&time.isBefore(controll.classlist[i].endTime)) {
-        subject =controll.classlist[i].subject;
-        cla = controll.classlist[i].jitsiiClass;
-        }
+    // for(int i=0;i<controll.classlist.length;i++){
+    //   if(time.isAfter(controll.classlist[i].startTime)&&time.isBefore(controll.classlist[i].endTime)) {
+    //     subject =controll.classlist[i].subject;
+    //     cla = controll.classlist[i].jitsiiClass;
+    //     }
    
-    }
+    // }
     // Define meetings options here
-    var options = JitsiMeetingOptions(room: '{$cla}th-{$subject}')
-      ..serverURL = 'meet.jitsi.si/{$cla}th-{$subject}'
-      ..subject = subject
+    var options = JitsiMeetingOptions(room: 'subject')
+      // ..serverURL = "meet.jitsii.si"
+      ..subject = 'subject'
       ..userDisplayName = d.userinfo(key: 'name')
       ..userEmail = d.userinfo(key: 'email')
       ..iosAppBarRGBAColor = '#0080FF80'
@@ -455,7 +310,7 @@ class _MeetingState extends State<Meeting> {
       ..videoMuted = isVideoMuted
       ..featureFlags.addAll(featureFlags)
       ..webOptions = {
-        "roomName": 'hindi',
+        "roomName": 'subject',
         "width": "100%",
         "height": "100%",
         "enableWelcomePage": false,

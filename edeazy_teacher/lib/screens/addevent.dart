@@ -27,7 +27,7 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay selectedTime2 = TimeOfDay.now();
   final formkey = GlobalKey<FormState>();
   late DateTime toDate = DateTime.now();
-  late List<String?> lectureId;
+  List<String?> lectureId = [];
   late List<bool> isSelect;
   late List<bool> isbatch;
   List<Subject>subjects = [];
@@ -87,6 +87,7 @@ class _AddEventState extends State<AddEvent> {
                     padding: const EdgeInsets.only(left: 5.0, right: 5),
                     child: FilterChip(
                       selected:isSelect[item],
+                      elevation: 20,
                       checkmarkColor: Colors.white,
                       selectedColor: Colors.greenAccent,
                       labelStyle: TextStyle(
@@ -131,6 +132,7 @@ class _AddEventState extends State<AddEvent> {
                   return Padding(
                     padding: const EdgeInsets.only(left: 5.0, right: 5),
                     child: FilterChip(
+                      elevation: 5,
                       selected:isbatch[item],
                       checkmarkColor: Colors.white,
                       selectedColor: Colors.greenAccent,
@@ -148,7 +150,9 @@ class _AddEventState extends State<AddEvent> {
                         setState(() {
                           isbatch[item] = value;
                           if(value)
-                          lectureId = [subjects[item].lectureId];
+                          lectureId.add(subjects[item].lectureId);
+                          if(!value)
+                          lectureId.removeWhere((e) => e == subjects[item].lectureId);
                         });
                       },
                     ),
@@ -258,7 +262,7 @@ class _AddEventState extends State<AddEvent> {
                 backgroundColor: Colors.blue,
                 primary: Colors.white,
               ),
-              onPressed: () {
+              onPressed:(!lectureId.isNotEmpty)?null : () {
                 if (formkey.currentState!.validate()) {
                   final dt = DateTime(fromDate.year, fromDate.month,
                       fromDate.day, selectedTime.hour, selectedTime.minute);

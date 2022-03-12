@@ -142,8 +142,8 @@ class _AddMaterialState extends State<AddMaterial> {
                       border: const OutlineInputBorder(),
                     ),
                     onTap: () async {
-                      if(await canLaunch('https://us05web.zoom.us/j/88357630580?pwd=S2QyZFFVR0dqN3RpcVg1TlhiTlVQUT09')){
-                        await launch('https://us05web.zoom.us/j/88357630580?pwd=S2QyZFFVR0dqN3RpcVg1TlhiTlVQUT09',
+                      if(await canLaunch('https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwj_9c7Hl8D2AhUMRmwGHftMD5sQMygBegUIARDUAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&ved=2ahUKEwj_9c7Hl8D2AhUMRmwGHftMD5sQMygBegUIARDUAQ')){
+                        await launch('https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwj_9c7Hl8D2AhUMRmwGHftMD5sQMygBegUIARDUAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&ved=2ahUKEwj_9c7Hl8D2AhUMRmwGHftMD5sQMygBegUIARDUAQ',
                                     forceSafariVC:false,
                                     forceWebView: true,
                                     enableJavaScript: true

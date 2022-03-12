@@ -112,7 +112,7 @@ class NotificatioPage extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'Paragraphs To Send To Your Girlfriend: Do you want to make your girlfriend happy? Do you want to make her cry? Do you want to make her cry with tears of joy? Then these sweet paragraphs are what you need. We give you dozens of great romantic love paragraphs that will make your girl smile even if she’s not with you. If you are looking to leave a significant impression on the one you love, then you should consider these cute paragraphs for her. Do you wish to surprise your significant other with your love sentiments? This post has some ideas on how to write something romantic for her.',
+                          'Paragraphs To Send To Your Girlfriend: Do you want to make your girlfriend happy?',
                           style: TextStyle(
                             color: Colors.black54,
                             fontSize:

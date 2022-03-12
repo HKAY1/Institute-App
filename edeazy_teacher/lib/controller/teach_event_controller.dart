@@ -30,21 +30,23 @@ class EventController extends GetxController {
   }
 
   var isLoading = true.obs;
-  var eventList = <String, List<Events>>{}.obs;
-  var fromDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  var eventList = <Events>[].obs;
+ var fromDate = DateTime(DateTime.now().year, DateTime.now().month);
   var toDate = DateTime(DateTime.now().year, DateTime.now().month + 2, 0);
   void fetchEvent() async {
-    try {
+   try {
       isLoading(true);
       var data = await Services.fetchEvent(
-          token: g.read('token') ?? '',
-          from: fromDate.millisecondsSinceEpoch,
-          to: toDate.millisecondsSinceEpoch);
+        token: g.read('token') ?? '',
+        from: fromDate.millisecondsSinceEpoch,
+        to: toDate.millisecondsSinceEpoch,
+      );
+      print(data);
       eventList(data);
       isLoading(false);
     } catch (e) {
       isLoading(false);
+      print(e.toString());
       toast(message: e.toString());
     }
     isLoading(false);

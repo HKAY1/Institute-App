@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 
-import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:get/get.dart';
 import 'package:edeazy_teacher/controller/authorisation_controller.dart';
@@ -46,11 +45,10 @@ class _HomePageState extends State<HomePage> {
                 _myindex = i;
               });
             }),
-        body: BottomBarPageTransition(
-            // transitionType: TransitionType.slide,
-            builder: (_, i) => mylist.elementAt(i),
-            currentIndex: _myindex,
-            totalLength: mylist.length),
+        body: IndexedStack(
+          children :mylist,
+          index:_myindex,
+        )
       ),
     );
   }

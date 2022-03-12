@@ -31,8 +31,8 @@ class Services {
       final bod = jsonEncode({
         "name": title,
         "class": classes,
-        "start": start.toIso8601String(),
-        "end": end.toIso8601String(),
+        "start": start.toUtc().toString(),
+        "end": end.toUtc().toString(),
         "description": description,
       });
 
@@ -57,19 +57,19 @@ class Services {
 
 //to fetch data of events
 
-  static Future<Map<String, List<Events>>> fetchEvent(
+  static Future<List<Events>> fetchEvent(
       {required String token, required int from, required int to}) async {
     try {
       var res = await client.get(
-          Uri.parse("$baseURL/events?fromDate=$from&toDate=$to"),
+          Uri.parse("$baseURL/organisation/events?fromDate=$from&toDate=$to"),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
-          }).timeout(const Duration(seconds: 10));
+          }).timeout(const Duration(seconds: 20));
       var data = jsonDecode(res.body);
       if (data['success']) {
-        return eventsFromJson(data['data']);
+        return eventFromJson(data['data']);
       }
       throw data['error']['message'] ?? 'No data';
     } on TimeoutException {
@@ -94,7 +94,6 @@ class Services {
       );
       final resString = jsonDecode(response.body);
       if (resString['success'] ?? false) {
-        print(resString['data']);
         return teacherclasfrom(resString['data']);
       }
       throw resString['error']['message'] ?? 'No Data';
